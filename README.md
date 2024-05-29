@@ -1,3 +1,3 @@
 # AthleticScore
 
-read me
+Athletics Score
