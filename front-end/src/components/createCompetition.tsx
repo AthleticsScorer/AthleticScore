@@ -1,8 +1,8 @@
-
+import { Button } from '@chakra-ui/react'
 
 function CreateCompetition() {
   return (
-    <div>createCompetition</div>
+    <Button colorScheme='blue' size='lg'>Create Competition</Button>
   )
 }
 
