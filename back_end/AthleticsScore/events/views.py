@@ -2,6 +2,9 @@
 from rest_framework import generics
 from .models import Organisation, Athlete, Competition, Event, Result
 from .serializers import OrganisationSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 # Organisation Views
 class OrganisationListCreateAPIView(generics.ListCreateAPIView):
@@ -49,16 +52,22 @@ class ResultDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ResultSerializer
 
 # Additional View for Ranked Athletes by Event Result
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-
 @api_view(['GET'])
 def get_athletes_ranked_by_result(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     if event.event_type == 'time':
-        results = Result.objects.filter(event=event).order_by('-value')
+        results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
+    elif event.event_type == 'distance':
+        results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
     else:
-        results = Result.objects.filter(event=event).order_by('value')
-    serializer = ResultSerializer(results, many=True)
-    return Response(serializer.data)
+        return Response({"error": "Invalid event measurement type"}, status=400)
+
+    ranked_results = []
+    for rank, result in enumerate(results, start=1):
+        ranked_results.append({
+            'rank': rank,
+            'athlete_name': result.athlete.name,
+            event.event_type: result.value
+        })
+
+    return Response(ranked_results)
