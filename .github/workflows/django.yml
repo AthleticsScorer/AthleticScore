@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "heroku-cicd" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "heroku-cicd" ]
 
 jobs:
   build:
@@ -29,3 +29,13 @@ jobs:
       run: |
         python manage.py test
       working-directory: back_end/AthleticsScore
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "athleticscore" #Must be unique in Heroku
+          heroku_email: "jz7622@ic.ac.uk"
