@@ -22,12 +22,12 @@ class Competition(models.Model):
 
 class Event(models.Model):
     EVENT_TYPES = [
-        ("D", "distance"),
-        ("T", "time"),
+        ("Distance", "distance"),
+        ("Time", "time"),
     ]
 
     age_group = models.CharField(max_length=100)
-    event_type = models.CharField(max_length=5, choices=EVENT_TYPES)
+    event_type = models.CharField(max_length=30, choices=EVENT_TYPES)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='events')
 
     def __str__(self):
@@ -36,7 +36,7 @@ class Event(models.Model):
 class Result(models.Model):
     athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='results')
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='results')
-    value = models.DecimalField(max_digits=10, decimal_places=3)
+    value = models.DecimalField(max_digits=10, decimal_places=3, blank=True)
 
     def __str__(self):
         return f"{self.athlete.name} - {self.event} - {self.value}"
