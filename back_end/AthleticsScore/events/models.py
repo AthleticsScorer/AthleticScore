@@ -36,7 +36,7 @@ class Event(models.Model):
 class Result(models.Model):
     athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='results')
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='results')
-    value = models.DecimalField(max_digits=10, decimal_places=3)
+    value = models.DecimalField(max_digits=10, decimal_places=3, blank=True)
 
     def __str__(self):
         return f"{self.athlete.name} - {self.event} - {self.value}"
