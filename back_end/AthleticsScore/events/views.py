@@ -71,3 +71,13 @@ def get_athletes_ranked_by_result(request, event_id):
         })
 
     return Response(ranked_results)
+
+@api_view(['GET'])
+def search_athletes_by_name(request):
+    query = request.query_params.get('name', None)
+    if query is not None:
+        athletes = Athlete.objects.filter(name__icontains=query)
+        results = [{'id': athlete.id, 'name': athlete.name} for athlete in athletes]
+        return Response(results)
+    else:
+        return Response({"error": "Name parameter is required"}, status=400)
