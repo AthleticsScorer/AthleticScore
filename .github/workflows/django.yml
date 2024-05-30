@@ -28,7 +28,6 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
-      working-directory: back_end/AthleticsScore
 
   deploy:
     runs-on: ubuntu-latest
