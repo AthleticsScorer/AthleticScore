@@ -29,6 +29,15 @@ class CompetitionListCreateAPIView(generics.ListCreateAPIView):
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer
 
+    def perform_create(self, serializer):
+        competition = serializer.save()
+        self.competition_id = competition.id
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['id'] = self.competition_id
+        return response
+
 class CompetitionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer
