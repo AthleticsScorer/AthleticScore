@@ -2,6 +2,7 @@ import { HStack, IconButton, Input } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Event } from "../pages/CreatePage";
+import axios from "axios";
 
 interface Props {
     onAdd: (newEvent: Event) => void;
@@ -12,13 +13,22 @@ const InputEvent = ({ onAdd }: Props) => {
     const [eventName, setEventName] = useState('');
     const currentIdRef = useRef(0);
 
-    const handleAddClick = () => {
-        const newEvent: Event = {
-          id: currentIdRef.current++, 
-          name: eventName,
-        };
-        onAdd(newEvent);
-        setEventName(''); 
+    const handleAddClick = async () => {
+        await axios.post("http://127.0.0.1:8000/api/events/", {
+        age_group: "U18",
+        event_type: "Time",
+        competition: 1
+      })
+      .then()
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+      const newEvent: Event = {
+        id: currentIdRef.current++, 
+        name: eventName,
+      };
+      onAdd(newEvent);
+      setEventName(''); 
       };
 
 
