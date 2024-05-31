@@ -9,7 +9,7 @@ class Organisation(models.Model):
 
 class Athlete(models.Model):
     name = models.CharField(max_length=255)
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, related_name='athletes')
+    #organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, related_name='athletes', blank=True)
 
     def __str__(self):
         return self.name
@@ -26,6 +26,7 @@ class Event(models.Model):
         ("Time", "time"),
     ]
 
+    event_name = models.CharField(max_length=100)
     age_group = models.CharField(max_length=100)
     event_type = models.CharField(max_length=30, choices=EVENT_TYPES)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='events')

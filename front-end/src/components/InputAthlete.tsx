@@ -1,41 +1,45 @@
 import { HStack, IconButton, Input } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
-import { Event } from "../pages/CreatePage";
 import axios from "axios";
 
 interface Props {
-    onAdd: (newEvent: Event) => void;
+    onAdd: (newAthlete: Athlete) => void;
 }
 
-const InputEvent = ({ onAdd }: Props) => {
+export interface Athlete {
+    id: number
+    name: String
+    organisation: String
+}
+
+const InputAthlete = ({ onAdd }: Props) => {
     
-    const [eventName, setEventName] = useState('');
+    const [athleteName, setAthleteName] = useState('');
     const currentIdRef = useRef(0);
 
     const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api/events/", {
-        age_group: eventName,
-        event_type: "Time",
-        competition: 1
+        await axios.post("http://127.0.0.1:8000/api/athletes/", {
+        name: athleteName,
       })
       .then()
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-      const newEvent: Event = {
-        id: currentIdRef.current++, 
-        name: eventName,
+      const newAthlete: Athlete = {
+        id: currentIdRef.current++,
+        name: athleteName,
+        organisation: "null"
       };
-      onAdd(newEvent);
-      setEventName(''); 
+      onAdd(newAthlete);
+      setAthleteName(''); 
       };
 
 
   return (
     <HStack>
-      <Input placeholder="Add Event" size="md" value={eventName}
-        onChange={(e) => setEventName(e.target.value)}/>
+      <Input placeholder="Add Athlete" size="md" value={athleteName}
+        onChange={(e) => setAthleteName(e.target.value)}/>
       <IconButton
         variant="outline"
         colorScheme="teal"
@@ -48,4 +52,4 @@ const InputEvent = ({ onAdd }: Props) => {
   );
 };
 
-export default InputEvent;
+export default InputAthlete;
