@@ -1,7 +1,7 @@
-import { Button, VStack } from "@chakra-ui/react"
+import { Button, Heading, VStack } from "@chakra-ui/react"
 import CreatedEventsContainer from "../components/CreatedEventsContainer";
 import InputEvent from "../components/InputEvent";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -25,7 +25,6 @@ const createPage = () => {
           name: competitionName,
         })
         .then(response => {
-          console.log(response.data.id)
           setCompetitionId(response.data.id)
         })
         .catch(error => {
@@ -35,6 +34,7 @@ const createPage = () => {
 
   return (
     <VStack padding="10px">
+      <Heading>{competitionName}</Heading>
       <CreatedEventsContainer events={events}/>
       <InputEvent onAdd={handleAddEvent} competitionId={Number(competitionId)}/>
       <Link to={"/competition/" + competitionId}>

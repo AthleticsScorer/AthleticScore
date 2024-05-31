@@ -2,14 +2,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
 import { Competition } from "./HomePage";
-import { Center, VStack } from "@chakra-ui/react";
+import { Center, Heading, VStack } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
 
 interface EventCollect {
   id: number,
   age_group: string,
   event_type: string,
-  competition: string
+  competition: number
 }
 
 
@@ -32,7 +32,8 @@ const CompetitionPage = () => {
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/events/')
       .then(response => {
-        setEvents(response.data);
+        const filteredEvents = response.data.filter((e:EventCollect) => e.competition === Number(competitionId));
+        setEvents(filteredEvents);
         console.log(response.data)
       })
       .catch(error => {
@@ -40,8 +41,7 @@ const CompetitionPage = () => {
       });
   }, []);
 
-  // Tests
-  const firstCompetitionName = data.length > 0 ? data[0].name : '';
+  const competition = data.find(comp => comp.id === Number(competitionId));
 
   // setEvents(events.filter(e => e.competition = competitionName!));
 
@@ -49,8 +49,7 @@ const CompetitionPage = () => {
     <>
     <Center>
       <VStack>
-    <div>{firstCompetitionName}</div>
-    <div>Competition {competitionId}</div>
+      <Heading>{competition?.name}</Heading>
     <EventsDisplayContainer competitionId={Number(competitionId)} events={events.map(e => ({id: e.id, name: e.age_group}))} />
     </VStack>
     </Center>

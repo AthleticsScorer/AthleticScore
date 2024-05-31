@@ -1,4 +1,4 @@
-import { Button, HStack, List, ListItem, Text, VStack } from "@chakra-ui/react"
+import { Button, Heading, HStack, List, ListItem, Text, VStack } from "@chakra-ui/react"
 import InputResult from "../components/InputResult"
 import { Result } from "../components/InputResult"
 import { useEffect, useState } from "react"
@@ -11,6 +11,7 @@ const ResultsPage = () => {
 
   const [results, setResults] = useState<Result[]>([])
   const [atheletesColl, setAthletes] = useState<Athlete[]>([]);
+  const [competitionName, setCompetitionName] = useState("")
   const { competitionId, eventId } = useParams();
 
   const handleAddResult = (newResult: Result) => {
@@ -28,10 +29,24 @@ const ResultsPage = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const fetchCompetitionName = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/competitions/${competitionId}`);
+        setCompetitionName(response.data.name);
+      } catch (error) {
+        console.error("Error fetching competition data:", error);
+        setCompetitionName("Unknown Competition");
+      }
+    };
+
+    fetchCompetitionName();
+  }, [competitionId]);
 
   return (
     <>
     <VStack>
+      <Heading>{competitionName}</Heading>
     <List>
         {atheletesColl.map((athlete) => (
           <ListItem key={athlete.id} paddingY="5px">
