@@ -94,7 +94,7 @@ const ViewPage = () => {
                 <Heading size={"sm"}>{index + 1}</Heading>   
                 <Heading size={"sm"}>{result.athleteName}</Heading>        
                 <Heading size={"sm"}>{result.value}</Heading>
-                <Heading size={"sm"}>{displayResults.length - index}</Heading>   
+                {/* <Heading size={"sm"}>{displayResults.length - index}</Heading>    */}
                 
             </HStack>
           </ListItem>
