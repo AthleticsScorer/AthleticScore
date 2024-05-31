@@ -11,6 +11,11 @@ class OrganisationListCreateAPIView(generics.ListCreateAPIView):
     queryset = Organisation.objects.all()
     serializer_class = OrganisationSerializer
 
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['id'] = self.object.id
+        return response
+
 class OrganisationDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Organisation.objects.all()
     serializer_class = OrganisationSerializer
@@ -19,6 +24,11 @@ class OrganisationDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class AthleteListCreateAPIView(generics.ListCreateAPIView):
     queryset = Athlete.objects.all()
     serializer_class = AthleteSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['id'] = self.object.id
+        return response
 
 class AthleteDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Athlete.objects.all()
@@ -29,6 +39,11 @@ class CompetitionListCreateAPIView(generics.ListCreateAPIView):
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer
 
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['id'] = self.object.id
+        return response
+
 class CompetitionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer
@@ -38,6 +53,11 @@ class EventListCreateAPIView(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['id'] = self.object.id
+        return response
+
 class EventDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -46,6 +66,11 @@ class EventDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ResultListCreateAPIView(generics.ListCreateAPIView):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['id'] = self.object.id
+        return response
 
 class ResultDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Result.objects.all()
