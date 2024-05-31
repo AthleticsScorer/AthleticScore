@@ -26,7 +26,7 @@ class Event(models.Model):
         ("Time", "time"),
     ]
 
-    event_name = models.CharField(max_length=100)
+    #event_name = models.CharField(max_length=100)
     age_group = models.CharField(max_length=100)
     event_type = models.CharField(max_length=30, choices=EVENT_TYPES)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='events')
