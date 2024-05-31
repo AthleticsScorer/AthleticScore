@@ -3,17 +3,17 @@ import { Event } from "../pages/CreatePage"
 import { Link } from "react-router-dom"
 
 interface Props {
-    competitionId: number
+    competitionName: String
     events: Event[]
 }
 
-const EventsDisplayContainer = ({ competitionId, events }: Props) => {
+const EventsDisplayContainer = ({ competitionName, events }: Props) => {
   return (
     <List>
         {events.map((event) => (
           <ListItem key={event.id} paddingY="5px">
             <HStack>
-                <Link to={"/competition/" + competitionId + "/" + event.id}>
+                <Link to={"/competition/" + competitionName + "/" + event.name}>
               <Button
                 whiteSpace="normal"
                 textAlign="left"

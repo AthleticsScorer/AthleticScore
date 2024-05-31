@@ -9,7 +9,7 @@ import CreatedAthletesContainer from "../components/CreatedAthletesContainer";
 const EventPage = () => {
 
   const [athletes, setAthletes] = useState<Athlete[]>([])
-  const { competitionId, eventId } = useParams();
+  const { competitionName, eventName } = useParams();
 
   const handleAddAthlete = (newAthlete: Athlete) => {
     setAthletes([...athletes, newAthlete]);
@@ -19,7 +19,7 @@ const EventPage = () => {
     <VStack padding="10px">
       <CreatedAthletesContainer athletes={athletes}/>
       <InputAthlete onAdd={handleAddAthlete}/>
-      <Link to={"/competition/" + competitionId + "/" + eventId + "/results"}>
+      <Link to={"/competition/" + competitionName + "/" + eventName + "/results"}>
         <Button size="lg">Submit</Button>
         </Link>
     </VStack>

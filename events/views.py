@@ -90,23 +90,3 @@ def search_athletes_by_name(request):
         return Response(results)
     else:
         return Response({"error": "Name parameter is required"}, status=400)
-
-@api_view(['GET'])
-def search_competitions_by_name(request):
-    query = request.query_params.get('name', None)
-    if query is not None:
-        competitions = Competition.objects.filter(name__icontains(query))
-        results = [{'id': competition.id, 'name': competition.name} for competition in competitions]
-        return Response(results)
-    else:
-        return Response({"error": "Name parameter is required"}, status=400)
-
-@api_view(['GET'])
-def search_organisations_by_name(request):
-    query = request.query_params.get('name', None)
-    if query is not None:
-        organisations = Organisation.objects.filter(name__icontains(query))
-        results = [{'id': organisation.id, 'name': organisation.name} for organisation in organisations]
-        return Response(results)
-    else:
-        return Response({"error": "Name parameter is required"}, status=400)
