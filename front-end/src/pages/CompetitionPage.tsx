@@ -43,6 +43,8 @@ const CompetitionPage = () => {
   // Tests
   const firstCompetitionName = data.length > 0 ? data[0].name : '';
 
+  // setEvents(events.filter(e => e.competition = competitionName!));
+
   return (
     <>
     <Center>
