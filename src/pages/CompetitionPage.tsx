@@ -14,7 +14,7 @@ interface EventCollect {
 
 
 const CompetitionPage = () => {
-  const { competitionName } = useParams();
+  const { competitionId } = useParams();
   const [data, setData] = useState<Competition[]>([]);
   const [events, setEvents] = useState<EventCollect[]>([]);
 
@@ -50,8 +50,8 @@ const CompetitionPage = () => {
     <Center>
       <VStack>
     <div>{firstCompetitionName}</div>
-    <div>Competition {competitionName}</div>
-    <EventsDisplayContainer competitionName={competitionName!} events={events.map(e => ({id: e.id, name: e.age_group}))} />
+    <div>Competition {competitionId}</div>
+    <EventsDisplayContainer competitionId={Number(competitionId)} events={events.map(e => ({id: e.id, name: e.age_group}))} />
     </VStack>
     </Center>
     </>
