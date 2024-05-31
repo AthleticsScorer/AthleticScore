@@ -5,15 +5,15 @@ import axios from "axios";
 
 interface Props {
     onAdd: (newResult: Result) => void;
-    athlete: String;
-    event: String;
+    athlete: number;
+    event: number;
 }
 
 export interface Result {
     id: number
     value: String
-    athlete: String
-    event: String
+    athlete: number
+    event: number
 }
 
 const InputResult = ({ onAdd, athlete, event }: Props) => {

@@ -6,6 +6,7 @@ import Layout from "./pages/Layout";
 import CompetitionPage from "./pages/CompetitionPage";
 import EventPage from "./pages/EventPage";
 import ResultsPage from "./pages/ResultsPage";
+import ViewPage from "./pages/ViewPage";
 
 const router = createBrowserRouter([
   {
@@ -15,9 +16,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/create/:competitionName", element: <CreatePage /> },
-      { path: "/competition/:competitionName", element: <CompetitionPage />},
-      { path: "/competition/:competitionName/:eventName", element: <EventPage />},
-      { path: "/competition/:competitionName/:eventName/results", element: <ResultsPage />}
+      { path: "/competition/:competitionId", element: <CompetitionPage />},
+      { path: "/competition/:competitionId/:eventId", element: <EventPage />},
+      { path: "/competition/:competitionId/:eventId/results", element: <ResultsPage />},
+      { path: "/competition/:competitionId/:eventId/view", element: <ViewPage />}
     ],
   },
 ]);

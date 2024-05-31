@@ -6,9 +6,10 @@ import axios from "axios";
 
 interface Props {
     onAdd: (newEvent: Event) => void;
+    competitionId: number,
 }
 
-const InputEvent = ({ onAdd }: Props) => {
+const InputEvent = ({ onAdd, competitionId }: Props) => {
     
     const [eventName, setEventName] = useState('');
     const currentIdRef = useRef(0);
@@ -17,7 +18,7 @@ const InputEvent = ({ onAdd }: Props) => {
         await axios.post("http://127.0.0.1:8000/api/events/", {
         age_group: eventName,
         event_type: "Time",
-        competition: 1
+        competition: competitionId
       })
       .then()
       .catch(error => {
