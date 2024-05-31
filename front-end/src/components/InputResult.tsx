@@ -38,6 +38,7 @@ const InputResult = ({ onAdd, athlete, event }: Props) => {
         event: event
       };
       onAdd(newResult);
+      setResult("")
       };
 
 

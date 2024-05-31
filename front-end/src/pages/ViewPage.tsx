@@ -1,4 +1,4 @@
-import { Heading, HStack, List, ListItem, Text, VStack } from "@chakra-ui/react"
+import { Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react"
 import { Result } from "../components/InputResult"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -46,7 +46,9 @@ const ViewPage = () => {
       });
 
       const resolvedDisplayResults = await Promise.all(displayResultsPromises);
-      setDisplayResults(resolvedDisplayResults);
+      const sortedResults = resolvedDisplayResults.sort((a, b) => a.value - b.value);
+
+      setDisplayResults(sortedResults);
     };
 
     if (results.length > 0) {
@@ -78,7 +80,6 @@ const ViewPage = () => {
         setEventName("Unknown Competition");
       }
     };
-
     fetchEventName();
   }, [eventId]);
 
@@ -87,11 +88,14 @@ const ViewPage = () => {
     <VStack>
     <Heading>{competitionName + " " + eventName}</Heading>
     <List>
-        {displayResults.map((result) => (
+        {displayResults.map((result, index) => (
           <ListItem key={result.id} paddingY="5px">
             <HStack>
-                <Text size={"lg"}>{result.athleteName}</Text>        
-                <Text size={"lg"}>{result.value}</Text>
+                <Heading size={"sm"}>{index + 1}</Heading>   
+                <Heading size={"sm"}>{result.athleteName}</Heading>        
+                <Heading size={"sm"}>{result.value}</Heading>
+                <Heading size={"sm"}>{displayResults.length - index}</Heading>   
+                
             </HStack>
           </ListItem>
         ))}
