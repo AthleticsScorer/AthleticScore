@@ -7,7 +7,9 @@ from .views import (
     EventListCreateAPIView, EventDetailAPIView,
     ResultListCreateAPIView, ResultDetailAPIView,
     get_athletes_ranked_by_result,
-    search_athletes_by_name
+    search_athletes_by_name,
+    search_competitions_by_name,
+    search_organisations_by_name
 )
 
 urlpatterns = [
@@ -23,4 +25,6 @@ urlpatterns = [
     path('results/<int:pk>/', ResultDetailAPIView.as_view(), name='result_detail'),
     path('events/<int:event_id>/ranked_athletes/', get_athletes_ranked_by_result, name='ranked_athletes'),
     path('athletes/search/', search_athletes_by_name, name='search_athletes_by_name'),
+    path('organisations/search/', search_athletes_by_name, name='search_athletes_by_name'),
+    path('competitions/search/', search_athletes_by_name, name='search_athletes_by_name'),
 ]
