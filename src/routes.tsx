@@ -6,6 +6,7 @@ import Layout from "./pages/Layout";
 import CompetitionPage from "./pages/CompetitionPage";
 import EventPage from "./pages/EventPage";
 import ResultsPage from "./pages/ResultsPage";
+import ViewPage from "./pages/ViewPage";
 
 const router = createBrowserRouter([
   {

@@ -23,9 +23,9 @@ const createPage = () => {
     <VStack padding="10px">
       <Heading>Competition Page</Heading>
       <CreatedEventsContainer events={events}/>
-      <InputEvent onAdd={handleAddEvent}/>
-      <Link to={"/competition/" + competitionName}>
-        <Button size="lg" onClick={handleSubmit}>Submit</Button>
+      <InputEvent onAdd={handleAddEvent} competitionId={Number(competitionId)}/>
+      <Link to={"/competition/" + competitionId}>
+        <Button size="lg">Submit</Button>
       </Link>
     </VStack>
   );
