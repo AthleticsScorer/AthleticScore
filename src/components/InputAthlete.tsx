@@ -5,15 +5,16 @@ import axios from "axios";
 
 interface Props {
     onAdd: (newAthlete: Athlete) => void;
+    competitionId: number;
 }
 
 export interface Athlete {
     id: number
     name: String
-    organisation: String
+    competition: number
 }
 
-const InputAthlete = ({ onAdd }: Props) => {
+const InputAthlete = ({ onAdd, competitionId }: Props) => {
     
     const [athleteName, setAthleteName] = useState('');
     const currentIdRef = useRef(0);
@@ -21,6 +22,7 @@ const InputAthlete = ({ onAdd }: Props) => {
     const handleAddClick = async () => {
         await axios.post("http://127.0.0.1:8000/api/athletes/", {
         name: athleteName,
+        competition: competitionId
       })
       .then()
       .catch(error => {
@@ -29,7 +31,7 @@ const InputAthlete = ({ onAdd }: Props) => {
       const newAthlete: Athlete = {
         id: currentIdRef.current++,
         name: athleteName,
-        organisation: "null"
+        competition: competitionId
       };
       onAdd(newAthlete);
       setAthleteName(''); 
