@@ -2,7 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: [ "heroku-cicd" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.8, 3.9, 3.10]
 
     steps:
     - uses: actions/checkout@v4
@@ -26,14 +26,3 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
-
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "athleticscore" #Must be unique in Heroku
-          heroku_email: "jz7622@ic.ac.uk"
-          branch: "heroku-cicd"
