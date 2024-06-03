@@ -15,7 +15,7 @@ const InputEvent = ({ onAdd, competitionId }: Props) => {
     const currentIdRef = useRef(0);
 
     const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api/events/", {
+        await axios.post(backend + '/events/', {
         age_group: eventName,
         event_type: "Time",
         competition: competitionId

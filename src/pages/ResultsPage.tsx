@@ -19,7 +19,7 @@ const ResultsPage = () => {
   };
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/athletes/')
+    axios.get(backend + '/athletes/')
       .then(response => {
         setAthletes(response.data);
         console.log(response.data)
@@ -32,7 +32,7 @@ const ResultsPage = () => {
   useEffect(() => {
     const fetchCompetitionName = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/competitions/${competitionId}`);
+        const response = await axios.get(backend + `/competitions/${competitionId}`);
         setCompetitionName(response.data.name);
       } catch (error) {
         console.error("Error fetching competition data:", error);
