@@ -14,4 +14,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "athleticscore" #Must be unique in Heroku
           heroku_email: "jz7622@ic.ac.uk"
-          branch: "heroku-cicd"
+          branch: "main"
