@@ -76,8 +76,8 @@ const ViewPage = () => {
         const response = await axios.get(`http://127.0.0.1:8000/api/events/${eventId}`);
         setEventName(response.data.age_group);
       } catch (error) {
-        console.error("Error fetching competition data:", error);
-        setEventName("Unknown Competition");
+        console.error("Error fetching event data:", error);
+        setEventName("Unknown Event");
       }
     };
     fetchEventName();

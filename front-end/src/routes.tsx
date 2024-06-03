@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: "/create/:competitionName", element: <CreatePage /> },
+      { path: "/create/:competitionId", element: <CreatePage /> },
       { path: "/competition/:competitionId", element: <CompetitionPage />},
       { path: "/competition/:competitionId/:eventId", element: <EventPage />},
       { path: "/competition/:competitionId/:eventId/results", element: <ResultsPage />},

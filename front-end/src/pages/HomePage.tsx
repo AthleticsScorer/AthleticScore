@@ -1,5 +1,6 @@
-import { Center } from "@chakra-ui/react";
+import { Center, VStack } from "@chakra-ui/react";
 import CreateCompetition from "../components/CreateCompetition";
+import CreatedCompetitionsContainer from "../components/CreatedCompetitionsContainer";
 
 export interface Competition {
   id: number
@@ -11,7 +12,10 @@ export interface Competition {
 const HomePage = () => {
   return (
     <Center height={"100vh"}>
+        <VStack>
+        <CreatedCompetitionsContainer />
         <CreateCompetition/>
+        </VStack>
     </Center>
   );
 };
