@@ -6,19 +6,21 @@ class Organisation(models.Model):
 
     def __str__(self):
         return self.name
-
-class Athlete(models.Model):
-    name = models.CharField(max_length=255)
-    #organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, related_name='athletes', blank=True)
-
-    def __str__(self):
-        return self.name
-
+    
 class Competition(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+
+class Athlete(models.Model):
+    name = models.CharField(max_length=255)
+    #organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, related_name='athletes', blank=True)
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='athletes')
+
+    def __str__(self):
+        return self.name
+
 
 class Event(models.Model):
     EVENT_TYPES = [

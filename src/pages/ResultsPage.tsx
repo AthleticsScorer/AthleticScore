@@ -21,7 +21,9 @@ const ResultsPage = () => {
   useEffect(() => {
     axios.get(backend + '/athletes/')
       .then(response => {
-        setAthletes(response.data);
+
+        const filteredAthletes = response.data.filter((e:Athlete) => e.competition === Number(competitionId));
+        setAthletes(filteredAthletes);
         console.log(response.data)
       })
       .catch(error => {

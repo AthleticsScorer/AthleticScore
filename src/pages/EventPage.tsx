@@ -36,7 +36,7 @@ const EventPage = () => {
     <VStack padding="10px">
         <Heading>{competitionName}</Heading>
       <CreatedAthletesContainer athletes={athletes}/>
-      <InputAthlete onAdd={handleAddAthlete}/>
+      <InputAthlete onAdd={handleAddAthlete} competitionId={Number(competitionId)}/>
       <Link to={"/competition/" + competitionId + "/" + eventId + "/results"}>
         <Button size="lg">Submit</Button>
         </Link>
