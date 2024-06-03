@@ -1,22 +1,44 @@
 import { Button, Input, VStack } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CreateCompetition() {
   const [competitionName, setCompetitionName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleAddClick = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/competitions/", {
+        name: competitionName,
+      });
+      navigate(`/create/${response.data.id}`);
+    } catch (error) {
+      console.error('Error creating competition:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-      <VStack>
-        <Input
-          placeholder="Competition Name"
-          value={competitionName}
-          onChange={(e) => setCompetitionName(e.target.value)}
-        />
-        <Link to={"/create/"+competitionName}>
-        <Button colorScheme="blue" size="lg" type="submit">
-          Create Competition
-        </Button></Link>
-      </VStack>
+    <VStack>
+      <Input
+        placeholder="Competition Name"
+        value={competitionName}
+        onChange={(e) => setCompetitionName(e.target.value)}
+      />
+      <Button
+        colorScheme="blue"
+        size="lg"
+        type="submit"
+        onClick={handleAddClick}
+        isLoading={loading}
+      >
+        Create Competition
+      </Button>
+    </VStack>
   );
 }
 
