@@ -5,6 +5,8 @@ from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerialize
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.core.management import call_command
+from rest_framework import status
 
 class BaseListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
@@ -61,6 +63,7 @@ class ResultDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = ResultSerializer
 
 
+
 # Additional View for Ranked Athletes by Event Result
 @api_view(['GET'])
 def get_athletes_ranked_by_result(request, event_id):
@@ -89,3 +92,14 @@ search_teams_by_name = create_search_view(Team)
 search_athletes_by_name = create_search_view(Athlete)
 search_competitions_by_name = create_search_view(Competition)
 search_events_by_name = create_search_view(Event)
+
+
+# visiting this wipes all database entries
+# specifically added for debugging and testing
+@api_view(['GET'])
+def wipe_events_data(request):
+    try:
+        call_command('wipe_events')
+        return Response({"message": "All entries in all tables in the events app have been wiped."}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
