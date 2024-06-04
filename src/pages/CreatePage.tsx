@@ -14,7 +14,7 @@ export interface Event {
 export interface Team {
   id: number
   name: String
-  competitionId: number
+  competition: number
 }
 
 const createPage = () => {

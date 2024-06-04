@@ -19,7 +19,7 @@ const CompetitionPage = () => {
   const [events, setEvents] = useState<EventCollect[]>([]);
 
   useEffect(() => {
-    axios.get(backend + '/competitions/')
+    axios.get("http://127.0.0.1:8000/api" + '/competitions/')
       .then(response => {
         setData(response.data);
         console.log(response.data)
@@ -30,7 +30,7 @@ const CompetitionPage = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(backend + '/events/')
+    axios.get("http://127.0.0.1:8000/api" + '/events/')
       .then(response => {
         const filteredEvents = response.data.filter((e:EventCollect) => e.competition === Number(competitionId));
         setEvents(filteredEvents);

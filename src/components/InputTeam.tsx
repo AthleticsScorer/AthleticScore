@@ -12,22 +12,22 @@ interface Props {
 const InputTeam = ({ onAdd, competitionId }: Props) => {
     
     const [teamName, setTeamName] = useState('');
-    const currentIdRef = useRef(0);
+    const [teamId, setTeamId] = useState(0);
 
 
     const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api/organisations/", {
+        await axios.post("http://127.0.0.1:8000/api/teams/", {
         name: teamName,
-        // competitionId: competitionId
+        competition: competitionId
       })
-      .then()
+      .then(response => setTeamId(response.data.id))
       .catch(error => {
         console.error('Error fetching data:', error);
       });
       const newTeam: Team = {
-        id: currentIdRef.current++, 
+        id: teamId, 
         name: teamName,
-        competitionId: competitionId
+        competition: competitionId
       };
       onAdd(newTeam);
       setTeamName(''); 

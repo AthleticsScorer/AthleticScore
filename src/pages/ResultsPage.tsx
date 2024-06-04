@@ -23,8 +23,10 @@ const ResultsPage = () => {
       .then(response => {
 
         const filteredAthletes = response.data.filter((e:Athlete) => e.competition === Number(competitionId));
-        setAthletes(filteredAthletes);
-        console.log(response.data)
+        setAthletes(response.data);
+        // console.log(response.data)
+        // console.log(competitionId)
+        // console.log(filteredAthletes)
       })
       .catch(error => {
         console.error('Error fetching data:', error);

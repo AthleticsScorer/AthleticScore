@@ -1,11 +1,13 @@
-import { HStack, IconButton, Input } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { HStack, IconButton, Input, List, ListItem, Select } from "@chakra-ui/react";
+import { useState, useRef, SetStateAction } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import axios from "axios";
+import { Team } from "../pages/CreatePage";
 
 interface Props {
     onAdd: (newAthlete: Athlete) => void;
     competitionId: number;
+    teams: Team[]
 }
 
 export interface Athlete {
@@ -14,15 +16,23 @@ export interface Athlete {
     competition: number
 }
 
-const InputAthlete = ({ onAdd, competitionId }: Props) => {
+const InputAthlete = ({ onAdd, competitionId, teams }: Props) => {
     
     const [athleteName, setAthleteName] = useState('');
+    const [team, setTeam] = useState('');
     const currentIdRef = useRef(0);
 
+
+    const handleSelectChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+      setTeam(event.target.value);
+      
+    };
+
     const handleAddClick = async () => {
-        await axios.post(backend + '/athletes/', {
+        await axios.post("http://127.0.0.1:8000/api" + '/athletes/', {
         name: athleteName,
-        competition: competitionId
+        competition: competitionId,
+        team: team
       })
       .then()
       .catch(error => {
@@ -42,6 +52,13 @@ const InputAthlete = ({ onAdd, competitionId }: Props) => {
     <HStack>
       <Input placeholder="Add Athlete" size="md" value={athleteName}
         onChange={(e) => setAthleteName(e.target.value)}/>
+      <Select placeholder='Team' size="md" value={team} onChange={handleSelectChange}>
+        {teams.map((team) => (
+          <option key={team.id} value={team.id}>
+            {team.name}
+          </option>
+        ))}
+      </Select>
       <IconButton
         variant="outline"
         colorScheme="teal"

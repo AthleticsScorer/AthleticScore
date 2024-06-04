@@ -67,6 +67,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [ # Does not seem to have any effect
+    "http://localhost:5173",
     "https://athleticscore-frontend-42e6a175baf8.herokuapp.com",
 ]
 

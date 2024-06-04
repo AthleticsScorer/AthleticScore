@@ -11,8 +11,9 @@ function CreateCompetition() {
   const handleAddClick = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(backend + '/competitions/', {
+      const response = await axios.post("http://127.0.0.1:8000/api" + '/competitions/', {
         name: competitionName,
+        date: "2000-01-01"
       });
       navigate(`/create/${response.data.id}`);
     } catch (error) {
