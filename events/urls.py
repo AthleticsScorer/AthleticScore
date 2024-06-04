@@ -9,7 +9,8 @@ from .views import (
     ResultListCreateAPIView, ResultDetailAPIView,
     get_athletes_ranked_by_result, ResultFilterAPIView,
     search_athletes_by_name, search_teams_by_name,
-    search_competitions_by_name, search_events_by_name
+    search_competitions_by_name, search_events_by_name,
+    wipe_events_data
 )
 
 # Define viewsets
@@ -48,4 +49,5 @@ for basename, viewset in viewsets.items():
 urlpatterns += [
     path('events/<int:event_id>/ranked_athletes/', get_athletes_ranked_by_result, name='ranked_athletes'),
     path('results/filter/', ResultFilterAPIView.as_view(), name='result_filter'),
+    path('wipe/', wipe_events_data, name='wipe-events-data'),
 ]
