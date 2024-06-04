@@ -1,64 +1,65 @@
 # core/views.py
 from rest_framework import generics
-from .models import Organisation, Athlete, Competition, Event, Result
-from .serializers import OrganisationSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer
+from .models import Team, Athlete, Competition, Event, Result
+from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
-# Organisation Views
-class OrganisationListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Organisation.objects.all()
-    serializer_class = OrganisationSerializer
-
-class OrganisationDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Organisation.objects.all()
-    serializer_class = OrganisationSerializer
-
-# Athlete Views
-class AthleteListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Athlete.objects.all()
-    serializer_class = AthleteSerializer
-
-class AthleteDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Athlete.objects.all()
-    serializer_class = AthleteSerializer
-
-# Competition Views
-class CompetitionListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Competition.objects.all()
-    serializer_class = CompetitionSerializer
+class BaseListCreateAPIView(generics.ListCreateAPIView):
+    def get_queryset(self):
+        model = self.serializer_class.Meta.model
+        return model.objects.all()
 
     def perform_create(self, serializer):
-        competition = serializer.save()
-        self.competition_id = competition.id
+        instance = serializer.save()
+        self.instance_id = instance.id
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        response.data['id'] = self.competition_id
+        response.data['id'] = self.instance_id
         return response
 
-class CompetitionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Competition.objects.all()
+class BaseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    def get_queryset(self):
+        model = self.serializer_class.Meta.model
+        return model.objects.all()
+
+# Team Views
+class TeamListCreateAPIView(BaseListCreateAPIView):
+    serializer_class = TeamSerializer
+
+class TeamDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
+    serializer_class = TeamSerializer
+
+# Athlete Views
+class AthleteListCreateAPIView(BaseListCreateAPIView):
+    serializer_class = AthleteSerializer
+
+class AthleteDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
+    serializer_class = AthleteSerializer
+
+# Competition Views
+class CompetitionListCreateAPIView(BaseListCreateAPIView):
+    serializer_class = CompetitionSerializer
+
+class CompetitionDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = CompetitionSerializer
 
 # Event Views
-class EventListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Event.objects.all()
+class EventListCreateAPIView(BaseListCreateAPIView):
     serializer_class = EventSerializer
 
-class EventDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Event.objects.all()
+class EventDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
 
 # Result Views
-class ResultListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Result.objects.all()
+class ResultListCreateAPIView(BaseListCreateAPIView):
     serializer_class = ResultSerializer
 
-class ResultDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Result.objects.all()
+class ResultDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = ResultSerializer
+
 
 # Additional View for Ranked Athletes by Event Result
 @api_view(['GET'])
@@ -81,12 +82,10 @@ def get_athletes_ranked_by_result(request, event_id):
 
     return Response(ranked_results)
 
-@api_view(['GET'])
-def search_athletes_by_name(request):
-    query = request.query_params.get('name', None)
-    if query is not None:
-        athletes = Athlete.objects.filter(name__icontains=query)
-        results = [{'id': athlete.id, 'name': athlete.name} for athlete in athletes]
-        return Response(results)
-    else:
-        return Response({"error": "Name parameter is required"}, status=400)
+
+from .utils import create_search_view
+
+search_teams_by_name = create_search_view(Team)
+search_athletes_by_name = create_search_view(Athlete)
+search_competitions_by_name = create_search_view(Competition)
+search_events_by_name = create_search_view(Event)

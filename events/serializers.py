@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Organisation, Athlete, Competition, Event, Result
+from .models import Team, Athlete, Competition, Event, Result
 
-class OrganisationSerializer(serializers.ModelSerializer):
+class TeamSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Organisation
+        model = Team
         fields = '__all__'
 
 class AthleteSerializer(serializers.ModelSerializer):
