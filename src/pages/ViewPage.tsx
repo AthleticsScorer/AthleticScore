@@ -20,7 +20,7 @@ const ViewPage = () => {
   const [displayResults, setDisplayResults] = useState<DisplayResult[]>([])
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/results/')
+    axios.get(backend + '/results/')
       .then(response => {
         setResults(response.data);
         console.log(response.data)
@@ -36,7 +36,7 @@ const ViewPage = () => {
       const filteredResults = results.filter(r => r.event === Number(eventId));
       const displayResultsPromises = filteredResults.map(async (result) => {
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/athletes/${result.athlete}`);
+          const response = await axios.get(backend + `/athletes/${result.athlete}`);
           const athleteName = response.data.name;
           return { id: result.id, athleteName: athleteName, value: Number(result.value) };
         } catch (error) {
@@ -59,7 +59,7 @@ const ViewPage = () => {
   useEffect(() => {
     const fetchCompetitionName = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/competitions/${competitionId}`);
+        const response = await axios.get(backend + `/competitions/${competitionId}`);
         setCompetitionName(response.data.name);
       } catch (error) {
         console.error("Error fetching competition data:", error);
@@ -73,7 +73,7 @@ const ViewPage = () => {
   useEffect(() => {
     const fetchEventName = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/events/${eventId}`);
+        const response = await axios.get(backend + `/events/${eventId}`);
         setEventName(response.data.age_group);
       } catch (error) {
         console.error("Error fetching event data:", error);

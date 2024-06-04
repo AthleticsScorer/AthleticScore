@@ -11,7 +11,7 @@ function CreateCompetition() {
   const handleAddClick = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/competitions/", {
+      const response = await axios.post(backend + '/competitions/', {
         name: competitionName,
       });
       navigate(`/create/${response.data.id}`);

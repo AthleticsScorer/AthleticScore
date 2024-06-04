@@ -66,8 +66,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+CORS_ALLOWED_ORIGINS = [ # Does not seem to have any effect
+    "https://athleticscore-frontend-42e6a175baf8.herokuapp.com",
 ]
 
 ROOT_URLCONF = 'AthleticsScore.urls'
