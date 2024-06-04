@@ -7,7 +7,7 @@ from .views import (
     CompetitionListCreateAPIView, CompetitionDetailAPIView,
     EventListCreateAPIView, EventDetailAPIView,
     ResultListCreateAPIView, ResultDetailAPIView,
-    get_athletes_ranked_by_result,
+    get_athletes_ranked_by_result, ResultFilterAPIView,
     search_athletes_by_name, search_teams_by_name,
     search_competitions_by_name, search_events_by_name
 )
@@ -37,15 +37,15 @@ viewsets = {
     'results': {
         'list': ResultListCreateAPIView,
         'detail': ResultDetailAPIView,
+        'filter': ResultFilterAPIView,
     },
 }
 
-# Generate URL patterns for each viewset
 urlpatterns = []
 for basename, viewset in viewsets.items():
     urlpatterns += generate_urlpatterns(viewset, basename)
 
-# Add additional custom URL patterns
 urlpatterns += [
     path('events/<int:event_id>/ranked_athletes/', get_athletes_ranked_by_result, name='ranked_athletes'),
+    path('results/filter/', ResultFilterAPIView.as_view(), name='result_filter'),
 ]

@@ -5,6 +5,8 @@ from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerialize
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ResultFilter
 
 class BaseListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
@@ -60,6 +62,11 @@ class ResultListCreateAPIView(BaseListCreateAPIView):
 class ResultDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = ResultSerializer
 
+class ResultFilterAPIView(generics.ListAPIView):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ResultFilter
 
 # Additional View for Ranked Athletes by Event Result
 @api_view(['GET'])
