@@ -45,7 +45,7 @@ class Event(models.Model):
     def __str__(self):
         return f"{self.competition.name} - {self.event_type} ({self.age_group})"
 
-# Need to make sure athlete is in competition before adding entries for specific event
+
 class Result(models.Model):
     athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='results')
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='results')
@@ -53,4 +53,10 @@ class Result(models.Model):
 
     def __str__(self):
         return f"{self.athlete.name} - {self.event} - {self.value}"
+
+    # Makes sure that athlete's team's competition matches event's competition
+    def save(self, *args, **kwargs):
+        if self.athlete.team.competition != self.event.competition:
+            raise ValidationError("Athlete's team competition does not match event competition.")
+        super().save(*args, **kwargs)
 
