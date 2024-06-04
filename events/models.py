@@ -55,6 +55,7 @@ class Result(models.Model):
         return f"{self.athlete.name} - {self.event} - {self.value}"
 
     # Makes sure that athlete's team's competition matches event's competition
+    # Check should be moved into view in future
     def save(self, *args, **kwargs):
         if self.athlete.team.competition != self.event.competition:
             raise ValidationError("Athlete's team competition does not match event competition.")
