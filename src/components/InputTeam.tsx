@@ -16,7 +16,7 @@ const InputTeam = ({ onAdd, competitionId }: Props) => {
 
 
     const handleAddClick = async () => {
-        await axios.post(backend + "/organisations/", {
+        await axios.post(backend + "/teams/", {
         name: teamName,
         competition: competitionId
       })
