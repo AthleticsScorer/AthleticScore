@@ -22,7 +22,7 @@ const InputResult = ({ onAdd, athlete, event }: Props) => {
     const currentIdRef = useRef(0);
 
     const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api" + '/results/', {
+        await axios.post(backend + '/results/', {
         value: result,
         athlete: athlete,
         event: event
