@@ -18,7 +18,7 @@ const TeamPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api" + "/teams/")
+      .get(backend + "/teams/")
       .then((response) => {
         const filteredTeams = response.data.filter(
           (e: Team) => e.competition === Number(competitionId!.competitionId)

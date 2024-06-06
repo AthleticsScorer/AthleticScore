@@ -22,7 +22,7 @@ const EventPage = () => {
   useEffect(() => {
     const fetchCompetitionName = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api" + `/competitions/${competitionId}`);
+        const response = await axios.get(backend + `/competitions/${competitionId}`);
         setCompetitionName(response.data.name);
       } catch (error) {
         console.error("Error fetching competition data:", error);
@@ -34,7 +34,7 @@ const EventPage = () => {
   }, [competitionId]);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api" + '/teams/')
+    axios.get(backend + '/teams/')
       .then(response => {
 
         const filteredTeams = response.data.filter((e:Team) => e.competition === Number(competitionId));

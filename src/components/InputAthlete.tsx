@@ -29,7 +29,7 @@ const InputAthlete = ({ onAdd, competitionId, teams }: Props) => {
     };
 
     const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api" + '/athletes/', {
+        await axios.post(backend + '/athletes/', {
         name: athleteName,
         competition: competitionId,
         team: team

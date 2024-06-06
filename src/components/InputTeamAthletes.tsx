@@ -18,7 +18,7 @@ const InputTeamAthletes = ({ teamId }: Props) => {
   useEffect(() => {
     if (competitionId) {
       axios
-        .get("http://127.0.0.1:8000/api/events/")
+        .get(backend + "/api/events/")
         .then((response) => {
           const filteredEvents = response.data.filter(
             (e: Event) => e.competition === Number(competitionId)
