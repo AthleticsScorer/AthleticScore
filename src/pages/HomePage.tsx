@@ -3,34 +3,30 @@ import { FaRunning, FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export interface Competition {
-  id: number
-  name: String
-  events: Event[]
+  id: number;
+  name: String;
+  events: Event[];
 }
-
 
 const HomePage = () => {
   return (
     <Center height={"100vh"}>
-        <VStack spacing={10}>
+      <VStack spacing={10}>
         <Link to="/manage">
-        <Button colorScheme="blue"
-        size="lg"
-        type="submit">
-          <HStack>
-            <FaRunning />
-            <Text>Manage Competitions</Text>
-          </HStack>
-        </Button></Link>
-        <Button colorScheme="blue"
-        size="lg"
-        type="submit">
+          <Button colorScheme="blue" size="lg" type="submit">
+            <HStack>
+              <FaRunning />
+              <Text>Manage Competitions</Text>
+            </HStack>
+          </Button>
+        </Link>
+        <Button colorScheme="blue" size="lg" type="submit">
           <HStack>
             <FaSearch />
             <Text>Search Finished Competitions</Text>
           </HStack>
         </Button>
-        </VStack>
+      </VStack>
     </Center>
   );
 };

@@ -1,7 +1,7 @@
-import { Button, HStack, Input, VStack } from "@chakra-ui/react";
+import { Button, HStack, IconButton, Input, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { CiCirclePlus } from "react-icons/ci";
+import { FaCirclePlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 function CreateCompetition() {
@@ -15,13 +15,16 @@ function CreateCompetition() {
 
   const handlePostClick = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/competitions/", {
-        name: competitionName,
-        date: "2000-01-01"
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/competitions/",
+        {
+          name: competitionName,
+          date: "2000-01-01",
+        }
+      );
       navigate(`/create/${response.data.id}`);
     } catch (error) {
-      console.error('Error creating competition:', error);
+      console.error("Error creating competition:", error);
     } finally {
       setShowInput(false);
     }
@@ -45,7 +48,14 @@ function CreateCompetition() {
             value={competitionName}
             onChange={(e) => setCompetitionName(e.target.value)}
           />
-          <CiCirclePlus onClick={handlePostClick} size={40} color="green"/>
+          <IconButton
+            variant="outline"
+            colorScheme="green"
+            aria-label="Call Sage"
+            fontSize="20px"
+            icon={<FaCirclePlus />}
+            onClick={handlePostClick}
+          />
         </HStack>
       )}
     </VStack>

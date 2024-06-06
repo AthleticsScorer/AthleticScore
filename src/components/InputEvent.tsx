@@ -1,63 +1,101 @@
-import { HStack, IconButton, Input, Select } from "@chakra-ui/react";
+import { Heading, HStack, IconButton, Input, Select } from "@chakra-ui/react";
 import { useState, useRef, SetStateAction } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Event } from "../pages/CreatePage";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface Props {
-    onAdd: (newEvent: Event) => void;
-    competitionId: number,
+  onAdd: (newEvent: Event) => void;
+  competitionId: number;
 }
 
 const InputEvent = ({ onAdd, competitionId }: Props) => {
-    
-    const [eventName, setEventName] = useState('');
-    const [eventType, setEventType] = useState('')
-    const currentIdRef = useRef(0);
+  const [eventName, setEventName] = useState("");
+  const [ageGroup, setAgeGroup] = useState("");
+  const [eventId, setEventId] = useState(0);
+  const [eventType, setEventType] = useState("");
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const currentIdRef = useRef(0);
 
-    const handleSelectChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-      setEventType(event.target.value);
-    };
+  const handleSelectChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setEventType(event.target.value);
+  };
 
-    const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api" + '/events/', {
+  const handleAddClick = async () => {
+    await axios
+      .post("http://127.0.0.1:8000/api" + "/events/", {
         event_name: eventName,
-        age_group: eventName,
+        age_group: ageGroup,
         event_type: eventType,
-        competition: competitionId
-      })
-      .then()
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-      const newEvent: Event = {
-        id: currentIdRef.current++, 
-        event_name: eventName,
         competition: competitionId,
-        age_group: eventName,
-        event_type: eventType
-      };
-      onAdd(newEvent);
-      setEventName(''); 
-      };
-
+      })
+      .then((response) => setEventId(response.data.id))
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    const newEvent: Event = {
+      id: currentIdRef.current++,
+      event_name: eventName,
+      competition: competitionId,
+      age_group: ageGroup,
+      event_type: eventType,
+    };
+    onAdd(newEvent);
+    setButtonClicked(true);
+  };
 
   return (
     <HStack>
-      <Input placeholder="Add Event" size="md" value={eventName}
-        onChange={(e) => setEventName(e.target.value)}/>
-      <Select placeholder='Event Type' size="md" value={eventType} onChange={handleSelectChange}>
-        <option value='Time'>Time</option>
-        <option value='Distance'>Distance</option>
-      </Select>
-      <IconButton
-        variant="outline"
-        colorScheme="teal"
-        aria-label="Call Sage"
-        fontSize="20px"
-        icon={<FaCirclePlus />}
-        onClick={handleAddClick}
-      />
+      {!buttonClicked ? (
+        <>
+          <Input
+            placeholder="Enter Event Name..."
+            size="md"
+            value={eventName}
+            onChange={(e) => setEventName(e.target.value)}
+          />
+          <Input
+            placeholder="Enter Age Group"
+            size="md"
+            value={ageGroup}
+            onChange={(e) => setAgeGroup(e.target.value)}
+          />
+          <Select
+            placeholder="Event Type"
+            size="md"
+            value={eventType}
+            onChange={handleSelectChange}
+          >
+            <option value="Time">Time</option>
+            <option value="Distance">Distance</option>
+          </Select>
+          <IconButton
+            variant="outline"
+            colorScheme="teal"
+            aria-label="Call Sage"
+            fontSize="20px"
+            icon={<FaCirclePlus />}
+            onClick={handleAddClick}
+          />
+        </>
+      ) : (
+        <>
+          <Link to={"/competition/" + competitionId + "/" + eventId}>
+            <HStack>
+              <Heading size="md">{eventName}</Heading>
+              <Heading size="md">{ageGroup}</Heading>
+            </HStack>
+          </Link>
+
+          <Select placeholder={"..."} size="md">
+            <option>Edit</option>
+            <option>Delete</option>
+          </Select>
+        </>
+      )}
     </HStack>
   );
 };

@@ -5,54 +5,62 @@ import axios from "axios";
 import { Team } from "../pages/CreatePage";
 
 interface Props {
-    onAdd: (newAthlete: Athlete) => void;
-    competitionId: number;
-    teams: Team[]
+  onAdd: (newAthlete: Athlete) => void;
+  competitionId: number;
+  teams: Team[];
 }
 
 export interface Athlete {
-    id: number
-    name: String
-    competition: number
+  id: number;
+  name: String;
+  competition: number;
 }
 
 const InputAthlete = ({ onAdd, competitionId, teams }: Props) => {
-    
-    const [athleteName, setAthleteName] = useState('');
-    const [team, setTeam] = useState('');
-    const currentIdRef = useRef(0);
+  const [athleteName, setAthleteName] = useState("");
+  const [team, setTeam] = useState("");
+  const currentIdRef = useRef(0);
 
+  const handleSelectChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setTeam(event.target.value);
+  };
 
-    const handleSelectChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-      setTeam(event.target.value);
-      
-    };
-
-    const handleAddClick = async () => {
-        await axios.post("http://127.0.0.1:8000/api" + '/athletes/', {
+  const handleAddClick = async () => {
+    await axios
+      .post("http://127.0.0.1:8000/api" + "/athletes/", {
         name: athleteName,
         competition: competitionId,
-        team: team
+        team: team,
       })
       .then()
-      .catch(error => {
-        console.error('Error fetching data:', error);
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-      const newAthlete: Athlete = {
-        id: currentIdRef.current++,
-        name: athleteName,
-        competition: competitionId
-      };
-      onAdd(newAthlete);
-      setAthleteName(''); 
-      };
-
+    const newAthlete: Athlete = {
+      id: currentIdRef.current++,
+      name: athleteName,
+      competition: competitionId,
+    };
+    onAdd(newAthlete);
+    setAthleteName("");
+  };
 
   return (
     <HStack>
-      <Input placeholder="Add Athlete" size="md" value={athleteName}
-        onChange={(e) => setAthleteName(e.target.value)}/>
-      <Select placeholder='Team' size="md" value={team} onChange={handleSelectChange}>
+      <Input
+        placeholder="Add Athlete"
+        size="md"
+        value={athleteName}
+        onChange={(e) => setAthleteName(e.target.value)}
+      />
+      <Select
+        placeholder="Team"
+        size="md"
+        value={team}
+        onChange={handleSelectChange}
+      >
         {teams.map((team) => (
           <option key={team.id} value={team.id}>
             {team.name}

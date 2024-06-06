@@ -32,19 +32,19 @@ const TeamPage = () => {
 
   return (
     <VStack spacing={10}>
-    <Select
-      placeholder="Team"
-      size="md"
-      value={team}
-      onChange={handleSelectChange}
-    >
-      {teams.map((team) => (
-        <option key={team.id} value={team.id}>
-          {team.name}
-        </option>
-      ))}
-    </Select>
-    <InputTeamAthletes teamId={Number(team)}/>
+      <Select
+        placeholder="Team"
+        size="md"
+        value={team}
+        onChange={handleSelectChange}
+      >
+        {teams.map((team) => (
+          <option key={team.id} value={team.id}>
+            {team.name}
+          </option>
+        ))}
+      </Select>
+      <InputTeamAthletes teamId={Number(team)} />
     </VStack>
   );
 };

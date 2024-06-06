@@ -12,7 +12,9 @@ interface Props {
 
 const InputTeamAthletes = ({ teamId }: Props) => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [athleteNames, setAthleteNames] = useState<{ [eventId: number]: string }>({});
+  const [athleteNames, setAthleteNames] = useState<{
+    [eventId: number]: string;
+  }>({});
   const { competitionId } = useParams<Params>();
 
   useEffect(() => {
@@ -31,7 +33,10 @@ const InputTeamAthletes = ({ teamId }: Props) => {
     }
   }, [competitionId, teamId]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, eventId: number) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    eventId: number
+  ) => {
     setAthleteNames({ ...athleteNames, [eventId]: event.target.value });
   };
 
@@ -40,7 +45,11 @@ const InputTeamAthletes = ({ teamId }: Props) => {
     Object.keys(athleteNames).forEach((eventId) => {
       const name = athleteNames[Number(eventId)].trim();
       if (name) {
-        allAthletes.push({ id: allAthletes.length + 1, name, competition: Number(competitionId) });
+        allAthletes.push({
+          id: allAthletes.length + 1,
+          name,
+          competition: Number(competitionId),
+        });
       }
     });
     console.log(allAthletes);
