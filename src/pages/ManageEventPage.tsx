@@ -31,6 +31,21 @@ const ManageEventPage = () => {
     fetchCompetitionName();
   }, [competitionId]);
 
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api" + "/events/")
+      .then((response) => {
+        const filteredEvents = response.data.filter(
+          (e: Event) => e.competition === Number(competitionId.competitionId)
+        );
+        setEvents(filteredEvents);
+        console.log(filteredEvents);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
   return (
     <VStack spacing={5}>
       <HStack spacing={10}>
@@ -42,17 +57,23 @@ const ManageEventPage = () => {
           Save Preset
         </Button>
       </HStack>
-      <InputEvent
-        onAdd={handleAddEvent}
-        competitionId={Number(competitionId.competitionId)}
-      />
-      {events.map((_, index) => (
+      {events.map((event, index) => (
         <InputEvent
           key={index}
           onAdd={handleAddEvent}
           competitionId={Number(competitionId.competitionId)}
+          button={true}
+          event_name={event.event_name}
+          age_group={event.age_group}
         />
       ))}
+      <InputEvent
+        onAdd={handleAddEvent}
+        competitionId={Number(competitionId.competitionId)}
+        button={false}
+        event_name={""}
+        age_group={""}
+      />
     </VStack>
   );
 };

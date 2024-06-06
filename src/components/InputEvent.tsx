@@ -8,14 +8,23 @@ import { Link } from "react-router-dom";
 interface Props {
   onAdd: (newEvent: Event) => void;
   competitionId: number;
+  button: boolean;
+  event_name: String;
+  age_group: String;
 }
 
-const InputEvent = ({ onAdd, competitionId }: Props) => {
-  const [eventName, setEventName] = useState("");
-  const [ageGroup, setAgeGroup] = useState("");
+const InputEvent = ({
+  onAdd,
+  competitionId,
+  button,
+  event_name,
+  age_group,
+}: Props) => {
+  const [eventName, setEventName] = useState(String(event_name));
+  const [ageGroup, setAgeGroup] = useState(String(age_group));
   const [eventId, setEventId] = useState(0);
   const [eventType, setEventType] = useState("");
-  const [buttonClicked, setButtonClicked] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(button);
   const currentIdRef = useRef(0);
 
   const handleSelectChange = (event: {
@@ -44,7 +53,12 @@ const InputEvent = ({ onAdd, competitionId }: Props) => {
       event_type: eventType,
     };
     onAdd(newEvent);
-    setButtonClicked(true);
+    setButtonClicked(button);
+    if (!button) {
+      setEventName("");
+      setAgeGroup("");
+      setEventType("");
+    }
   };
 
   return (

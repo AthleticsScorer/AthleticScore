@@ -11,6 +11,7 @@ import TeamPage from "./pages/TeamPage";
 import ManagePage from "./pages/ManagePage";
 import ManageTeamPage from "./pages/ManageTeamPage";
 import ManageEventPage from "./pages/ManageEventPage";
+import ViewCompetitionPage from "./pages/ViewCompetitionPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/create/:competitionId", element: <CreatePage /> },
       { path: "/manage", element: <ManagePage /> },
+      { path: "/competition", element: <ViewCompetitionPage /> },
       { path: "/manage/:competitionId/teams", element: <ManageTeamPage /> },
       { path: "/manage/:competitionId/events", element: <ManageEventPage /> },
       { path: "/competition/:competitionId", element: <CompetitionPage /> },
