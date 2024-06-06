@@ -20,7 +20,7 @@ const InputTeamAthletes = ({ teamId }: Props) => {
   useEffect(() => {
     if (competitionId) {
       axios
-        .get(backend + "events/")
+        .get(backend + "/events/")
         .then((response) => {
           const filteredEvents = response.data.filter(
             (e: Event) => e.competition === Number(competitionId)
