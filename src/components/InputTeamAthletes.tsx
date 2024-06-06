@@ -49,6 +49,7 @@ const InputTeamAthletes = ({ teamId }: Props) => {
           id: allAthletes.length + 1,
           name,
           competition: Number(competitionId),
+          team: String(teamId),
         });
       }
     });

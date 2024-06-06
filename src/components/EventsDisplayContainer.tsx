@@ -13,7 +13,9 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
       {events.map((event) => (
         <ListItem key={event.id} paddingY="5px">
           <HStack>
-            <Link to={"/competition/" + competitionId + "/" + event.id}>
+            <Link
+              to={"/competition/" + competitionId + "/" + event.id + "/results"}
+            >
               <Button
                 whiteSpace="normal"
                 textAlign="left"
