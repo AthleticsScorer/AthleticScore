@@ -11,7 +11,7 @@ const EventPage = () => {
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [competitionName, setCompetitionName] = useState("");
-  const { competitionId, eventId } = useParams();
+  const { competitionId } = useParams();
 
   const handleAddAthlete = (newAthlete: Athlete) => {
     setAthletes([...athletes, newAthlete]);
@@ -59,8 +59,8 @@ const EventPage = () => {
       <Link to={"/competition/" + competitionId}>
         <Button size="lg">Back to Competition</Button>
       </Link>
-      <Link to={"/competition/" + competitionId + "/" + eventId + "/results"}>
-        <Button size="lg">Submit Results</Button>
+      <Link to={"/create/" + competitionId}>
+        <Button size="lg">Submit Athletes</Button>
       </Link>
     </VStack>
   );

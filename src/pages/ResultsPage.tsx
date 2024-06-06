@@ -65,6 +65,7 @@ const ResultsPage = () => {
           {atheletesColl.map((athlete) => (
             <ListItem key={athlete.id} paddingY="5px">
               <HStack>
+                <Text size={"lg"}>{athlete.team}</Text>
                 <Text size={"lg"}>{athlete.name}</Text>
                 <InputResult
                   onAdd={handleAddResult}

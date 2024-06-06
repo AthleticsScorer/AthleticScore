@@ -68,7 +68,7 @@ const InputTeam = ({ onAdd, competitionId, button, team_name }: Props) => {
         </>
       ) : (
         <Link to={"/competition/" + competitionId + "/team"}>
-          <Heading size="md">{teamName + " - " + shortCode}</Heading>
+          <Heading size="md">{teamName + " " + shortCode}</Heading>
         </Link>
       )}
     </HStack>

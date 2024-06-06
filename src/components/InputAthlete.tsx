@@ -14,6 +14,7 @@ export interface Athlete {
   id: number;
   name: String;
   competition: number;
+  team: String;
 }
 
 const InputAthlete = ({ onAdd, competitionId, teams }: Props) => {
@@ -42,6 +43,7 @@ const InputAthlete = ({ onAdd, competitionId, teams }: Props) => {
       id: currentIdRef.current++,
       name: athleteName,
       competition: competitionId,
+      team: team,
     };
     onAdd(newAthlete);
     setAthleteName("");
