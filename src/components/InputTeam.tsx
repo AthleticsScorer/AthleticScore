@@ -1,51 +1,64 @@
-import { HStack, IconButton, Input } from "@chakra-ui/react";
+import { Heading, HStack, IconButton, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Team } from "../pages/CreatePage";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface Props {
-    onAdd: (newTeam: Team) => void;
-    competitionId: number,
+  onAdd: (newTeam: Team) => void;
+  competitionId: number;
 }
 
 const InputTeam = ({ onAdd, competitionId }: Props) => {
-    
-    const [teamName, setTeamName] = useState('');
-    const [teamId, setTeamId] = useState(0);
+  const [teamName, setTeamName] = useState("");
+  const [teamId, setTeamId] = useState(0);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
-
-    const handleAddClick = async () => {
-        await axios.post(backend + "/teams/", {
+  const handleAddClick = async () => {
+    try {
+      const response = await axios.post(backend + "/teams/", {
         name: teamName,
-        competition: competitionId
-      })
-      .then(response => setTeamId(response.data.id))
-      .catch(error => {
-        console.error('Error fetching data:', error);
+        competition: competitionId,
       });
+      setTeamId(response.data.id);
       const newTeam: Team = {
-        id: teamId, 
+        id: teamId,
         name: teamName,
-        competition: competitionId
+        competition: competitionId,
       };
       onAdd(newTeam);
-      setTeamName(''); 
-      };
-
+      setButtonClicked(true);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <HStack>
-      <Input placeholder="Add Team" size="md" value={teamName}
-        onChange={(e) => setTeamName(e.target.value)}/>
-      <IconButton
-        variant="outline"
-        colorScheme="teal"
-        aria-label="Call Sage"
-        fontSize="20px"
-        icon={<FaCirclePlus />}
-        onClick={handleAddClick}
-      />
+      {!buttonClicked ? (
+        <>
+          <Input
+            placeholder="Enter Team..."
+            size="md"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+          />
+          <Input placeholder="Enter Short Code..." size="md" />
+          <IconButton
+            variant="outline"
+            colorScheme="teal"
+            aria-label="Add Team"
+            fontSize="20px"
+            icon={<FaCirclePlus />}
+            onClick={handleAddClick}
+          />
+        </>
+      ) : (
+        <Link to={"/competition/" + competitionId + "/team"}>
+          <Heading size="md">{teamName}</Heading>
+        </Link>
+      )}
     </HStack>
   );
 };

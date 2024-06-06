@@ -8,6 +8,9 @@ import EventPage from "./pages/EventPage";
 import ResultsPage from "./pages/ResultsPage";
 import ViewPage from "./pages/ViewPage";
 import TeamPage from "./pages/TeamPage";
+import ManagePage from "./pages/ManagePage";
+import ManageTeamPage from "./pages/ManageTeamPage";
+import ManageEventPage from "./pages/ManageEventPage";
 
 const router = createBrowserRouter([
   {
@@ -17,11 +20,20 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/create/:competitionId", element: <CreatePage /> },
-      { path: "/competition/:competitionId", element: <CompetitionPage />},
-      { path: "/competition/:competitionId/:eventId", element: <EventPage />},
-      { path: "/competition/:competitionId/:eventId/results", element: <ResultsPage />},
-      { path: "/competition/:competitionId/:eventId/view", element: <ViewPage />},
-      { path: "/competition/:competitionId/team", element: <TeamPage />}
+      { path: "/manage", element: <ManagePage /> },
+      { path: "/manage/:competitionId/teams", element: <ManageTeamPage /> },
+      { path: "/manage/:competitionId/events", element: <ManageEventPage /> },
+      { path: "/competition/:competitionId", element: <CompetitionPage /> },
+      { path: "/competition/:competitionId/:eventId", element: <EventPage /> },
+      {
+        path: "/competition/:competitionId/:eventId/results",
+        element: <ResultsPage />,
+      },
+      {
+        path: "/competition/:competitionId/:eventId/view",
+        element: <ViewPage />,
+      },
+      { path: "/competition/:competitionId/team", element: <TeamPage /> },
     ],
   },
 ]);

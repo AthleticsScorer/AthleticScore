@@ -1,4 +1,4 @@
-import { Select } from "@chakra-ui/react";
+import { Select, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useState, useEffect, SetStateAction } from "react";
 import { Team } from "./CreatePage";
@@ -31,21 +31,21 @@ const TeamPage = () => {
   }, []);
 
   return (
-    <>
-    <Select
-      placeholder="Team"
-      size="md"
-      value={team}
-      onChange={handleSelectChange}
-    >
-      {teams.map((team) => (
-        <option key={team.id} value={team.id}>
-          {team.name}
-        </option>
-      ))}
-    </Select>
-    <InputTeamAthletes teamId={Number(team)}/>
-    </>
+    <VStack spacing={10}>
+      <Select
+        placeholder="Team"
+        size="md"
+        value={team}
+        onChange={handleSelectChange}
+      >
+        {teams.map((team) => (
+          <option key={team.id} value={team.id}>
+            {team.name}
+          </option>
+        ))}
+      </Select>
+      <InputTeamAthletes teamId={Number(team)} />
+    </VStack>
   );
 };
 

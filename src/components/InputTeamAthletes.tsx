@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Params, useParams } from "react-router-dom";
 import { Event } from "../pages/CreatePage";
-import { List, ListItem, HStack, Heading, Input, Button } from "@chakra-ui/react";
+import { Heading, Input, SimpleGrid, Box, Button } from "@chakra-ui/react";
 import { Athlete } from "./InputAthlete";
+import React from "react";
 
 interface Props {
   teamId: number;
@@ -11,8 +12,9 @@ interface Props {
 
 const InputTeamAthletes = ({ teamId }: Props) => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [athletes, setAthletes] = useState<Athlete[]>([]);
-  const [newAthlete, setNewAthlete] = useState<string>("");
+  const [athleteNames, setAthleteNames] = useState<{
+    [eventId: number]: string;
+  }>({});
   const { competitionId } = useParams<Params>();
 
   useEffect(() => {
@@ -24,7 +26,6 @@ const InputTeamAthletes = ({ teamId }: Props) => {
             (e: Event) => e.competition === Number(competitionId)
           );
           setEvents(filteredEvents);
-          console.log(filteredEvents);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -32,31 +33,52 @@ const InputTeamAthletes = ({ teamId }: Props) => {
     }
   }, [competitionId, teamId]);
 
-  const handleAddAthlete = () => {
-    if (newAthlete.trim()) {
-      setAthletes([...athletes, { id: athletes.length + 1, name: newAthlete, competition: Number(competitionId) }]);
-      setNewAthlete("");
-    }
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    eventId: number
+  ) => {
+    setAthleteNames({ ...athleteNames, [eventId]: event.target.value });
+  };
+
+  const handleSubmitAthletes = () => {
+    const allAthletes: Athlete[] = [];
+    Object.keys(athleteNames).forEach((eventId) => {
+      const name = athleteNames[Number(eventId)].trim();
+      if (name) {
+        allAthletes.push({
+          id: allAthletes.length + 1,
+          name,
+          competition: Number(competitionId),
+        });
+      }
+    });
+    console.log(allAthletes);
   };
 
   return (
     <>
-      <List>
+      <SimpleGrid columns={2} spacing={4}>
+        <Box></Box>
+        <Box>
+          <Heading size="md">Age Group</Heading>
+        </Box>
         {events.map((event) => (
-          <ListItem key={event.id} paddingY="5px">
-            <HStack>
+          <React.Fragment key={event.id}>
+            <Box>
               <Heading size="md">{event.event_name}</Heading>
+            </Box>
+            <Box>
               <Input
                 placeholder="Add Athlete"
                 size="md"
-                value={newAthlete}
-                onChange={(e) => setNewAthlete(e.target.value)}
+                value={athleteNames[event.id] || ""}
+                onChange={(e) => handleInputChange(e, event.id)}
               />
-              <Button onClick={handleAddAthlete}>Add</Button>
-            </HStack>
-          </ListItem>
+            </Box>
+          </React.Fragment>
         ))}
-      </List>
+      </SimpleGrid>
+      <Button onClick={handleSubmitAthletes}>Submit Athletes</Button>
     </>
   );
 };
