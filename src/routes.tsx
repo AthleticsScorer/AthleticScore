@@ -7,6 +7,7 @@ import CompetitionPage from "./pages/CompetitionPage";
 import EventPage from "./pages/EventPage";
 import ResultsPage from "./pages/ResultsPage";
 import ViewPage from "./pages/ViewPage";
+import TeamPage from "./pages/TeamPage";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,8 @@ const router = createBrowserRouter([
       { path: "/competition/:competitionId", element: <CompetitionPage />},
       { path: "/competition/:competitionId/:eventId", element: <EventPage />},
       { path: "/competition/:competitionId/:eventId/results", element: <ResultsPage />},
-      { path: "/competition/:competitionId/:eventId/view", element: <ViewPage />}
+      { path: "/competition/:competitionId/:eventId/view", element: <ViewPage />},
+      { path: "/competition/:competitionId/team", element: <TeamPage />}
     ],
   },
 ]);

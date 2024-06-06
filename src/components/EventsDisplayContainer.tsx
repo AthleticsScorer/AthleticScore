@@ -20,7 +20,7 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
                 fontSize="lg"
                 variant="link"
               >
-                {event.name}
+                {event.event_name}
               </Button></Link>
             </HStack>
           </ListItem>

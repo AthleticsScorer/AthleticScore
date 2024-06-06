@@ -17,7 +17,7 @@ const CreatedEventsContainer = ({ events }: Props) => {
                 fontSize="lg"
                 variant="link"
               >
-                {event.name}
+                {event.event_name}
               </Button>
             </HStack>
           </ListItem>

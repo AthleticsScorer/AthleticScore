@@ -8,7 +8,10 @@ import CreatedTeamsContainer from "../components/CreatedTeamsContainer";
 
 export interface Event {
   id: number
-  name: String
+  event_name: String
+  competition: number
+  age_group: String,
+  event_type: String,
 }
 
 export interface Team {

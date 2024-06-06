@@ -1,5 +1,5 @@
 import { HStack, IconButton, Input } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Team } from "../pages/CreatePage";
 import axios from "axios";

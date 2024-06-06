@@ -32,7 +32,10 @@ const InputEvent = ({ onAdd, competitionId }: Props) => {
       });
       const newEvent: Event = {
         id: currentIdRef.current++, 
-        name: eventName,
+        event_name: eventName,
+        competition: competitionId,
+        age_group: eventName,
+        event_type: eventType
       };
       onAdd(newEvent);
       setEventName(''); 

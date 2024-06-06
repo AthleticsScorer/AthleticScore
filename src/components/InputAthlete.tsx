@@ -1,4 +1,4 @@
-import { HStack, IconButton, Input, List, ListItem, Select } from "@chakra-ui/react";
+import { HStack, IconButton, Input, Select } from "@chakra-ui/react";
 import { useState, useRef, SetStateAction } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import axios from "axios";

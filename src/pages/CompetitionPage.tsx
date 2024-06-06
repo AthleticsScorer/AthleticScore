@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Competition } from "./HomePage";
-import { Center, Heading, VStack } from "@chakra-ui/react";
+import { Button, Center, Heading, VStack } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
 
-interface EventCollect {
+export interface EventCollect {
   id: number,
   age_group: string,
   event_type: string,
@@ -50,7 +50,12 @@ const CompetitionPage = () => {
     <Center>
       <VStack>
       <Heading>{competition?.name}</Heading>
-    <EventsDisplayContainer competitionId={Number(competitionId)} events={events.map(e => ({id: e.id, name: e.age_group}))} />
+    <EventsDisplayContainer competitionId={Number(competitionId)} events={events.map(e => ({id: e.id, event_name: e.age_group, competition: Number(competitionId), age_group: e.age_group, event_type: e.event_type}))} />
+    <Link to={"/competition/" + competitionId + "/team"}>
+      <Button>
+        Team Input
+      </Button>
+    </Link>
     </VStack>
     </Center>
     </>
