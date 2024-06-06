@@ -21,6 +21,7 @@ const InputEvent = ({ onAdd, competitionId }: Props) => {
 
     const handleAddClick = async () => {
         await axios.post(backend + '/events/', {
+        event_name: eventName,
         age_group: eventName,
         event_type: eventType,
         competition: competitionId
