@@ -4,18 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import { Competition } from "./HomePage";
 import { Button, Center, Heading, VStack } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
-
-export interface EventCollect {
-  id: number;
-  age_group: string;
-  event_type: string;
-  competition: number;
-}
+import { Event } from "./CreatePage";
 
 const CompetitionPage = () => {
   const { competitionId } = useParams();
   const [data, setData] = useState<Competition[]>([]);
-  const [events, setEvents] = useState<EventCollect[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     axios
@@ -34,7 +28,7 @@ const CompetitionPage = () => {
       .get(backend + "/events/")
       .then((response) => {
         const filteredEvents = response.data.filter(
-          (e: EventCollect) => e.competition === Number(competitionId)
+          (e: Event) => e.competition === Number(competitionId)
         );
         setEvents(filteredEvents);
         console.log(response.data);
@@ -55,7 +49,7 @@ const CompetitionPage = () => {
             competitionId={Number(competitionId)}
             events={events.map((e) => ({
               id: e.id,
-              event_name: e.age_group,
+              event_name: e.event_name,
               competition: Number(competitionId),
               age_group: e.age_group,
               event_type: e.event_type,

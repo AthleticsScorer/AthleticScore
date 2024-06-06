@@ -1,4 +1,4 @@
-import { List, ListItem, HStack, Button } from "@chakra-ui/react";
+import { List, ListItem, HStack, Button, Select } from "@chakra-ui/react";
 import { Event } from "../pages/CreatePage";
 
 interface Props {
@@ -19,6 +19,10 @@ const CreatedEventsContainer = ({ events }: Props) => {
             >
               {event.event_name}
             </Button>
+            <Select placeholder={"..."} size="md">
+              <option>Edit</option>
+              <option>Delete</option>
+            </Select>
           </HStack>
         </ListItem>
       ))}
