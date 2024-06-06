@@ -31,6 +31,20 @@ const ManageTeamPage = () => {
     fetchCompetitionName();
   }, [competitionId]);
 
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api" + "/teams/")
+      .then((response) => {
+        const filteredTeams = response.data.filter(
+          (e: Team) => e.competition === Number(competitionId.competitionId)
+        );
+        setTeams(filteredTeams);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
   return (
     <VStack spacing={5}>
       <HStack spacing={10}>
@@ -39,17 +53,21 @@ const ManageTeamPage = () => {
           Import Team
         </Button>
       </HStack>
-      <InputTeam
-        onAdd={handleAddTeam}
-        competitionId={Number(competitionId.competitionId)}
-      />
-      {teams.map((_, index) => (
+      {teams.map((team, index) => (
         <InputTeam
           key={index}
           onAdd={handleAddTeam}
           competitionId={Number(competitionId.competitionId)}
+          button={true}
+          team_name={team.name}
         />
       ))}
+      <InputTeam
+        onAdd={handleAddTeam}
+        competitionId={Number(competitionId.competitionId)}
+        button={false}
+        team_name={""}
+      />
     </VStack>
   );
 };

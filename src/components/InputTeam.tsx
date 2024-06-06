@@ -8,12 +8,15 @@ import { Link } from "react-router-dom";
 interface Props {
   onAdd: (newTeam: Team) => void;
   competitionId: number;
+  button: boolean;
+  team_name: String;
 }
 
-const InputTeam = ({ onAdd, competitionId }: Props) => {
-  const [teamName, setTeamName] = useState("");
+const InputTeam = ({ onAdd, competitionId, button, team_name }: Props) => {
+  const [teamName, setTeamName] = useState(String(team_name));
+  const [shortCode, setShortCode] = useState("");
   const [teamId, setTeamId] = useState(0);
-  const [buttonClicked, setButtonClicked] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(button);
 
   const handleAddClick = async () => {
     try {
@@ -28,7 +31,11 @@ const InputTeam = ({ onAdd, competitionId }: Props) => {
         competition: competitionId,
       };
       onAdd(newTeam);
-      setButtonClicked(true);
+      setButtonClicked(button);
+      if (!button) {
+        setTeamName("");
+        setShortCode("");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -44,7 +51,12 @@ const InputTeam = ({ onAdd, competitionId }: Props) => {
             value={teamName}
             onChange={(e) => setTeamName(e.target.value)}
           />
-          <Input placeholder="Enter Short Code..." size="md" />
+          <Input
+            placeholder="Enter Short Code..."
+            size="md"
+            value={shortCode}
+            onChange={(e) => setShortCode(e.target.value)}
+          />
           <IconButton
             variant="outline"
             colorScheme="teal"
