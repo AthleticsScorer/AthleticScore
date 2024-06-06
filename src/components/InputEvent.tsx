@@ -99,8 +99,7 @@ const InputEvent = ({
         <>
           <Link to={"/competition/" + competitionId + "/" + eventId}>
             <HStack>
-              <Heading size="md">{eventName}</Heading>
-              <Heading size="md">{ageGroup}</Heading>
+              <Heading size="md">{eventName + " - " + ageGroup}</Heading>
             </HStack>
           </Link>
 
