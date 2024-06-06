@@ -1,4 +1,4 @@
-import { Select } from "@chakra-ui/react";
+import { Select, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useState, useEffect, SetStateAction } from "react";
 import { Team } from "./CreatePage";
@@ -31,7 +31,7 @@ const TeamPage = () => {
   }, []);
 
   return (
-    <>
+    <VStack spacing={10}>
     <Select
       placeholder="Team"
       size="md"
@@ -45,7 +45,7 @@ const TeamPage = () => {
       ))}
     </Select>
     <InputTeamAthletes teamId={Number(team)}/>
-    </>
+    </VStack>
   );
 };
 

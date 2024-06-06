@@ -43,8 +43,6 @@ const CompetitionPage = () => {
 
   const competition = data.find(comp => comp.id === Number(competitionId));
 
-  // setEvents(events.filter(e => e.competition = competitionName!));
-
   return (
     <>
     <Center>

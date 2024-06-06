@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, VStack } from "@chakra-ui/react"
+import { Button, Center, Heading, HStack, VStack } from "@chakra-ui/react"
 import CreatedEventsContainer from "../components/CreatedEventsContainer";
 import InputEvent from "../components/InputEvent";
 import InputTeam from "../components/InputTeam";
@@ -36,8 +36,21 @@ const createPage = () => {
 
 
   return (
-    <VStack>
-    <HStack padding="20px">
+    <Center height={"100vh"}>
+      <VStack spacing={10}>
+      <Link to={"/manage/" + competitionId + "/teams"}>
+        <Button colorScheme="blue"
+        size="lg"
+        type="submit">
+          Manage Teams
+        </Button></Link>
+        <Link to={"/manage/" + competitionId + "/events"}>
+        <Button colorScheme="blue"
+        size="lg"
+        type="submit">
+          Manage Events
+        </Button></Link>
+    {/* <HStack padding="20px">
     <VStack padding="10px">
       <Heading>Add Events</Heading>
       <CreatedEventsContainer events={events}/>
@@ -51,8 +64,9 @@ const createPage = () => {
     </HStack>
     <Link to={"/competition/" + competitionId}>
     <Button size="lg">Submit</Button>
-  </Link>
+  </Link> */}
   </VStack>
+  </Center>
   );
 };
 
