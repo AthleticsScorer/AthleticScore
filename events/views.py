@@ -88,7 +88,7 @@ def get_athletes_ranked_by_result(request, event_id):
         ranked_results.append({
             'rank': rank,
             'athlete_name': result.athlete.name,
-            event.event_type: result.value,
+            'result': result.value,
             'points': points
         })
 

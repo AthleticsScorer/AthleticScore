@@ -11,7 +11,7 @@ interface DisplayResult {
 
 interface RankedResult {
   rank: number;
-  Distance: number;
+  result: number;
   athlete_name: String;
   points: number;
 }
@@ -77,7 +77,7 @@ const ViewPage = () => {
               <HStack>
                 <Heading size={"sm"}>{result.rank}</Heading>
                 <Heading size={"sm"}>{result.athlete_name}</Heading>
-                <Heading size={"sm"}>{result.Distance}</Heading>
+                <Heading size={"sm"}>{result.result}</Heading>
                 <Heading size={"sm"}>{result.points}</Heading>
               </HStack>
             </ListItem>
