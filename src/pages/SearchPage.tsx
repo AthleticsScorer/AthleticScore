@@ -23,7 +23,7 @@ const SearchPage = () => {
     const fetchCompetitions = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/api" + `/competitions/`
+          backend + `/competitions/`
         );
         setCompetitions(response.data);
       } catch (error) {

@@ -44,7 +44,7 @@ const CompetitionSearchPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api" + "/events/")
+      .get(backend + "/events/")
       .then((response) => {
         const filteredEvents = response.data.filter(
           (e: Event) => e.competition === Number(competitionId.competitionId)
@@ -59,7 +59,7 @@ const CompetitionSearchPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api" + "/athletes/")
+      .get(backend + "/athletes/")
       .then((response) => {
         const filteredAthletes = response.data.filter(
           (e: Athlete) => e.competition === Number(competitionId)
@@ -76,7 +76,7 @@ const CompetitionSearchPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api" + "/results/")
+      .get(backend + "/results/")
       .then((response) => {
         setResults(response.data);
         console.log(response.data);
@@ -92,7 +92,7 @@ const CompetitionSearchPage = () => {
       const displayResultsPromises = filteredResults.map(async (result) => {
         try {
           const response = await axios.get(
-            "http://127.0.0.1:8000/api" + `/athletes/${result.athlete}`
+            backend + `/athletes/${result.athlete}`
           );
           const athleteName = response.data.name;
           return {

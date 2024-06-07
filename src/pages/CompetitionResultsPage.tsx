@@ -24,7 +24,7 @@ const CompetitionResultsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api" + "/teams/")
+      .get(backend + "/teams/")
       .then((response) => {
         const filteredTeams = response.data.filter(
           (e: Team) => e.competition === Number(competitionId.competitionId)
@@ -41,7 +41,7 @@ const CompetitionResultsPage = () => {
       const displayTeamsPromises = teams.map(async (team) => {
         try {
           const response = await axios.get(
-            "http://127.0.0.1:8000/api" + `/teams/${team.id}/total_points`
+            backend + `/teams/${team.id}/total_points`
           );
           return {
             id: team.id,
