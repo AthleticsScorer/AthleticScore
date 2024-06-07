@@ -64,12 +64,7 @@ class ResultDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
 FIRST_PLACE_EDGE = 1
 MAX_SCORE_WITHOUT_EDGE = 11
 
-
-# Additional View for Ranked Athletes by Event Result
-@api_view(['GET'])
-def get_athletes_ranked_by_result(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    print(event.event_type)
+def calc_event_result(event):
     if event.event_type == 'Time':
         results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
     elif event.event_type == 'Distance':
@@ -87,13 +82,41 @@ def get_athletes_ranked_by_result(request, event_id):
             points = MAX_SCORE_WITHOUT_EDGE - dist_from_first
         ranked_results.append({
             'rank': rank,
-            'athlete_name': result.athlete.name,
-            event.event_type: result.value,
+            'athlete_id': result.athlete.id,
+            'result': result.value,
             'points': points
         })
+    return ranked_results
 
+# Additional View for Ranked Athletes by Event Result
+@api_view(['GET'])
+def get_athletes_ranked_by_result(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    ranked_results = calc_event_result(event)
+    for result in ranked_results:
+        athlete_id = result['athlete_id']
+        athlete = get_object_or_404(Athlete, pk=athlete_id)
+        result['athlete_name'] = athlete.name
+        del result['athlete_id']
     return Response(ranked_results)
 
+@api_view(['GET'])
+def get_teams_points(request, team_id):
+    team = get_object_or_404(Team, pk=team_id)
+    team_athletes = Athlete.objects.filter(team=team)
+    team_athletes_ids = []
+    for athlete in team_athletes:
+        team_athletes_ids.append(athlete.id)
+    events = Event.objects.filter(competition=team.competition)
+
+    total_points = 0
+    for event in events:
+        ranked_results = calc_event_result(event)
+        for result in ranked_results:
+            if result['athlete_id'] in team_athletes_ids:
+                total_points += result['points']
+
+    return Response(total_points)
 
 from .utils import create_search_view
 
