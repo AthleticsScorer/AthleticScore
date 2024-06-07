@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   define: {
-    backend: JSON.stringify('https://athleticscore-89d44187f67a.herokuapp.com/api')
+    backend: JSON.stringify('https://athleticscore-89d44187f67a.herokuapp.com')
   }
 })
