@@ -118,6 +118,21 @@ def get_teams_points(request, team_id):
 
     return Response(total_points)
 
+# TOAD: given event id, return all athletes
+
+# given competition, return all athletes
+@api_view(['GET'])
+def get_competition_athletes(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    teams = Team.objects.filter(competition=competition)
+    all_athletes = Athlete.objects
+    for team in teams:
+        all_athletes.filter(team=team)
+
+    serializer = AthleteSerializer(all_athletes, many=True)
+    
+    return Response(serializer.data)
+
 from .utils import create_search_view
 
 search_teams_by_name = create_search_view(Team)

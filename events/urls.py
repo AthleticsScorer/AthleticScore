@@ -8,6 +8,7 @@ from .views import (
     EventListCreateAPIView, EventDetailAPIView,
     ResultListCreateAPIView, ResultDetailAPIView,
     get_athletes_ranked_by_result, get_teams_points,
+    get_competition_athletes,
     search_athletes_by_name, search_teams_by_name,
     search_competitions_by_name, search_events_by_name
 )
@@ -49,4 +50,5 @@ for basename, viewset in viewsets.items():
 urlpatterns += [
     path('events/<int:event_id>/ranked_athletes/', get_athletes_ranked_by_result, name='ranked_athletes'),
     path('teams/<int:team_id>/total_points/', get_teams_points, name='total_points'),
+    path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='all_athletes'),
 ]
