@@ -1,11 +1,16 @@
-import { Center, Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react"
-import { useState } from "react"
-import { Team } from "./CreatePage"
+import {
+  Center,
+  Heading,
+  HStack,
+  List,
+  ListItem,
+  VStack,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { Team } from "./CreatePage";
 
 const CompetitionResultsPage = () => {
-  const [teams, setTeams] = useState<Team[]>([])
-
-
+  const [teams, setTeams] = useState<Team[]>([]);
 
   return (
     <Center>
@@ -24,7 +29,7 @@ const CompetitionResultsPage = () => {
         </List>
       </VStack>
     </Center>
-  )
-}
+  );
+};
 
-export default CompetitionResultsPage
+export default CompetitionResultsPage;

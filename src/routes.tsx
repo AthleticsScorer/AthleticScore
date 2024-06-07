@@ -13,6 +13,8 @@ import ManageTeamPage from "./pages/ManageTeamPage";
 import ManageEventPage from "./pages/ManageEventPage";
 import ViewCompetitionPage from "./pages/ViewCompetitionPage";
 import CompetitionResultsPage from "./pages/CompetitionResultsPage";
+import SearchPage from "./pages/SearchPage";
+import CompetitionSearchPage from "./pages/CompetitionSearchPage";
 
 const router = createBrowserRouter([
   {
@@ -23,11 +25,19 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/create/:competitionId", element: <CreatePage /> },
       { path: "/manage", element: <ManagePage /> },
+      { path: "/search", element: <SearchPage /> },
       { path: "/competition", element: <ViewCompetitionPage /> },
       { path: "/manage/:competitionId/teams", element: <ManageTeamPage /> },
       { path: "/manage/:competitionId/events", element: <ManageEventPage /> },
       { path: "/competition/:competitionId", element: <CompetitionPage /> },
-      { path: "/competition/:competitionId/view", element: <CompetitionResultsPage />},
+      {
+        path: "/competition/:competitionId/search",
+        element: <CompetitionSearchPage />,
+      },
+      {
+        path: "/competition/:competitionId/view",
+        element: <CompetitionResultsPage />,
+      },
       { path: "/competition/:competitionId/:eventId", element: <EventPage /> },
       {
         path: "/competition/:competitionId/:eventId/results",

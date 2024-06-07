@@ -3,12 +3,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-interface DisplayResult {
-  id: number;
-  athleteName: String;
-  value: number;
-}
-
 interface RankedResult {
   rank: number;
   result: number;

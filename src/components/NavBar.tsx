@@ -11,7 +11,7 @@ const NavBar = () => {
       <Link to="/manage">
         <FaRunning size="50px" />
       </Link>
-      <Link to="/">
+      <Link to="/search">
         <FaSearch size="50px" />
       </Link>
     </HStack>
