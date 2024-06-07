@@ -58,6 +58,9 @@ const CompetitionPage = () => {
           <Link to={"/competition/" + competitionId + "/team"}>
             <Button>Team Input</Button>
           </Link>
+          <Link to={"/competition/" + competitionId + "/view"}>
+            <Button>View Results</Button>
+          </Link>
         </VStack>
       </Center>
     </>

@@ -1,5 +1,4 @@
 import { Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react";
-import { Result } from "../components/InputResult";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -10,16 +9,24 @@ interface DisplayResult {
   value: number;
 }
 
+interface RankedResult {
+  rank: number;
+  result: number;
+  athlete_name: String;
+  points: number;
+}
+
 const ViewPage = () => {
-  const [results, setResults] = useState<Result[]>([]);
+  const [results, setResults] = useState<RankedResult[]>([]);
   const { competitionId, eventId } = useParams();
   const [competitionName, setCompetitionName] = useState("");
   const [eventName, setEventName] = useState("");
-  const [displayResults, setDisplayResults] = useState<DisplayResult[]>([]);
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api" + "/results/")
+      .get(
+        "http://127.0.0.1:8000/api" + "/events/" + eventId + "/ranked_athletes"
+      )
       .then((response) => {
         setResults(response.data);
         console.log(response.data);
@@ -28,45 +35,6 @@ const ViewPage = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
-  useEffect(() => {
-    const fetchAthleteNames = async () => {
-      const filteredResults = results.filter(
-        (r) => r.event === Number(eventId)
-      );
-      const displayResultsPromises = filteredResults.map(async (result) => {
-        try {
-          const response = await axios.get(
-            "http://127.0.0.1:8000/api" + `/athletes/${result.athlete}`
-          );
-          const athleteName = response.data.name;
-          return {
-            id: result.id,
-            athleteName: athleteName,
-            value: Number(result.value),
-          };
-        } catch (error) {
-          console.error("Error fetching athlete data:", error);
-          return {
-            id: result.id,
-            athleteName: "Unknown Athlete",
-            value: Number(result.value),
-          };
-        }
-      });
-
-      const resolvedDisplayResults = await Promise.all(displayResultsPromises);
-      const sortedResults = resolvedDisplayResults.sort(
-        (a, b) => a.value - b.value
-      );
-
-      setDisplayResults(sortedResults);
-    };
-
-    if (results.length > 0) {
-      fetchAthleteNames();
-    }
-  }, [results]);
 
   useEffect(() => {
     const fetchCompetitionName = async () => {
@@ -104,12 +72,13 @@ const ViewPage = () => {
       <VStack>
         <Heading>{competitionName + " " + eventName}</Heading>
         <List>
-          {displayResults.map((result, index) => (
-            <ListItem key={result.id} paddingY="5px">
+          {results.map((result) => (
+            <ListItem key={result.rank} paddingY="5px">
               <HStack>
-                <Heading size={"sm"}>{index + 1}</Heading>
-                <Heading size={"sm"}>{result.athleteName}</Heading>
-                <Heading size={"sm"}>{result.value}</Heading>
+                <Heading size={"sm"}>{result.rank}</Heading>
+                <Heading size={"sm"}>{result.athlete_name}</Heading>
+                <Heading size={"sm"}>{result.result}</Heading>
+                <Heading size={"sm"}>{result.points}</Heading>
               </HStack>
             </ListItem>
           ))}
