@@ -60,24 +60,36 @@ class ResultListCreateAPIView(BaseListCreateAPIView):
 class ResultDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = ResultSerializer
 
+#current constants by can be confiugured
+FIRST_PLACE_EDGE = 1
+MAX_SCORE_WITHOUT_EDGE = 11
+
 
 # Additional View for Ranked Athletes by Event Result
 @api_view(['GET'])
 def get_athletes_ranked_by_result(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    if event.event_type == 'time':
+    print(event.event_type)
+    if event.event_type == 'Time':
         results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
-    elif event.event_type == 'distance':
+    elif event.event_type == 'Distance':
         results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
     else:
         return Response({"error": "Invalid event measurement type"}, status=400)
 
     ranked_results = []
     for rank, result in enumerate(results, start=1):
+        points = 0
+        dist_from_first = rank - 1
+        if rank == 1:
+            points = MAX_SCORE_WITHOUT_EDGE + FIRST_PLACE_EDGE
+        else:
+            points = MAX_SCORE_WITHOUT_EDGE - dist_from_first
         ranked_results.append({
             'rank': rank,
             'athlete_name': result.athlete.name,
-            event.event_type: result.value
+            event.event_type: result.value,
+            'points': points
         })
 
     return Response(ranked_results)
