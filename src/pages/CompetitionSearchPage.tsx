@@ -150,7 +150,15 @@ const CompetitionSearchPage = () => {
           events.map((event) => (
             <React.Fragment key={event.id}>
               <Box>
-                <Link to={"/competition/" + competitionId.competitionId + "/" + event.id + "/view"}>
+                <Link
+                  to={
+                    "/competition/" +
+                    competitionId.competitionId +
+                    "/" +
+                    event.id +
+                    "/view"
+                  }
+                >
                   <Heading size="md">{event.event_name}</Heading>
                 </Link>
               </Box>
@@ -160,7 +168,7 @@ const CompetitionSearchPage = () => {
           athletes.map((athlete) => (
             <React.Fragment key={athlete.id}>
               <Box>
-                  <Heading size="md">{athlete.name}</Heading>
+                <Heading size="md">{athlete.name}</Heading>
               </Box>
             </React.Fragment>
           ))}
@@ -168,9 +176,7 @@ const CompetitionSearchPage = () => {
           displayResults.map((result) => (
             <React.Fragment key={result.id}>
               <Box>
-                  <Heading size="md">
-                    {result.name + " " + result.value}
-                  </Heading>
+                <Heading size="md">{result.name + " " + result.value}</Heading>
               </Box>
             </React.Fragment>
           ))}
