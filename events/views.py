@@ -5,8 +5,6 @@ from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerialize
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
-from .filters import ResultFilter
 from django.core.management import call_command
 from rest_framework import status
 
