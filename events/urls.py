@@ -7,7 +7,8 @@ from .views import (
     CompetitionListCreateAPIView, CompetitionDetailAPIView,
     EventListCreateAPIView, EventDetailAPIView,
     ResultListCreateAPIView, ResultDetailAPIView,
-    get_athletes_ranked_by_result,
+    get_athletes_ranked_by_result, get_teams_points,
+    get_competition_athletes, get_event_athletes,
     search_athletes_by_name, search_teams_by_name,
     search_competitions_by_name, search_events_by_name,
     wipe_events_data
@@ -49,5 +50,8 @@ for basename, viewset in viewsets.items():
 # Add additional custom URL patterns
 urlpatterns += [
     path('events/<int:event_id>/ranked_athletes/', get_athletes_ranked_by_result, name='ranked_athletes'),
+    path('teams/<int:team_id>/total_points/', get_teams_points, name='total_points'),
+    path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='comp_all_athletes'),
+    path('events/<int:event_id>/all_athletes/', get_event_athletes, name='event_all_athletes'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
 ]
