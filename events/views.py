@@ -62,29 +62,63 @@ class ResultListCreateAPIView(BaseListCreateAPIView):
 class ResultDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = ResultSerializer
 
+#current constants by can be confiugured
+FIRST_PLACE_EDGE = 1
+MAX_SCORE_WITHOUT_EDGE = 11
 
-
-# Additional View for Ranked Athletes by Event Result
-@api_view(['GET'])
-def get_athletes_ranked_by_result(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    if event.event_type == 'time':
+def calc_event_result(event):
+    if event.event_type == 'Time':
         results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
-    elif event.event_type == 'distance':
+    elif event.event_type == 'Distance':
         results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
     else:
         return Response({"error": "Invalid event measurement type"}, status=400)
 
     ranked_results = []
     for rank, result in enumerate(results, start=1):
+        points = 0
+        dist_from_first = rank - 1
+        if rank == 1:
+            points = MAX_SCORE_WITHOUT_EDGE + FIRST_PLACE_EDGE
+        else:
+            points = MAX_SCORE_WITHOUT_EDGE - dist_from_first
         ranked_results.append({
             'rank': rank,
-            'athlete_name': result.athlete.name,
-            event.event_type: result.value
+            'athlete_id': result.athlete.id,
+            'result': result.value,
+            'points': points
         })
+    return ranked_results
 
+# Additional View for Ranked Athletes by Event Result
+@api_view(['GET'])
+def get_athletes_ranked_by_result(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    ranked_results = calc_event_result(event)
+    for result in ranked_results:
+        athlete_id = result['athlete_id']
+        athlete = get_object_or_404(Athlete, pk=athlete_id)
+        result['athlete_name'] = athlete.name
+        del result['athlete_id']
     return Response(ranked_results)
 
+@api_view(['GET'])
+def get_teams_points(request, team_id):
+    team = get_object_or_404(Team, pk=team_id)
+    team_athletes = Athlete.objects.filter(team=team)
+    team_athletes_ids = []
+    for athlete in team_athletes:
+        team_athletes_ids.append(athlete.id)
+    events = Event.objects.filter(competition=team.competition)
+
+    total_points = 0
+    for event in events:
+        ranked_results = calc_event_result(event)
+        for result in ranked_results:
+            if result['athlete_id'] in team_athletes_ids:
+                total_points += result['points']
+
+    return Response(total_points)
 
 # given event, returns all athletes in event
 @api_view(['GET'])
