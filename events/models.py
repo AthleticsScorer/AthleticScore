@@ -30,6 +30,14 @@ class Athlete(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        existing_athlete = Athlete.objects.filter(name=self.name, team=self.team).first()
+        if existing_athlete:
+            return existing_athlete.id
+        else:
+            super(Athlete, self).save(*args, **kwargs)
+            return self.id
+
 
 class Event(models.Model):
     EVENT_TYPES = [

@@ -22,6 +22,15 @@ class BaseListCreateAPIView(generics.ListCreateAPIView):
         response.data['id'] = self.instance_id
         return response
 
+@api_view(['POST'])
+def bulk_create_events(request, competition_id):
+    for age_group in request.data['age_groups']: # If this doesn't work with Axios try using POST instead of data
+        for name in request.data['names']:
+            for event_type in request.data['event_types']:
+                print(age_group, name, event_type)
+                Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=competition_id)
+    return Response("Bulk create successful")
+
 class BaseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         model = self.serializer_class.Meta.model
@@ -37,6 +46,14 @@ class TeamDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
 # Athlete Views
 class AthleteListCreateAPIView(BaseListCreateAPIView):
     serializer_class = AthleteSerializer
+
+    def create(self, request, *args, **kwargs):
+        existing_athlete = Athlete.objects.filter(name=request.data['name'], team=request.data['team']).first()
+        if existing_athlete:
+            return Response(AthleteSerializer(existing_athlete).data, status=status.HTTP_200_OK)
+        else:
+            return super().create(request, *args, **kwargs)
+        
 
 class AthleteDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = AthleteSerializer
