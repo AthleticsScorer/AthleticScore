@@ -21,11 +21,13 @@ viewsets = {
         'list': TeamListCreateAPIView,
         'detail': TeamDetailAPIView,
         'search': search_teams_by_name,
+        'bulk_create': bulk_create_teams
     },
     'athletes': {
         'list': AthleteListCreateAPIView,
         'detail': AthleteDetailAPIView,
         'search': search_athletes_by_name,
+        'bulk_create': bulk_create_athletes
     },
     'competitions': {
         'list': CompetitionListCreateAPIView,
@@ -36,11 +38,13 @@ viewsets = {
         'list': EventListCreateAPIView,
         'detail': EventDetailAPIView,
         'search': search_events_by_name,
+        'bulk_create': bulk_create_events
     },
     'results': {
         'list': ResultListCreateAPIView,
         'detail': ResultDetailAPIView,
-    },
+        'bulk_create': bulk_create_results
+    }
 }
 
 # Generate URL patterns for each viewset
@@ -55,8 +59,4 @@ urlpatterns += [
     path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='comp_all_athletes'),
     path('events/<int:event_id>/all_athletes/', get_event_athletes, name='event_all_athletes'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
-    path('bulk_create/events/<int:competition_id>/', bulk_create_events, name='bulk-create-events'),
-    path('bulk_create/teams/<int:competition_id>/', bulk_create_teams, name='bulk-create-teams'),
-    path('bulk_create/athletes/<int:team_id>/', bulk_create_athletes, name='bulk-create-athletes'),
-    path('bulk_create/results/<int:event_id>/', bulk_create_results, name='bulk-create-results'),
 ]

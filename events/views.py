@@ -23,21 +23,21 @@ class BaseListCreateAPIView(generics.ListCreateAPIView):
         return response
 
 @api_view(['POST'])
-def bulk_create_events(request, competition_id):
+def bulk_create_events(request, f_id):
     for age_group in request.data['age_groups']: # If this doesn't work with Axios try using POST instead of data
         for name in request.data['names']:
             for event_type in request.data['event_types']:
-                Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=competition_id, complete=False)
+                Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=f_id, complete=False)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
-def bulk_create_teams(request, competition_id):
+def bulk_create_teams(request, f_id):
     team_data_list = request.data["teams"]
     teams = [
         Team(
             name=team_data.get('name'),
             short_code=team_data.get('short_code'),
-            competition_id=competition_id
+            competition_id=f_id
         )
         for team_data in team_data_list
     ]
@@ -45,27 +45,27 @@ def bulk_create_teams(request, competition_id):
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
-def bulk_create_athletes(request, team_id):
+def bulk_create_athletes(request, f_id):
     athletes_data_list = request.data["athletes"]
     results = []
     for athlete_data in athletes_data_list:
         name=athlete_data.get('name')
-        existing = Athlete.objects.filter(name=name, team=team_id).first()
+        existing = Athlete.objects.filter(name=name, team=f_id).first()
         results.append(Result(
-            athlete_id = existing.id if existing else (Athlete.objects.create(name=name,team_id=team_id)).id,
+            athlete_id = existing.id if existing else (Athlete.objects.create(name=name,team_id=f_id)).id,
             event_id=athlete_data.get('event_id'),
         ))
     Result.objects.bulk_create(results)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
-def bulk_create_results(request, event_id):
+def bulk_create_results(request, f_id):
     results_data_list = request.data["results"]
     results = [
         Result(
             value=results_data.get('value'),
             athlete_id=results_data.get('athlete'),
-            event_id=event_id
+            event_id=f_id
         )
         for results_data in results_data_list
     ]
