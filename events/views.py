@@ -27,9 +27,50 @@ def bulk_create_events(request, competition_id):
     for age_group in request.data['age_groups']: # If this doesn't work with Axios try using POST instead of data
         for name in request.data['names']:
             for event_type in request.data['event_types']:
-                print(age_group, name, event_type)
                 Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=competition_id)
-    return Response("Bulk create successful")
+    return Response("Bulk create successful", status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def bulk_create_teams(request, competition_id):
+    team_data_list = request.data["teams"]
+    teams = [
+        Team(
+            name=team_data.get('name'),
+            short_code=team_data.get('short_code'),
+            competition_id=competition_id
+        )
+        for team_data in team_data_list
+    ]
+    Team.objects.bulk_create(teams)
+    return Response("Bulk create successful", status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def bulk_create_athletes(request, team_id):
+    athletes_data_list = request.data["athletes"]
+    athletes = [
+        Athlete(
+            name=athlete_data.get('name'),
+            team_id=team_id
+        )
+        for athlete_data in athletes_data_list
+    ]
+    Athlete.objects.bulk_create(athletes)
+    return Response("Bulk create successful", status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def bulk_create_results(request, event_id):
+    results_data_list = request.data["results"]
+    results = [
+        Result(
+            value=results_data.get('value'),
+            athlete_id=results_data.get('athlete'),
+            event_id=event_id
+        )
+        for results_data in results_data_list
+    ]
+    Result.objects.bulk_create(results)
+    return Response("Bulk create successful", status=status.HTTP_201_CREATED)
+
 
 class BaseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
