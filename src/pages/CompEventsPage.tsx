@@ -52,6 +52,19 @@ const CompEventsPage = () => {
     const [eventStrings, setEventStrings] = useState<string[]>([])
     const [eventAge, setEventAge] = useState<string>("")
     const [eventAges, setEventAges] = useState<string[]>([])
+    const {competitionId} = useParams();
+
+    const submitAllEvents = async () => {
+        try {
+            const response = await axios.post(backend + `/bulk_create_events/${competitionId}/`, {
+                event_types: eventBoxes.filter(eb => eb.isChecked === true).map(eb => eb.value),
+                age_groups: eventAges,
+                names: eventStrings
+            })
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
 
     function changeChecked(event: EventBox, currentTarget: HTMLInputElement): EventBox{
         if (event.value === currentTarget.value) {
@@ -150,7 +163,14 @@ const CompEventsPage = () => {
                     </HStack>
                 </VStack>
             </HStack>
-            
+            <Button
+                colorScheme="blue"
+                size="lg"
+                type="button"
+                onClick={submitAllEvents}
+                >
+                Confirm
+            </Button>
         </VStack>
 
     );
