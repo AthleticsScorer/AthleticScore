@@ -2,7 +2,7 @@ import { Select, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useState, useEffect, SetStateAction } from "react";
 import { Team } from "./CreatePage";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import InputTeamAthletes from "../components/InputTeamAthletes";
 
 const TeamPage = () => {

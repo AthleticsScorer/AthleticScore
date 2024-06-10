@@ -1,7 +1,7 @@
 import { Button, Heading, VStack, HStack, Input, Center, IconButton } from "@chakra-ui/react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import CheckBox from "../components/CheckBox";
 
@@ -11,27 +11,7 @@ interface EventBox {
     isChecked: boolean;
 }
 
-interface EventsBoxes {
-    eventBoxes: EventBox[];
-}
-
-interface EventString {
-    eventString: string
-}
-
-interface EventStrings {
-    eventStrings: string[];
-}
-
-interface EventAge {
-    eventAge: string
-}
-
-interface EventAges {
-    eventAges: string[];
-}
-
-const CompEventsPage = () => {
+const ConfEventsPage = () => {
     const [eventBoxes, setEventBoxes] = useState<EventBox[]> (
         [
             {id: 0, value: "Hurdles", isChecked: false},
@@ -163,17 +143,19 @@ const CompEventsPage = () => {
                     </HStack>
                 </VStack>
             </HStack>
-            <Button
-                colorScheme="blue"
-                size="lg"
-                type="button"
-                onClick={submitAllEvents}
-                >
-                Confirm
-            </Button>
+            <Link to={"/create/" + competitionId + "/teams"}>
+                <Button
+                    colorScheme="blue"
+                    size="lg"
+                    type="button"
+                    onClick={submitAllEvents}
+                    >
+                    Confirm
+                </Button>
+            </Link>
         </VStack>
 
     );
 };
 
-export default CompEventsPage;
+export default ConfEventsPage;
