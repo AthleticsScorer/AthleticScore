@@ -54,5 +54,5 @@ urlpatterns += [
     path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='comp_all_athletes'),
     path('events/<int:event_id>/all_athletes/', get_event_athletes, name='event_all_athletes'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
-    path('bulk_create_events/', bulk_create_events, name='bulk-create-events'),
+    path('bulk_create_events/<int:competition_id>/', bulk_create_events, name='bulk-create-events'),
 ]

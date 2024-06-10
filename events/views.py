@@ -23,11 +23,12 @@ class BaseListCreateAPIView(generics.ListCreateAPIView):
         return response
 
 @api_view(['POST'])
-def bulk_create_events(request, competition_id, event_types, names, age_groups):
-    for age_group in age_groups:
-        for name in names:
-            for event_type in event_types:
-                Event.objects.create(name, age_group, event_type, competition_id)
+def bulk_create_events(request, competition_id):
+    for age_group in request.data['age_groups']: # If this doesn't work with Axios try using POST instead of data
+        for name in request.data['names']:
+            for event_type in request.data['event_types']:
+                print(age_group, name, event_type)
+                Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=competition_id)
     return Response("Bulk create successful")
 
 class BaseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
