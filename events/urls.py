@@ -11,7 +11,7 @@ from .views import (
     get_competition_athletes, get_event_athletes,
     search_athletes_by_name, search_teams_by_name,
     search_competitions_by_name, search_events_by_name,
-    wipe_events_data
+    wipe_events_data, bulk_create_events
 )
 
 # Define viewsets
@@ -54,4 +54,5 @@ urlpatterns += [
     path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='comp_all_athletes'),
     path('events/<int:event_id>/all_athletes/', get_event_athletes, name='event_all_athletes'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
+    path('bulk_create_events/', bulk_create_events, name='bulk-create-events'),
 ]

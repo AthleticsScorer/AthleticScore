@@ -22,6 +22,14 @@ class BaseListCreateAPIView(generics.ListCreateAPIView):
         response.data['id'] = self.instance_id
         return response
 
+@api_view(['POST'])
+def bulk_create_events(request, competition_id, event_types, names, age_groups):
+    for age_group in age_groups:
+        for name in names:
+            for event_type in event_types:
+                Event.objects.create(name, age_group, event_type, competition_id)
+    return Response("Bulk create successful")
+
 class BaseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         model = self.serializer_class.Meta.model
