@@ -47,6 +47,14 @@ class TeamDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
 class AthleteListCreateAPIView(BaseListCreateAPIView):
     serializer_class = AthleteSerializer
 
+    def create(self, request, *args, **kwargs):
+        existing_athlete = Athlete.objects.filter(name=request.data['name'], team=request.data['team']).first()
+        if existing_athlete:
+            return Response(AthleteSerializer(existing_athlete).data, status=status.HTTP_200_OK)
+        else:
+            return super().create(request, *args, **kwargs)
+        
+
 class AthleteDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = AthleteSerializer
 
