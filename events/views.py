@@ -27,7 +27,7 @@ def bulk_create_events(request, competition_id):
     for age_group in request.data['age_groups']: # If this doesn't work with Axios try using POST instead of data
         for name in request.data['names']:
             for event_type in request.data['event_types']:
-                Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=competition_id)
+                Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=competition_id, complete=False)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
@@ -47,14 +47,15 @@ def bulk_create_teams(request, competition_id):
 @api_view(['POST'])
 def bulk_create_athletes(request, team_id):
     athletes_data_list = request.data["athletes"]
-    athletes = [
-        Athlete(
-            name=athlete_data.get('name'),
-            team_id=team_id
-        )
-        for athlete_data in athletes_data_list
-    ]
-    Athlete.objects.bulk_create(athletes)
+    results = []
+    for athlete_data in athletes_data_list:
+        name=athlete_data.get('name')
+        existing = Athlete.objects.filter(name=name, team=team_id).first()
+        results.append(Result(
+            athlete_id = existing.id if existing else (Athlete.objects.create(name=name,team_id=team_id)).id,
+            event_id=athlete_data.get('event_id'),
+        ))
+    Result.objects.bulk_create(results)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
