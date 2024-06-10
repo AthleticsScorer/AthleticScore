@@ -18,6 +18,7 @@ class Competition(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
+    short_code = models.CharField(max_length=3)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='teams')
 
     def __str__(self):
