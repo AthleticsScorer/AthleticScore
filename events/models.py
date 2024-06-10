@@ -41,13 +41,24 @@ class Athlete(models.Model):
 
 class Event(models.Model):
     EVENT_TYPES = [
-        ("Distance", "distance"),
-        ("Time", "time"),
+        ("Hurdles", "hurdles"),
+        ("100 m", "100m"),
+        ("200 m", "200m"),
+        ("400 m", "400m"),
+        ("800 m", "800m"),
+        ("1500 m", "1500m"),
+        ("Shot Put", "shot put"),
+        ("Discus", "discus"),
+        ("Javelin", "javelin"),
+        ("High Jump", "high jump"),
+        ("Long Jump", "long jump"),
+        ("Triple Jump", "triple jump"),
     ]
 
     event_name = models.CharField(max_length=100)
     age_group = models.CharField(max_length=100)
     event_type = models.CharField(max_length=30, choices=EVENT_TYPES)
+    complete = models.BooleanField()
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='events')
 
     def __str__(self):
