@@ -132,7 +132,7 @@ def calc_event_result(event):
         results = results.order_by('-value')  # Descending for distance
     else:
         raise ValidationError("Invalid Event Type:" + event.event_type)
-    
+
     ranked_results = []
     for rank, result in enumerate(results, start=1):
         points = 0
@@ -188,6 +188,13 @@ def get_event_athletes(request, event_id):
     for result in results:
         all_athletes.append(result.athlete)
     serializer = AthleteSerializer(all_athletes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_event_results(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    results = Result.objects.filter(event=event)
+    serializer = ResultSerializer(results, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])

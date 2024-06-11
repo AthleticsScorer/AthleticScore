@@ -9,7 +9,7 @@ from .views import (
     ResultListCreateAPIView, ResultDetailAPIView,
     get_athletes_ranked_by_result, get_teams_points,
     get_competition_athletes, get_competition_teams,
-    get_event_athletes, get_event_teams,
+    get_event_athletes, get_event_teams, get_event_results,
     search_athletes_by_name, search_teams_by_name,
     search_competitions_by_name, search_events_by_name,
     wipe_events_data, 
@@ -62,5 +62,6 @@ urlpatterns += [
     path('competitions/<int:competition_id>/all_teams/', get_competition_teams, name='comp-all-teams'),
     path('events/<int:event_id>/all_athletes/', get_event_athletes, name='event-all-athletes'),
     path('events/<int:event_id>/all_teams/', get_event_teams, name='event-all-teams'),
+    path('events/<int:event_id>/all_results/', get_event_results, name='event-all-results'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
 ]
