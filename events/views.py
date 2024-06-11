@@ -34,7 +34,6 @@ def bulk_create_events(request, f_id):
 def bulk_create_teams(request, f_id):
     team_data_list = request.data["teams"]
     teams = []
-    notmade = []
     for team_data in team_data_list:
         name = team_data.get('name')
         short_code=team_data.get('short_code')
@@ -44,10 +43,8 @@ def bulk_create_teams(request, f_id):
                 short_code=short_code,
                 competition_id=f_id
             ))
-        else:
-            notmade.append(name + ":" + short_code)
     Team.objects.bulk_create(teams)
-    return Response("Bulk create successful except" + notmade, status=status.HTTP_201_CREATED)
+    return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 def bulk_create_athletes(request, f_id):
