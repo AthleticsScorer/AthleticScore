@@ -40,6 +40,7 @@ const InputEvent = ({
         age_group: ageGroup,
         event_type: eventType,
         competition: competitionId,
+        complete: false,
       })
       .then((response) => setEventId(response.data.id))
       .catch((error) => {
@@ -51,6 +52,7 @@ const InputEvent = ({
       competition: competitionId,
       age_group: ageGroup,
       event_type: eventType,
+      complete: false,
     };
     onAdd(newEvent);
     setButtonClicked(button);
@@ -83,8 +85,8 @@ const InputEvent = ({
             value={eventType}
             onChange={handleSelectChange}
           >
-            <option value="Time">Time</option>
-            <option value="Distance">Distance</option>
+            <option value="100 m">100m</option>
+            <option value="Shot Put">Shot Put</option>
           </Select>
           <IconButton
             variant="outline"
