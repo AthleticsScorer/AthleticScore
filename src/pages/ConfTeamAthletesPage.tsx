@@ -12,15 +12,13 @@ import {
   TabPanel,
   Box,
 } from "@chakra-ui/react";
-import { Params, useParams } from "react-router-dom";
+import { Params, useNavigate, useParams } from "react-router-dom";
 import { Event } from "../pages/CreatePage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface Athlete {
-  id: number;
   name: String;
-  team_id: number;
   event_id: number;
 }
 
@@ -33,6 +31,7 @@ const ConfTeamAthletesPage = () => {
   const [ageGroups, setAgeGroups] = useState<String[]>([]);
   const [eventStrings, setEventStrings] = useState<String[]>([]);
   const { competitionId, teamId } = useParams<Params>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (competitionId) {
@@ -69,20 +68,29 @@ const ConfTeamAthletesPage = () => {
     fetchTeamName();
   }, [teamId]);
 
-  const handleSubmitAthletes = () => {
+  const handleSubmitAthletes = async () => {
     const allAthletes: Athlete[] = [];
     Object.keys(athleteNames).forEach((eventId) => {
       const name = athleteNames[Number(eventId)].trim();
       if (name) {
         allAthletes.push({
-          id: allAthletes.length + 1,
           name,
           event_id: Number(eventId),
-          team_id: Number(teamId),
         });
       }
     });
     console.log(allAthletes);
+
+    try {
+      // console.log(teams);
+      await axios.post(backend + `/bulk_create/athletes/${teamId}/`, {
+        athletes: allAthletes,
+      });
+
+      navigate(`../../create/${competitionId}/teams`);
+    } catch (error) {
+      console.error("Error posting athletes:", error);
+    }
   };
 
   const handleInputChange = (

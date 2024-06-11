@@ -13,6 +13,7 @@ export interface Event {
 export interface Team {
   id: number;
   name: String;
+  short_code: String;
   competition: number;
 }
 

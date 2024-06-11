@@ -14,14 +14,16 @@ import InputResult from "../components/InputResult";
 import { Result } from "../components/InputResult";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Athlete } from "../components/InputAthlete";
 import axios from "axios";
+import { Team } from "./CreatePage";
+import { Athlete } from "../components/InputAthlete";
 
 const ResultsPage = () => {
   const [results, setResults] = useState<Result[]>([]);
   const [atheletesColl, setAthletes] = useState<Athlete[]>([]);
   const [competitionName, setCompetitionName] = useState("");
   const [eventName, setEventName] = useState("");
+  const [teams, setTeams] = useState<Team[]>([]);
   const { competitionId, eventId } = useParams();
 
   const handleAddResult = (newResult: Result) => {
@@ -30,15 +32,20 @@ const ResultsPage = () => {
 
   useEffect(() => {
     axios
-      .get(backend + "/athletes/")
+      .get(backend + "/events/" + eventId + "/all_teams")
       .then((response) => {
-        const filteredAthletes = response.data.filter(
-          (e: Athlete) => e.competition === Number(competitionId)
-        );
+        setTeams(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(backend + "/events/" + eventId + "/all_athletes")
+      .then((response) => {
         setAthletes(response.data);
-        // console.log(response.data)
-        // console.log(competitionId)
-        // console.log(filteredAthletes)
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -88,9 +95,14 @@ const ResultsPage = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {atheletesColl.map((athlete) => (
+              {atheletesColl.map((athlete: Athlete) => (
                 <Tr key={athlete.id} paddingY="5px">
-                  <Td>{athlete.team}</Td>
+                  <Td>
+                    {
+                      teams.find((t) => t.id === Number(athlete.team))
+                        ?.short_code
+                    }
+                  </Td>
                   <Td>{athlete.name}</Td>
                   <Td>
                     <InputResult
