@@ -187,6 +187,16 @@ def get_event_athletes(request, event_id):
     serializer = AthleteSerializer(all_athletes, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_event_teams(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    teams = [
+        Team.objects.get(id=Athlete.objects.get(id=result.athlete).team)
+        for result in Result.objects.filter(event=event)
+    ]
+    serializer = TeamSerializer(teams, many=True)
+    return Response(serializer.data)
+
 # given competition, return all athletes in competition
 @api_view(['GET'])
 def get_competition_athletes(request, competition_id):

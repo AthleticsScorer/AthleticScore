@@ -8,11 +8,12 @@ from .views import (
     EventListCreateAPIView, EventDetailAPIView,
     ResultListCreateAPIView, ResultDetailAPIView,
     get_athletes_ranked_by_result, get_teams_points,
-    get_competition_athletes, get_event_athletes,
+    get_competition_athletes, get_event_athletes, get_event_teams,
     search_athletes_by_name, search_teams_by_name,
     search_competitions_by_name, search_events_by_name,
     wipe_events_data, 
-    bulk_create_events, bulk_create_teams, bulk_create_athletes, bulk_create_results
+    bulk_create_events, bulk_create_teams,
+    bulk_create_athletes, bulk_create_results
 )
 
 # Define viewsets
@@ -58,5 +59,6 @@ urlpatterns += [
     path('teams/<int:team_id>/total_points/', get_teams_points, name='total_points'),
     path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='comp_all_athletes'),
     path('events/<int:event_id>/all_athletes/', get_event_athletes, name='event_all_athletes'),
+    path('events/<int:event_id>/all_teams/', get_event_teams, name='event_all_teams'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
 ]
