@@ -23,10 +23,6 @@ const ViewTeamsPage = () => {
             (e: Team) => e.competition === Number(competitionId!.competitionId)
           );
           setTeams(filteredTeams);
-          console.log(response.data);
-          console.log(teams);
-          console.log(filteredTeams);
-          console.log('"');
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
