@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.core.management import call_command
 from rest_framework import status
+from django.forms import ValidationError
 
 class BaseListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
@@ -129,7 +130,7 @@ def calc_event_result(event):
     elif event.event_type in dist_events: # Distance based event order
         results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
     else:
-        return Response({"error": "Invalid event measurement type"}, status=400)
+        raise ValidationError("Invalid Event Type")
 
     ranked_results = []
     for rank, result in enumerate(results, start=1):
