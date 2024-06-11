@@ -60,16 +60,10 @@ def bulk_create_athletes(request, f_id):
 
 @api_view(['POST'])
 def bulk_create_results(request, f_id):
-    results_data_list = request.data["results"]
-    results = [
-        Result(
-            value=results_data.get('value'),
-            athlete_id=results_data.get('athlete'),
-            event_id=f_id
-        )
-        for results_data in results_data_list
-    ]
-    Result.objects.bulk_create(results)
+    results = Result.objects.filter(event=f_id)
+    for result in results:
+        result.value = request.data[result.athlete]
+    Result.objects.bulk_update(results)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 
