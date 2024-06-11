@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
-import CreatePage from "./pages/CreatePage";
 import HomePage from "./pages/HomePage";
 import Layout from "./pages/Layout";
 import CompetitionPage from "./pages/CompetitionPage";
@@ -26,11 +25,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/" },
-      { path: "/info", element: <InformationPage />},
+      { path: "/info", element: <InformationPage /> },
       { path: "/create/:competitionId", element: <ConfEventsPage /> },
-      { path: "/create/:competitionId/teams", element: <ConfTeamsPage />},
-      { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage />},
-      { path: "/create/:competitionId/teams/:teamId", element: <ConfTeamAthletesPage/>},
+      { path: "/create/:competitionId/teams", element: <ConfTeamsPage /> },
+      { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage /> },
+      {
+        path: "/create/:competitionId/teams/:teamId",
+        element: <ConfTeamAthletesPage />,
+      },
       { path: "/manage", element: <ManagePage /> },
       { path: "/competition", element: <ViewCompetitionPage /> },
       { path: "/manage/:competitionId/teams", element: <ManageTeamPage /> },

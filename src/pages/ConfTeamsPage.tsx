@@ -7,11 +7,10 @@ import {
   Center,
   IconButton,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { Params, useNavigate, useParams } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useRef, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 interface Team {
   id: number;
@@ -23,15 +22,18 @@ const ConfTeamsPage = () => {
   const [teamName, setTeamName] = useState<String>("");
   const [teamCode, setTeamCode] = useState<String>("");
   const [teams, setTeams] = useState<Team[]>([]);
-  const { competitionId } = useParams();
+  const { competitionId } = useParams<Params>();
   const teamId = useRef(0);
+  const navigate = useNavigate();
 
   const submitAllTeams = async () => {
     try {
-      console.log(teams);
+      // console.log(teams);
       await axios.post(backend + `/bulk_create/teams/${competitionId}/`, {
         teams: teams,
       });
+
+      navigate(`/create/${competitionId}/viewteams`);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -77,16 +79,14 @@ const ConfTeamsPage = () => {
           onClick={handleAddTeamClick}
         />
       </HStack>
-      <Link to={"/create/" + competitionId + "/viewteams"}>
-        <Button
-          colorScheme="blue"
-          size="lg"
-          type="button"
-          onClick={submitAllTeams}
-        >
-          Confirm
-        </Button>
-      </Link>
+      <Button
+        colorScheme="blue"
+        size="lg"
+        type="button"
+        onClick={submitAllTeams}
+      >
+        Confirm
+      </Button>
     </VStack>
   );
 };

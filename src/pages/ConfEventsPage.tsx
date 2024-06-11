@@ -19,7 +19,7 @@ interface EventBox {
   isChecked: boolean;
 }
 
-interface ListElem {
+export interface ListElem {
   id: number;
   value: String;
 }
