@@ -13,7 +13,7 @@ interface Props {
 const InputTeamAthletes = ({ teamId }: Props) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [athleteNames, setAthleteNames] = useState<{
-    [eventId: number]: string;
+    [eventId: number]: String;
   }>({});
   const { competitionId } = useParams<Params>();
 
@@ -72,7 +72,7 @@ const InputTeamAthletes = ({ teamId }: Props) => {
               <Input
                 placeholder="Add Athlete"
                 size="md"
-                value={athleteNames[event.id] || ""}
+                value={String(athleteNames[event.id] || "")}
                 onChange={(e) => handleInputChange(e, event.id)}
               />
             </Box>

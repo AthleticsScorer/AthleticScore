@@ -23,9 +23,9 @@ const InputAthlete = ({ onAdd, competitionId, teams }: Props) => {
   const currentIdRef = useRef(0);
 
   const handleSelectChange = (event: {
-    target: { value: SetStateAction<string> };
+    target: { value: SetStateAction<String> };
   }) => {
-    setTeam(event.target.value);
+    setTeam(String(event.target.value));
   };
 
   const handleAddClick = async () => {

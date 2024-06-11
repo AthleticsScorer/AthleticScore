@@ -4,7 +4,7 @@ interface CheckboxProps {
   id?: number;
   handleCheckChildElement?(event: React.FormEvent<HTMLInputElement>): void;
   isChecked?: boolean;
-  value?: string;
+  value?: String;
 }
 
 const Checkbox = (props: CheckboxProps) => {
@@ -15,7 +15,7 @@ const Checkbox = (props: CheckboxProps) => {
         onChange={props.handleCheckChildElement}
         type="checkbox"
         checked={props.isChecked}
-        value={props.value}
+        value={String(props.value)}
       />
       {props.value}
     </li>

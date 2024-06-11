@@ -11,9 +11,9 @@ const TeamPage = () => {
   const competitionId = useParams();
 
   const handleSelectChange = (event: {
-    target: { value: SetStateAction<string> };
+    target: { value: SetStateAction<String> };
   }) => {
-    setTeam(event.target.value);
+    setTeam(String(event.target.value));
   };
 
   useEffect(() => {

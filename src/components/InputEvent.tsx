@@ -28,9 +28,9 @@ const InputEvent = ({
   const currentIdRef = useRef(0);
 
   const handleSelectChange = (event: {
-    target: { value: SetStateAction<string> };
+    target: { value: SetStateAction<String> };
   }) => {
-    setEventType(event.target.value);
+    setEventType(String(event.target.value));
   };
 
   const handleAddClick = async () => {

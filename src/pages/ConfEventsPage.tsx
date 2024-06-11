@@ -15,7 +15,7 @@ import CheckBox from "../components/CheckBox";
 
 interface EventBox {
   id: number;
-  value: string;
+  value: String;
   isChecked: boolean;
 }
 

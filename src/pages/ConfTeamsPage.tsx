@@ -15,13 +15,13 @@ import { Link } from "react-router-dom";
 
 interface Team {
   id: number;
-  name: string;
-  short_code: string;
+  name: String;
+  short_code: String;
 }
 
 const ConfTeamsPage = () => {
-  const [teamName, setTeamName] = useState<string>("");
-  const [teamCode, setTeamCode] = useState<string>("");
+  const [teamName, setTeamName] = useState<String>("");
+  const [teamCode, setTeamCode] = useState<String>("");
   const [teams, setTeams] = useState<Team[]>([]);
   const { competitionId } = useParams();
   const teamId = useRef(0);
@@ -59,13 +59,13 @@ const ConfTeamsPage = () => {
         <Input
           placeholder="Enter Team Name..."
           size="md"
-          value={teamName}
+          value={String(teamName)}
           onChange={(e) => setTeamName(e.target.value)}
         />
         <Input
           placeholder="Enter Team Code..."
           size="md"
-          value={teamCode}
+          value={String(teamCode)}
           onChange={(e) => setTeamCode(e.target.value)}
         />
         <IconButton

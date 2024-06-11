@@ -5,8 +5,8 @@ import { useParams, Link } from "react-router-dom";
 
 interface Team {
     id: number,
-    name: string,
-    short_code: string
+    name: String,
+    short_code: String
     competition: number
 }
 
@@ -22,6 +22,7 @@ const ViewTeamsPage = () => {
           (e: Team) => e.competition === Number(competitionId!.competitionId)
         );
         setTeams(filteredTeams);
+        console.log(teams);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -32,7 +33,7 @@ const ViewTeamsPage = () => {
         <VStack spacing="10px">
             <Heading>{"Manage Teams"}</Heading>
             {teams.map((team) => (
-                <Link to={"/create/" + competitionId + "/teams/" + team.id}>
+                <Link to={"/create/" + competitionId.competitionId + "/teams/" + team.id}>
                 <Button
                     colorScheme="blue"
                     size="lg"
