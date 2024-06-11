@@ -183,7 +183,6 @@ def get_event_athletes(request, event_id):
     all_athletes = []
     for result in results:
         all_athletes.append(result.athlete)
-
     serializer = AthleteSerializer(all_athletes, many=True)
     return Response(serializer.data)
 
@@ -197,6 +196,13 @@ def get_event_teams(request, event_id):
     serializer = TeamSerializer(teams, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_competition_teams(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    teams = Team.objects.filter(competition=competition)
+    serializer = TeamSerializer(teams, many=True)
+    return Response(serializer.data)
+
 # given competition, return all athletes in competition
 @api_view(['GET'])
 def get_competition_athletes(request, competition_id):
@@ -205,7 +211,6 @@ def get_competition_athletes(request, competition_id):
     all_athletes = Athlete.objects
     for team in teams:
         all_athletes.filter(team=team)
-
     serializer = AthleteSerializer(all_athletes, many=True)
     return Response(serializer.data)
 
