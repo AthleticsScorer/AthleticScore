@@ -70,7 +70,7 @@ def bulk_create_results(request, f_id):
         results_data[get_object_or_404(Athlete, pk=result['athlete_id'])]=result['value']
     for result in results:
         result.value = results_data[result.athlete]
-    Result.objects.bulk_update(results)
+    Result.objects.bulk_update(results, "value")
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 
