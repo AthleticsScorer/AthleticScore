@@ -14,18 +14,18 @@ interface EventBox {
 const ConfEventsPage = () => {
     const [eventBoxes, setEventBoxes] = useState<EventBox[]> (
         [
-            {id: 0, value: "Hurdles", isChecked: false},
-            {id: 1, value: "100m", isChecked: false},
-            {id: 2, value: "200m", isChecked: false},
-            {id: 3, value: "400m", isChecked: false},
-            {id: 4, value: "800m", isChecked: false},
-            {id: 5, value: "1500m", isChecked: false},
-            {id: 6, value: "Shot Put", isChecked: false},
-            {id: 7, value: "Discus", isChecked: false},
-            {id: 8, value: "Javelin", isChecked: false},
-            {id: 9, value: "High Jump", isChecked: false},
-            {id: 10, value: "Long Jump", isChecked: false},
-            {id: 11, value: "Triple Jump", isChecked: false}
+            {id: 0, value: "Hurdles", isChecked: true},
+            {id: 1, value: "100m", isChecked: true},
+            {id: 2, value: "200m", isChecked: true},
+            {id: 3, value: "400m", isChecked: true},
+            {id: 4, value: "800m", isChecked: true},
+            {id: 5, value: "1500m", isChecked: true},
+            {id: 6, value: "Shot Put", isChecked: true},
+            {id: 7, value: "Discus", isChecked: true},
+            {id: 8, value: "Javelin", isChecked: true},
+            {id: 9, value: "High Jump", isChecked: true},
+            {id: 10, value: "Long Jump", isChecked: true},
+            {id: 11, value: "Triple Jump", isChecked: true}
         ]
     );
     const [eventString, setEventString] = useState<string>("")
@@ -36,7 +36,7 @@ const ConfEventsPage = () => {
 
     const submitAllEvents = async () => {
         try {
-            const response = await axios.post(backend + `/bulk_create_events/${competitionId}/`, {
+            const response = await axios.post(backend + `/bulk_create/events/${competitionId}/`, {
                 event_types: eventBoxes.filter(eb => eb.isChecked === true).map(eb => eb.value),
                 age_groups: eventAges,
                 names: eventStrings

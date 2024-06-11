@@ -3,21 +3,24 @@ import { useParams } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface Team {
     name: string,
-    code: string
+    short_code: string
 }
 
 const ConfTeamsPage = () => {
-    const [team, setTeam] = useState<Team>({name: "", code: ""});
-    const [teams, setTeams] = useState<Team[]>([]);
+    const [teamName, setTeamName] = useState<string>("");
+    const [teamCode, setTeamCode] = useState<string>("");
+    const [teams, setTeams] = useState<Team[]>([])
     const {competitionId} = useParams();
 
     const submitAllTeams = async () => {
         try {
-            const response = await axios.post(backend + `/bulk_create_teams/${competitionId}/`, {
-                name: teams
+            console.log(teams);
+            const response = await axios.post(backend + `/bulk_create/teams/${competitionId}/`, {
+                teams: teams
             })
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -25,27 +28,27 @@ const ConfTeamsPage = () => {
     };
 
     function handleAddTeamClick(action: any) {
-        if (team) {
-            if (team.name != "" && team.code != "") 
-                setTeams([...teams, team]);
-                setTeam({name: "", code: ""});
-            }
-        }
+        if (teamName != "" && teamCode != "") 
+            setTeams([...teams, {name: teamName, short_code: teamCode}])
+            setTeamName("");
+            setTeamCode("");
+    }
+
 
     return (
         <VStack padding="10px">
             <Heading>{"Configure Teams"}</Heading>
             {teams.map(t => (
                 <Center minW='200px' bg='blue.600' color='white'>
-                {t.name + " " + t.code}
+                {t.name + " " + t.short_code}
                 </Center>
             ))}
             <HStack padding="40px">
                 <Input
                     placeholder="Enter Team Name..."
                     size="md"
-                    value={team.name}
-                    onChange={(e) => setTeam(e.target.value)}
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
                 />
                 <Input
                     placeholder="Enter Team Code..."
@@ -62,14 +65,16 @@ const ConfTeamsPage = () => {
                     onClick={handleAddTeamClick}
                 />
             </HStack>
-            <Button
-                colorScheme="blue"
-                size="lg"
-                type="button"
-                onClick={submitAllTeams}
-                >
-                Confirm
-            </Button>
+            <Link to={"/create/" + competitionId + "/viewteams"}>
+                <Button
+                    colorScheme="blue"
+                    size="lg"
+                    type="button"
+                    onClick={submitAllTeams}
+                    >
+                    Confirm
+                </Button>
+                </Link>
         </VStack>
     )
 }
