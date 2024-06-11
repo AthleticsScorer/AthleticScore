@@ -32,3 +32,9 @@ class ResultSerializer(serializers.ModelSerializer):
         model = Result
         fields = '__all__'
         read_only_fields = ["id"]
+
+class ResultDetailSerializer(serializers.Serializer):
+    value=serializers.DecimalField(decimal_places=3, allow_null=True)
+    athlete_id=serializers.IntegerField()
+    athlete=serializers.CharField()
+    team=serializers.CharField(max_length=3)

@@ -195,13 +195,6 @@ def get_event_athletes(request, event_id):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_event_results(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    results = Result.objects.filter(event=event)
-    serializer = ResultSerializer(results, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
 def get_event_teams(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     teams = list(set([
@@ -212,7 +205,7 @@ def get_event_teams(request, event_id):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_event_results2(request, event_id):
+def get_event_results(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     results = Result.objects.filter(event=event)
     result_details = [
