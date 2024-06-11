@@ -4,6 +4,7 @@ import { useState, useEffect, SetStateAction } from "react";
 import { useParams, Link } from "react-router-dom";
 
 interface Team {
+    id: number,
     name: string,
     short_code: string
     competition: number
@@ -31,7 +32,7 @@ const ViewTeamsPage = () => {
         <VStack spacing="10px">
             <Heading>{"Manage Teams"}</Heading>
             {teams.map((team) => (
-                <Link to={"/create/" + competitionId + "/teams/" + team.short_code}>
+                <Link to={"/create/" + competitionId + "/teams/" + team.id}>
                 <Button
                     colorScheme="blue"
                     size="lg"
