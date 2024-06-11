@@ -191,7 +191,7 @@ def get_event_athletes(request, event_id):
 def get_event_teams(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     teams = [
-        Team.objects.get(id=Athlete.objects.get(id=result.athlete).team)
+        get_object_or_404(Team, pk=get_object_or_404(Athlete, pk=result.athlete).team)
         for result in Result.objects.filter(event=event)
     ]
     serializer = TeamSerializer(teams, many=True)
