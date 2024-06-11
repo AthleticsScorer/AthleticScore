@@ -125,13 +125,14 @@ MAX_SCORE_WITHOUT_EDGE = 11
 def calc_event_result(event):
     time_events = ["Hurdles", "100m", "200m", "400m", "800m", "1500m"]
     dist_events = ["Shot Put", "Discus", "Javelin", "High Jump", "Long Jump", "Triple Jump"]
+    results = Result.objects.filter(event=event,value__isnull=False)
     if event.event_type in time_events: # Time based event order
-        results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
+        results = results.order_by('value')  # Ascending for time
     elif event.event_type in dist_events: # Distance based event order
-        results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
+        results = results.order_by('-value')  # Descending for distance
     else:
         raise ValidationError("Invalid Event Type:" + event.event_type)
-
+    
     ranked_results = []
     for rank, result in enumerate(results, start=1):
         points = 0
