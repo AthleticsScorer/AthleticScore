@@ -38,7 +38,6 @@ const ManageEventPage = () => {
           (e: Event) => e.competition === Number(competitionId.competitionId)
         );
         setEvents(filteredEvents);
-        console.log(filteredEvents);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

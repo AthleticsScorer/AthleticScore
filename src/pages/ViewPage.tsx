@@ -22,7 +22,6 @@ const ViewPage = () => {
       .get(backend + "/results/")
       .then((response) => {
         setResults(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

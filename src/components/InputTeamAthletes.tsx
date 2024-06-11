@@ -53,7 +53,6 @@ const InputTeamAthletes = ({ teamId }: Props) => {
         });
       }
     });
-    console.log(allAthletes);
   };
 
   return (

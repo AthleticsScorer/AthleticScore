@@ -14,7 +14,6 @@ export interface Team {
   id: number;
   name: String;
   short_code: String;
-  competition: number;
 }
 
 const createPage = () => {
