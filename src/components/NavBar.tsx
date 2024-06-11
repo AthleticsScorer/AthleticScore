@@ -1,6 +1,7 @@
 import { HStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaHome, FaRunning, FaSearch } from "react-icons/fa";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const NavBar = () => {
   return (
@@ -11,8 +12,11 @@ const NavBar = () => {
       <Link to="/manage">
         <FaRunning size="50px" />
       </Link>
-      <Link to="/">
+      <Link to="/search">
         <FaSearch size="50px" />
+      </Link>
+      <Link to="/info">
+        <IoMdInformationCircleOutline size="50px" />
       </Link>
     </HStack>
   );
