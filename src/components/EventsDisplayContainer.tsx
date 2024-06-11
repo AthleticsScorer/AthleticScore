@@ -13,7 +13,7 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
       {events.map((event) => (
         <ListItem key={event.id} paddingY="5px">
           <Box
-            background="darkviolet"
+            background={event.competition ? "green" : "darkviolet"}
             borderWidth="1px"
             borderRadius="lg"
             p="3"
