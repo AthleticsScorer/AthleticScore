@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Competition } from "../pages/HomePage";
 import { Link } from "react-router-dom";
-import backend from "../backend";
 
 const CreatedCompetitionsContainer = () => {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
