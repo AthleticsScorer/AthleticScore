@@ -1,7 +1,7 @@
 # core/views.py
 from rest_framework import generics
 from .models import Team, Athlete, Competition, Event, Result
-from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer
+from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer, ResultDetailSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -70,7 +70,7 @@ def bulk_create_results(request, f_id):
         results_data[get_object_or_404(Athlete, pk=result['athlete_id'])]=result['value']
     for result in results:
         result.value = results_data[result.athlete]
-    Result.objects.bulk_update(results, "value")
+    Result.objects.bulk_update(results, ["value"])
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 
@@ -210,6 +210,23 @@ def get_event_teams(request, event_id):
     ]))
     serializer = TeamSerializer(teams, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def get_event_results2(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    results = Result.objects.filter(event=event)
+    result_details = [
+        {
+            'value':result.value,
+            'athlete_id':result.athlete.pk,
+            'athlete':result.athlete.name,
+            'team':result.athlete.team.short_code
+        }
+        for result in results
+    ]
+    serializer = ResultDetailSerializer(result_details, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def get_competition_teams(request, competition_id):
