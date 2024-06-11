@@ -50,7 +50,7 @@ function CreateCompetition() {
             colorScheme="green"
             aria-label="Call Sage"
             fontSize="20px"
-            icon={<FaCirclePlus/>}
+            icon={<FaCirclePlus />}
             onClick={handlePostClick}
           />
         </HStack>

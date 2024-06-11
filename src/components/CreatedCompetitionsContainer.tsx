@@ -1,8 +1,9 @@
-import { List, ListItem, HStack, Button, Select } from "@chakra-ui/react";
+import { List, ListItem, HStack, Button, Select, Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Competition } from "../pages/HomePage";
 import { Link } from "react-router-dom";
+import backend from "../backend";
 
 const CreatedCompetitionsContainer = () => {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
@@ -25,22 +26,29 @@ const CreatedCompetitionsContainer = () => {
     <List>
       {competitions.map((competition) => (
         <ListItem key={competition.id} paddingY="5px">
-          <HStack spacing={4}>
-            <Link to={"/competition/" + competition.id}>
-              <Button
-                whiteSpace="normal"
-                textAlign="left"
-                fontSize="xl"
-                variant="link"
-              >
-                {competition.name}
-              </Button>
-            </Link>
-            <Select placeholder={"..."} size="md">
-              <option>Edit</option>
-              <option>Delete</option>
-            </Select>
-          </HStack>
+          <Box
+            background="darkviolet"
+            borderWidth="1px"
+            borderRadius="lg"
+            p="3"
+          >
+            <HStack spacing={4}>
+              <Link to={"/competition/" + competition.id}>
+                <Button
+                  whiteSpace="normal"
+                  textAlign="left"
+                  fontSize="xl"
+                  variant="link"
+                >
+                  {competition.name}
+                </Button>
+              </Link>
+              <Select placeholder={"..."} size="md">
+                <option>Edit</option>
+                <option>Delete</option>
+              </Select>
+            </HStack>
+          </Box>
         </ListItem>
       ))}
     </List>

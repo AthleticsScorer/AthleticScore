@@ -18,8 +18,7 @@ const ManageTeamPage = () => {
     const fetchCompetitionName = async () => {
       try {
         const response = await axios.get(
-          backend +
-            `/competitions/${competitionId.competitionId}`
+          backend + `/competitions/${competitionId.competitionId}`
         );
         setCompetitionName(response.data.name);
       } catch (error) {

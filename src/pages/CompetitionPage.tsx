@@ -42,9 +42,11 @@ const CompetitionPage = () => {
 
   return (
     <>
+      <Heading size="xl" paddingLeft={10}>
+        {competition?.name}
+      </Heading>
       <Center>
         <VStack>
-          <Heading>{competition?.name}</Heading>
           <EventsDisplayContainer
             competitionId={Number(competitionId)}
             events={events.map((e) => ({
@@ -53,6 +55,7 @@ const CompetitionPage = () => {
               competition: Number(competitionId),
               age_group: e.age_group,
               event_type: e.event_type,
+              complete: e.complete,
             }))}
           />
           <Link to={"/competition/" + competitionId + "/team"}>

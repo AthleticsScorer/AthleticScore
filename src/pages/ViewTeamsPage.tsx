@@ -11,22 +11,22 @@ interface Team {
 }
 
 const ViewTeamsPage = () => {
-    const [teams, setTeams] = useState<Team[]>([]);
-    const competitionId = useParams();
+  const [teams, setTeams] = useState<Team[]>([]);
+  const competitionId = useParams();
 
-    useEffect(() => {
-        axios
-          .get(backend + "/teams/")
-          .then((response) => {
-            const filteredTeams = response.data.filter(
-              (e: Team) => e.competition === Number(competitionId!.competitionId)
-            );
-            setTeams(filteredTeams);
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
-      }, []);
+  useEffect(() => {
+    axios
+      .get(backend + "/teams/")
+      .then((response) => {
+        const filteredTeams = response.data.filter(
+          (e: Team) => e.competition === Number(competitionId!.competitionId)
+        );
+        setTeams(filteredTeams);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
     return (
         <VStack spacing="10px">

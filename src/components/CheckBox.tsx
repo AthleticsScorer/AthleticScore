@@ -12,7 +12,7 @@ const Checkbox = (props: CheckboxProps) => {
     <li>
       <input
         key={props.id}
-        onClick={props.handleCheckChildElement}
+        onChange={props.handleCheckChildElement}
         type="checkbox"
         checked={props.isChecked}
         value={props.value}

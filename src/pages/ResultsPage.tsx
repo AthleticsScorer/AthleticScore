@@ -1,10 +1,13 @@
 import {
   Button,
   Heading,
-  HStack,
-  List,
-  ListItem,
-  Text,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
   VStack,
 } from "@chakra-ui/react";
 import InputResult from "../components/InputResult";
@@ -18,6 +21,7 @@ const ResultsPage = () => {
   const [results, setResults] = useState<Result[]>([]);
   const [atheletesColl, setAthletes] = useState<Athlete[]>([]);
   const [competitionName, setCompetitionName] = useState("");
+  const [eventName, setEventName] = useState("");
   const { competitionId, eventId } = useParams();
 
   const handleAddResult = (newResult: Result) => {
@@ -57,26 +61,50 @@ const ResultsPage = () => {
     fetchCompetitionName();
   }, [competitionId]);
 
+  useEffect(() => {
+    const fetchEventName = async () => {
+      try {
+        const response = await axios.get(backend + `/events/${eventId}`);
+        setEventName(response.data.age_group);
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+        setEventName("Unknown Event");
+      }
+    };
+    fetchEventName();
+  }, [eventId]);
+
   return (
     <>
       <VStack>
-        <Heading>{competitionName}</Heading>
-        <List>
-          {atheletesColl.map((athlete) => (
-            <ListItem key={athlete.id} paddingY="5px">
-              <HStack>
-                <Text size={"lg"}>{athlete.team}</Text>
-                <Text size={"lg"}>{athlete.name}</Text>
-                <InputResult
-                  onAdd={handleAddResult}
-                  athlete={athlete.id}
-                  event={Number(eventId)}
-                />
-              </HStack>
-            </ListItem>
-          ))}
-        </List>
-        <Link to={"/competition/" + competitionId + "/" + eventId + "/view"}>
+        <Heading>{competitionName + " - " + eventName}</Heading>
+        <TableContainer>
+          <Table variant={"simple"}>
+            <Thead>
+              <Tr>
+                <Th>Team</Th>
+                <Th>Name</Th>
+                <Th isNumeric>Result</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {atheletesColl.map((athlete) => (
+                <Tr key={athlete.id} paddingY="5px">
+                  <Td>{athlete.team}</Td>
+                  <Td>{athlete.name}</Td>
+                  <Td>
+                    <InputResult
+                      onAdd={handleAddResult}
+                      athlete={athlete.id}
+                      event={Number(eventId)}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        <Link to={"/competition/" + competitionId}>
           <Button size="lg">Submit</Button>
         </Link>
       </VStack>
