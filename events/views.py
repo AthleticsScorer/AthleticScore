@@ -130,7 +130,7 @@ def calc_event_result(event):
     elif event.event_type in dist_events: # Distance based event order
         results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
     else:
-        raise ValidationError("Invalid Event Type")
+        raise ValidationError("Invalid Event Type:" + event.event_type)
 
     ranked_results = []
     for rank, result in enumerate(results, start=1):
