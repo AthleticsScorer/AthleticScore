@@ -16,6 +16,8 @@ import ConfTeamsPage from "./pages/ConfTeamsPage";
 import ViewTeamsPage from "./pages/ViewTeamsPage";
 import ConfTeamAthletesPage from "./pages/ConfTeamAthletesPage";
 import InformationPage from "./pages/InformationPage";
+import SearchPage from "./pages/SearchPage";
+import CompetitionSearchPage from "./pages/CompetitionSearchPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,8 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/" },
       { path: "/info", element: <InformationPage /> },
+      { path: "/search", element: <SearchPage />},
+      { path: "/competition/:competitionId/search", element: <CompetitionSearchPage />},
       { path: "/create/:competitionId", element: <ConfEventsPage /> },
       { path: "/create/:competitionId/teams", element: <ConfTeamsPage /> },
       { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage /> },
