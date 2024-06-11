@@ -1,12 +1,4 @@
-import {
-  Button,
-  Heading,
-  HStack,
-  List,
-  ListItem,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Heading, List, ListItem, VStack } from "@chakra-ui/react";
 import InputResult from "../components/InputResult";
 import { Result } from "../components/InputResult";
 import { useEffect, useState } from "react";
@@ -64,15 +56,11 @@ const ResultsPage = () => {
         <List>
           {atheletesColl.map((athlete) => (
             <ListItem key={athlete.id} paddingY="5px">
-              <HStack>
-                <Text size={"lg"}>{athlete.team}</Text>
-                <Text size={"lg"}>{athlete.name}</Text>
-                <InputResult
-                  onAdd={handleAddResult}
-                  athlete={athlete.id}
-                  event={Number(eventId)}
-                />
-              </HStack>
+              <InputResult
+                onAdd={handleAddResult}
+                athlete={athlete}
+                event={Number(eventId)}
+              />
             </ListItem>
           ))}
         </List>

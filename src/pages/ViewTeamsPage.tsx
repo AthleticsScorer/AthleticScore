@@ -4,45 +4,41 @@ import { useState, useEffect, SetStateAction } from "react";
 import { useParams, Link } from "react-router-dom";
 
 interface Team {
-    name: string,
-    short_code: string
-    competition: number
+  name: string;
+  short_code: string;
+  competition: number;
 }
 
 const ViewTeamsPage = () => {
-    const [teams, setTeams] = useState<Team[]>([]);
-    const competitionId = useParams();
+  const [teams, setTeams] = useState<Team[]>([]);
+  const competitionId = useParams();
 
-    useEffect(() => {
-        axios
-          .get(backend + "/teams/")
-          .then((response) => {
-            const filteredTeams = response.data.filter(
-              (e: Team) => e.competition === Number(competitionId!.competitionId)
-            );
-            setTeams(filteredTeams);
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
-      }, []);
+  useEffect(() => {
+    axios
+      .get(backend + "/teams/")
+      .then((response) => {
+        const filteredTeams = response.data.filter(
+          (e: Team) => e.competition === Number(competitionId!.competitionId)
+        );
+        setTeams(filteredTeams);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
-    return (
-        <VStack spacing="10px">
-            <Heading>{"Manage Teams"}</Heading>
-            {teams.map((team) => (
-                <Link to={"/create/" + competitionId + "/teams/" + team.short_code}>
-                <Button
-                    colorScheme="blue"
-                    size="lg"
-                    type="button"
-                    >
-                    {team.name}
-                </Button>
-                </Link>
-            ))}
-        </VStack>
-    )
-}
+  return (
+    <VStack spacing="10px">
+      <Heading>{"Manage Teams"}</Heading>
+      {teams.map((team) => (
+        <Link to={"/create/" + competitionId + "/teams/" + team.short_code}>
+          <Button colorScheme="blue" size="lg" type="button">
+            {team.name}
+          </Button>
+        </Link>
+      ))}
+    </VStack>
+  );
+};
 
 export default ViewTeamsPage;

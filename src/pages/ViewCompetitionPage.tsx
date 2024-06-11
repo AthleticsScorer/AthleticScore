@@ -1,11 +1,16 @@
-import { Center } from "@chakra-ui/react";
+import { Center, Heading } from "@chakra-ui/react";
 import CreatedCompetitionsContainer from "../components/CreatedCompetitionsContainer";
 
 const ViewCompetitionPage = () => {
   return (
-    <Center>
-      <CreatedCompetitionsContainer />
-    </Center>
+    <>
+      <Heading size="xl" paddingLeft={10}>
+        Your Competitions
+      </Heading>
+      <Center>
+        <CreatedCompetitionsContainer />
+      </Center>
+    </>
   );
 };
 

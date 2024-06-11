@@ -42,9 +42,11 @@ const CompetitionPage = () => {
 
   return (
     <>
+      <Heading size="xl" paddingLeft={10}>
+        {competition?.name}
+      </Heading>
       <Center>
         <VStack>
-          <Heading>{competition?.name}</Heading>
           <EventsDisplayContainer
             competitionId={Number(competitionId)}
             events={events.map((e) => ({

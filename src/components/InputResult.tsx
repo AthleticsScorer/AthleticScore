@@ -1,11 +1,12 @@
-import { HStack, IconButton, Input } from "@chakra-ui/react";
+import { HStack, IconButton, Input, Text } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import axios from "axios";
+import { Athlete } from "./InputAthlete";
 
 interface Props {
   onAdd: (newResult: Result) => void;
-  athlete: number;
+  athlete: Athlete;
   event: number;
 }
 
@@ -34,7 +35,7 @@ const InputResult = ({ onAdd, athlete, event }: Props) => {
     const newResult: Result = {
       id: currentIdRef.current++,
       value: result,
-      athlete: athlete,
+      athlete: athlete.id,
       event: event,
     };
     onAdd(newResult);
@@ -43,6 +44,8 @@ const InputResult = ({ onAdd, athlete, event }: Props) => {
 
   return (
     <HStack>
+      <Text>{athlete.team}</Text>
+      <Text>{athlete.name}</Text>
       <Input
         placeholder="Add Result"
         size="md"

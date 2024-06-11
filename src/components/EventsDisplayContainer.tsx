@@ -1,4 +1,4 @@
-import { List, ListItem, HStack, Button, Select } from "@chakra-ui/react";
+import { List, ListItem, HStack, Button, Select, Box } from "@chakra-ui/react";
 import { Event } from "../pages/CreatePage";
 import { Link } from "react-router-dom";
 
@@ -12,24 +12,37 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
     <List>
       {events.map((event) => (
         <ListItem key={event.id} paddingY="5px">
-          <HStack>
-            <Link
-              to={"/competition/" + competitionId + "/" + event.id + "/results"}
-            >
-              <Button
-                whiteSpace="normal"
-                textAlign="left"
-                fontSize="lg"
-                variant="link"
+          <Box
+            background="darkviolet"
+            borderWidth="1px"
+            borderRadius="lg"
+            p="3"
+          >
+            <HStack>
+              <Link
+                to={
+                  "/competition/" + competitionId + "/" + event.id + "/results"
+                }
               >
-                {event.event_name}
-              </Button>
-            </Link>
-            <Select placeholder={"..."} size="md">
-              <option>Edit</option>
-              <option>Delete</option>
-            </Select>
-          </HStack>
+                <Button
+                  whiteSpace="normal"
+                  textAlign="left"
+                  fontSize="lg"
+                  variant="link"
+                >
+                  {event.event_name +
+                    " " +
+                    event.age_group +
+                    " " +
+                    event.event_type}
+                </Button>
+              </Link>
+              <Select placeholder={"..."} size="md">
+                <option>Edit</option>
+                <option>Delete</option>
+              </Select>
+            </HStack>
+          </Box>
         </ListItem>
       ))}
     </List>

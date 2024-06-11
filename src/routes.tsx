@@ -13,7 +13,7 @@ import ManageTeamPage from "./pages/ManageTeamPage";
 import ManageEventPage from "./pages/ManageEventPage";
 import ViewCompetitionPage from "./pages/ViewCompetitionPage";
 import ConfEventsPage from "./pages/ConfEventsPage";
-import ConfTeamsPage from "./pages/ConfTeamsPage"
+import ConfTeamsPage from "./pages/ConfTeamsPage";
 import ViewTeamsPage from "./pages/ViewTeamsPage";
 
 const router = createBrowserRouter([
@@ -23,10 +23,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: "/"},
+      { path: "/" },
       { path: "/create/:competitionId", element: <ConfEventsPage /> },
-      { path: "/create/:competitionId/teams", element: <ConfTeamsPage />},
-      { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage />},
+      { path: "/create/:competitionId/teams", element: <ConfTeamsPage /> },
+      { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage /> },
       { path: "/manage", element: <ManagePage /> },
       { path: "/competition", element: <ViewCompetitionPage /> },
       { path: "/manage/:competitionId/teams", element: <ManageTeamPage /> },
