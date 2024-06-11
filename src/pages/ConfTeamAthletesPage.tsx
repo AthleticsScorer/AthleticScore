@@ -79,15 +79,13 @@ const ConfTeamAthletesPage = () => {
         });
       }
     });
-    console.log(allAthletes);
 
     try {
-      // console.log(teams);
       await axios.post(backend + `/bulk_create/athletes/${teamId}/`, {
         athletes: allAthletes,
       });
 
-      navigate(`../../create/${competitionId}/teams`);
+      navigate(`../../create/${competitionId}/viewteams`);
     } catch (error) {
       console.error("Error posting athletes:", error);
     }

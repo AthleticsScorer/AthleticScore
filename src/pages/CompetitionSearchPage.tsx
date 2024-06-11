@@ -50,7 +50,6 @@ const CompetitionSearchPage = () => {
           (e: Event) => e.competition === Number(competitionId.competitionId)
         );
         setEvents(filteredEvents);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -59,15 +58,9 @@ const CompetitionSearchPage = () => {
 
   useEffect(() => {
     axios
-      .get(backend + "/athletes/")
+      .get(backend + "/competitions/" + competitionId + "/all_athletes")
       .then((response) => {
-        const filteredAthletes = response.data.filter(
-          (e: Athlete) => e.competition === Number(competitionId)
-        );
         setAthletes(response.data);
-        // console.log(response.data)
-        // console.log(competitionId)
-        // console.log(filteredAthletes)
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -79,7 +72,6 @@ const CompetitionSearchPage = () => {
       .get(backend + "/results/")
       .then((response) => {
         setResults(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

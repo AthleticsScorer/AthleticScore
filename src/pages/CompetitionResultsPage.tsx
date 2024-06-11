@@ -24,17 +24,14 @@ const CompetitionResultsPage = () => {
 
   useEffect(() => {
     axios
-      .get(backend + "/teams/")
+      .get(backend + "/competitions/" + competitionId + "/all_teams")
       .then((response) => {
-        const filteredTeams = response.data.filter(
-          (e: Team) => e.competition === Number(competitionId.competitionId)
-        );
-        setTeams(filteredTeams);
+        setTeams(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [competitionId]);
 
   useEffect(() => {
     const fetchDisplayTeams = async () => {

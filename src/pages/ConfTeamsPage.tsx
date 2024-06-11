@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 interface Team {
@@ -26,9 +26,19 @@ const ConfTeamsPage = () => {
   const teamId = useRef(0);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    axios
+      .get(backend + "/competitions/" + competitionId + "/all_teams")
+      .then((response) => {
+        setTeams(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [competitionId]);
+
   const submitAllTeams = async () => {
     try {
-      // console.log(teams);
       await axios.post(backend + `/bulk_create/teams/${competitionId}/`, {
         teams: teams,
       });
