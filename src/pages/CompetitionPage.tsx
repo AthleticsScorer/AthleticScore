@@ -53,6 +53,7 @@ const CompetitionPage = () => {
               competition: Number(competitionId),
               age_group: e.age_group,
               event_type: e.event_type,
+              complete: e.complete,
             }))}
           />
           <Link to={"/competition/" + competitionId + "/team"}>

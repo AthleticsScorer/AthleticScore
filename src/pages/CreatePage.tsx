@@ -7,6 +7,7 @@ export interface Event {
   competition: number;
   age_group: String;
   event_type: String;
+  complete: boolean;
 }
 
 export interface Team {

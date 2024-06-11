@@ -67,9 +67,11 @@ FIRST_PLACE_EDGE = 1
 MAX_SCORE_WITHOUT_EDGE = 11
 
 def calc_event_result(event):
-    if event.event_type == 'Time':
+    time_events = ["Hurdles", "100 m", "200 m", "400 m", "800 m", "1500 m"]
+    dist_events = ["Shot Put", "Discus", "Javelin", "High Jump", "Long Jump", "Triple Jump"]
+    if event.event_type in time_events: # Time based event order
         results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
-    elif event.event_type == 'Distance':
+    elif event.event_type in dist_events: # Distance based event order
         results = Result.objects.filter(event=event).order_by('-value')  # Descending for distance
     else:
         return Response({"error": "Invalid event measurement type"}, status=400)
