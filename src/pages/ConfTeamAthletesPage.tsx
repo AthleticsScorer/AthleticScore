@@ -111,26 +111,26 @@ const ConfTeamAthletesPage = () => {
           {ageGroups.map((ag, index) => (
             <TabPanel key={index}>
               <SimpleGrid columns={eventStrings.length} spacing={4}>
-                {eventStrings.map((e, index) => (
+                {eventStrings.map((event, index) => (
                   <Box key={index}>
-                    <Heading>{e}</Heading>
+                    <Heading>{event}</Heading>
                   </Box>
                 ))}
                 {events
-                  .filter((e) => e.age_group === ag)
-                  .map((e, index) => (
-                    <HStack padding="10px" key={e.id}>
+                  .filter((event) => event.age_group === ag)
+                  .map((event, index) => (
+                    <HStack padding="10px" key={event.id}>
                       {index % eventStrings.length == 0 ? (
-                        <Box>{e.event_type}</Box>
+                        <Box>{event.event_type}</Box>
                       ) : (
-                        <></>
+                        <></> 
                       )}
                       <Box>
                         <Input
                           placeholder="Add Athlete"
                           size="md"
-                          value={String(athleteNames[e.id] || "")}
-                          onChange={(f) => handleInputChange(f, e.id)}
+                          value={String(athleteNames[event.id] || "")}
+                          onChange={(e) => handleInputChange(e, event.id)}
                         />
                       </Box>
                     </HStack>

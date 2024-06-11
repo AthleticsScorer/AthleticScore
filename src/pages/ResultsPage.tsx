@@ -9,43 +9,80 @@ import {
   Thead,
   Tr,
   VStack,
+  Input
 } from "@chakra-ui/react";
-import InputResult from "../components/InputResult";
-import { Result } from "../components/InputResult";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, Params, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Team } from "./CreatePage";
 import { Athlete } from "../components/InputAthlete";
 
+interface Result {
+  value: String;
+  athlete_id: number;
+}
+
+interface InResult {
+  value: String;
+  athlete_id: number;
+  athlete: String;
+  team: String;
+}
+
 const ResultsPage = () => {
   const [results, setResults] = useState<Result[]>([]);
-  const [atheletesColl, setAthletes] = useState<Athlete[]>([]);
+  const [resultsVals, setResultsVals] = useState<{
+    [athleteId: number]: String;
+  }>({});
   const [competitionName, setCompetitionName] = useState("");
   const [eventName, setEventName] = useState("");
-  const [teams, setTeams] = useState<Team[]>([]);
-  const { competitionId, eventId } = useParams();
+  const [inResults, setInResults] = useState<InResult[]>([]);
+  const { competitionId, eventId } = useParams<Params>();
+
+  const navigate = useNavigate();
 
   const handleAddResult = (newResult: Result) => {
     setResults([...results, newResult]);
   };
 
-  useEffect(() => {
-    axios
-      .get(backend + "/events/" + eventId + "/all_teams")
-      .then((response) => {
-        setTeams(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
+  const handleSubmitResults = async () => {
+    const allResults: Result[] = [];
+    Object.keys(resultsVals).forEach((athleteId) => {
+      const value = resultsVals[Number(athleteId)].trim();
+      if (value) {
+        allResults.push({
+          value,
+          athlete_id: Number(athleteId)
+        });
+      }
+    });
+    console.log(allResults);
+    try {
+      await axios.post(backend + `/bulk_create/results/${eventId}/`, {
+        results: allResults,
       });
-  }, []);
 
+      navigate(`../../create/${competitionId}/viewteams`);
+    } catch (error) {
+      console.error("Error posting athletes:", error);
+    }
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    eventId: number
+  ) => {
+    setResultsVals({ ...resultsVals, [eventId]: event.target.value });
+  };
+
+
+  
   useEffect(() => {
+    
     axios
-      .get(backend + "/events/" + eventId + "/all_athletes")
+      .get(backend + "/events/" + eventId + "/all_results")
       .then((response) => {
-        setAthletes(response.data);
+        setInResults(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -95,21 +132,19 @@ const ResultsPage = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {atheletesColl.map((athlete: Athlete) => (
-                <Tr key={athlete.id} paddingY="5px">
+              {inResults.map((result: InResult) => (
+                <Tr key={result.athlete_id} paddingY="5px">
                   <Td>
-                    {
-                      teams.find((t) => t.id === Number(athlete.team))
-                        ?.short_code
-                    }
+                    {result.team}
                   </Td>
-                  <Td>{athlete.name}</Td>
+                  <Td>{result.athlete}</Td>
                   <Td>
-                    <InputResult
-                      onAdd={handleAddResult}
-                      athlete={athlete.id}
-                      event={Number(eventId)}
-                    />
+                  <Input
+                    placeholder="Enter Result"
+                    size="md"
+                    value={String(result.value || "")}
+                    onChange={(f) => handleInputChange(f, result.athlete_id)}
+                  />
                   </Td>
                 </Tr>
               ))}
@@ -117,7 +152,7 @@ const ResultsPage = () => {
           </Table>
         </TableContainer>
         <Link to={"/competition/" + competitionId}>
-          <Button size="lg">Submit</Button>
+          <Button onClick={handleSubmitResults} size="lg">Submit results</Button>
         </Link>
       </VStack>
     </>
