@@ -190,10 +190,10 @@ def get_event_athletes(request, event_id):
 @api_view(['GET'])
 def get_event_teams(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    teams = []
-    for result in Result.objects.filter(event=event):
-        athlete = get_object_or_404(Athlete, pk=result.athlete)
-        teams.append(get_object_or_404(Team, pk=athlete.team))
+    teams = [
+        result.athlete.team
+        for result in Result.objects.filter(event=event)
+    ]
     serializer = TeamSerializer(teams, many=True)
     return Response(serializer.data)
 
