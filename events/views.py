@@ -123,8 +123,8 @@ FIRST_PLACE_EDGE = 1
 MAX_SCORE_WITHOUT_EDGE = 11
 
 def calc_event_result(event):
-    time_events = ["Hurdles", "100 m", "200 m", "400 m", "800 m", "1500 m"]
-    dist_events = ["Shot Put", "Discus", "Javelin", "High Jump", "Long Jump", "Triple Jump"]
+    time_events = ["hurdles", "100m", "200m", "400m", "800m", "1500m"]
+    dist_events = ["shot put", "discus", "javelin", "high jump", "long jump", "triple jump"]
     if event.event_type in time_events: # Time based event order
         results = Result.objects.filter(event=event).order_by('value')  # Ascending for time
     elif event.event_type in dist_events: # Distance based event order
