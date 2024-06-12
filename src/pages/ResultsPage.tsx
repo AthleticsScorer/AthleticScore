@@ -35,7 +35,9 @@ const ResultsPage = () => {
     [athleteId: number]: String;
   }>({});
   const [competitionName, setCompetitionName] = useState("");
-  const [eventName, setEventName] = useState("");
+  const [eventAgeGroup, setEventAgeGroup] = useState("");
+  const [eventType, setEventType] = useState("");
+  const [eventString, setEventString] = useState("");
   const [inResults, setInResults] = useState<InResult[]>([]);
   const { competitionId, eventId } = useParams<Params>();
 
@@ -58,7 +60,7 @@ const ResultsPage = () => {
         results: allResults,
       });
 
-      navigate(`../../competition/${competitionId}/`);
+      navigate(`../../competition/${competitionId}/viewteams`);
     } catch (error) {
       console.error("Error posting athletes:", error);
     }
@@ -104,22 +106,24 @@ const ResultsPage = () => {
   }, [inResults]);
 
   useEffect(() => {
-    const fetchEventName = async () => {
+    const fetchEvent = async () => {
       try {
         const response = await axios.get(backend + `/events/${eventId}`);
-        setEventName(response.data.age_group);
+        setEventAgeGroup(response.data.age_group);
+        setEventType(response.data.event_type);
+        setEventString(response.data.event_name);
       } catch (error) {
         console.error("Error fetching event data:", error);
-        setEventName("Unknown Event");
+        setEventAgeGroup("Unknown Event");
       }
     };
-    fetchEventName();
+    fetchEvent();
   }, [eventId]);
 
   return (
     <>
       <VStack>
-        <Heading>{competitionName + " - " + eventName}</Heading>
+        <Heading>{competitionName + " - " + eventAgeGroup + " - " + eventString + " - " + eventType}</Heading>
         <TableContainer>
           <Table variant={"simple"}>
             <Thead>
@@ -149,9 +153,11 @@ const ResultsPage = () => {
             </Tbody>
           </Table>
         </TableContainer>
-        <Link to={"/competition/" + competitionId}>
-          <Button onClick={handleSubmitResults} size="lg">Submit results</Button>
-        </Link>
+        <Button 
+          onClick={handleSubmitResults}
+          size="lg">
+          Submit results
+        </Button>
       </VStack>
     </>
   );
