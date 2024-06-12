@@ -238,7 +238,7 @@ def get_competition_athletes(request, competition_id):
     teams = Team.objects.filter(competition=competition)
     all_athletes = []
     for team in teams:
-        all_athletes.append(Athlete.objects.filter(team=team))
+        all_athletes += (Athlete.objects.filter(team=team))
     serializer = AthleteSerializer(all_athletes, many=True)
     return Response(serializer.data)
 
