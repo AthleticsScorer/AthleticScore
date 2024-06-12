@@ -26,7 +26,7 @@ const CreatedCompetitionsContainer = () => {
       {competitions.map((competition) => (
         <ListItem key={competition.id} paddingY="5px">
           <Box
-            background="darkviolet"
+            background={competition.complete ? "green" : "darkblue"}
             borderWidth="1px"
             borderRadius="lg"
             p="3"
@@ -38,6 +38,7 @@ const CreatedCompetitionsContainer = () => {
                   textAlign="left"
                   fontSize="xl"
                   variant="link"
+                  color="white"
                 >
                   {competition.name}
                 </Button>
