@@ -17,7 +17,6 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
             borderWidth="1px"
             borderRadius="lg"
             p="3"
-            color="white"
           >
             <HStack>
               <Link
@@ -30,6 +29,7 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
                   textAlign="left"
                   fontSize="lg"
                   variant="link"
+                  color="white"
                 >
                   {event.event_name +
                     " " +
