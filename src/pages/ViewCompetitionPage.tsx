@@ -5,7 +5,7 @@ const ViewCompetitionPage = () => {
   return (
     <>
       <Heading size="xl" paddingLeft={10}>
-        Your Competitions
+        Existing Competitions
       </Heading>
       <Center>
         <CreatedCompetitionsContainer />

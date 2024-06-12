@@ -9,7 +9,7 @@ const ManagePage = () => {
         <CreateCompetition />
         <Link to="/competition">
           <Button colorScheme="blue" size="lg" type="submit">
-            <Text>Your Competitions</Text>
+            <Text>Existing Competitions</Text>
           </Button>
         </Link>
       </VStack>
