@@ -71,6 +71,9 @@ def bulk_create_results(request, f_id):
     for result in results:
         result.value = results_data[result.athlete]
     Result.objects.bulk_update(results, ["value"])
+    event = get_object_or_404(Event, pk=f_id)
+    event.complete = True
+    event.save()
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 
@@ -233,9 +236,9 @@ def get_competition_teams(request, competition_id):
 def get_competition_athletes(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     teams = Team.objects.filter(competition=competition)
-    all_athletes = Athlete.objects
+    all_athletes = []
     for team in teams:
-        all_athletes.filter(team=team)
+        all_athletes += (Athlete.objects.filter(team=team))
     serializer = AthleteSerializer(all_athletes, many=True)
     return Response(serializer.data)
 
