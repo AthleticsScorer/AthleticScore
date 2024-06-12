@@ -43,10 +43,10 @@ const CreatedCompetitionsContainer = () => {
                   {competition.name}
                 </Button>
               </Link>
-              <Select placeholder={"..."} size="md">
-                <option>Edit</option>
-                <option>Delete</option>
-              </Select>
+              //<Select placeholder={"..."} size="md">
+              //  <option>Edit</option>
+              //  <option>Delete</option>
+              //</Select>
             </HStack>
           </Box>
         </ListItem>
