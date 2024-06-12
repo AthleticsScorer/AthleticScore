@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Competition } from "./HomePage";
 import {
+  Button,
   Center,
   Heading,
   HStack,
@@ -12,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
 import { Event, Team } from "./CreatePage";
+import { Link } from "react-router-dom";
 
 interface DisplayTeam {
   id: number;
@@ -138,6 +140,9 @@ const CompetitionPage = () => {
                 </ListItem>
               ))}
             </List>
+            <Link to={"/competition/" + competitionId + "/details"}>
+              <Button>More Results</Button>
+            </Link>
           </VStack>
         </HStack>
       </Center>
