@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams, Params, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Team } from "./CreatePage";
-import { Athlete } from "../components/InputAthlete";
+import InputAthlete, { Athlete } from "../components/InputAthlete";
 
 interface Result {
   value: String;
@@ -40,10 +40,6 @@ const ResultsPage = () => {
   const { competitionId, eventId } = useParams<Params>();
 
   const navigate = useNavigate();
-
-  const handleAddResult = (newResult: Result) => {
-    setResults([...results, newResult]);
-  };
 
   const handleSubmitResults = async () => {
     const allResults: Result[] = [];
@@ -70,25 +66,11 @@ const ResultsPage = () => {
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    eventId: number
+    athleteId: number
   ) => {
-    setResultsVals({ ...resultsVals, [eventId]: event.target.value });
+    setResultsVals({ ...resultsVals, [athleteId]: event.target.value });
   };
-
-
   
-  useEffect(() => {
-    
-    axios
-      .get(backend + "/events/" + eventId + "/all_results")
-      .then((response) => {
-        setInResults(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
   useEffect(() => {
     const fetchCompetitionName = async () => {
       try {
@@ -101,9 +83,25 @@ const ResultsPage = () => {
         setCompetitionName("Unknown Competition");
       }
     };
-
     fetchCompetitionName();
   }, [competitionId]);
+
+  useEffect(() => {
+    axios
+      .get(backend + "/events/" + eventId + "/all_results")
+      .then((response) => {
+        setInResults(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    inResults.forEach(inResult => {
+      setResultsVals({...resultsVals, [inResult.athlete_id]: inResult.value});
+    });
+  }, [inResults]);
 
   useEffect(() => {
     const fetchEventName = async () => {
@@ -142,7 +140,7 @@ const ResultsPage = () => {
                   <Input
                     placeholder="Enter Result"
                     size="md"
-                    value={String(result.value || "")}
+                    value={String(resultsVals[result.athlete_id] || "")}
                     onChange={(f) => handleInputChange(f, result.athlete_id)}
                   />
                   </Td>
