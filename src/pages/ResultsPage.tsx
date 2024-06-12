@@ -58,7 +58,7 @@ const ResultsPage = () => {
         results: allResults,
       });
 
-      navigate(`../../create/${competitionId}/viewteams`);
+      navigate(`../../competition/${competitionId}/`);
     } catch (error) {
       console.error("Error posting athletes:", error);
     }
