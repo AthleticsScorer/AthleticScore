@@ -62,8 +62,7 @@ const CompetitionPage = () => {
       });
   }, [competitionId]);
 
-  useEffect(() => {
-    const fetchDisplayTeams = async () => {
+  async function fetchDisplayTeams () {
       const displayTeamsPromises = teams.map(async (team) => {
         try {
           const response = await axios.get(
@@ -89,12 +88,16 @@ const CompetitionPage = () => {
         (a, b) => b.points - a.points
       );
       setDisplayTeams(sortedTeams);
-    };
+  };
 
-    if (teams.length > 0) {
+  useEffect(() => {
+    let timerId = setTimeout(() => {
       fetchDisplayTeams();
+    }, 2000)
+    return () => {
+      clearTimeout(timerId)
     }
-  }, [teams]);
+  }, [displayTeams]);
 
   const competition = data.find((comp) => comp.id === Number(competitionId));
 
