@@ -20,12 +20,14 @@ const HomePage = () => {
             </HStack>
           </Button>
         </Link>
-        <Button colorScheme="blue" size="lg" type="submit">
-          <HStack>
-            <FaSearch />
-            <Text>Search Finished Competitions</Text>
-          </HStack>
-        </Button>
+        <Link to="/search">
+          <Button colorScheme="blue" size="lg" type="submit">
+            <HStack>
+              <FaSearch />
+              <Text>Search Finished Competitions</Text>
+            </HStack>
+          </Button>
+        </Link>
       </VStack>
     </Center>
   );
