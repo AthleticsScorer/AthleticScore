@@ -94,12 +94,33 @@ def bulk_create_athletes(request, f_id):
         event=get_object_or_404(Event, pk=athlete_data['event_id']) # Finds the event matching the given event id
         if athlete_results[name]: # If the athlete already exists
             if athlete_results[name].count() == 1: # If the athlete is in only one event
-                result = athlete_results[name].first()
-                if result.event != event: # If the event has changed update the result | TODO: check if event is filled here as well
+                result = athlete_results[name].first() # Get that event
+                if result.event != event: # If the event has changed update the result
                     result.event = event
                     updated_results.append(event)
+                    if filled_events[events]: # If the event was filled by someone else first
+                        prev_athlete = filled_events[event]
+                        prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
+                        prev_result.delete() # Delete that result entry
+                        if athlete_results[prev_athlete.name].count() == 1: # If that was the athlete's only event
+                            prev_athlete.delete() # Delete that athlete as well
+                # If the event has not changed then you don't need to do anything
             else: # The athlete is in more than one event
-                TODO
+                events = athlete_results[name]
+                athlete = get_object_or_404(Athlete, name=name, team_id=f_id)
+                if not event in events: # The athlete is not already in the event
+                    if filled_events[event]: # Another athlete is already in the event
+                        prev_athlete = filled_events[event]
+                        prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
+                        prev_result.athlete=athlete # update the result to the new result
+                        if athlete_results[prev_athlete.name].count() == 1: # If that was the athlete's only event
+                            prev_athlete.delete() # Delete that athlete as well
+                    else:
+                        new_results.append(Result(
+                            athlete=athlete,
+                            event=event
+                        ))
+                # if the athlete is already in the event you don't need to do anything
         else: # The athlete doesn't currently exist
             if filled_events[event]: # if there is already an athlete assigned to this event
                 athlete = filled_events[event]
@@ -115,6 +136,7 @@ def bulk_create_athletes(request, f_id):
                     athlete = Athlete.objects.create(name=name,team_id=f_id),
                     event = event,
                 ))
+        # TODO: Figure out how to detect which events are now empty
     Result.objects.bulk_create(new_results)
     Result.objects.bulk_update(updated_results,["athlete","event"])
     Athlete.objects.bulk_update(updated_athletes,["name"])
