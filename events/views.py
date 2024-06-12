@@ -48,44 +48,81 @@ def bulk_create_teams(request, f_id):
     Team.objects.bulk_create(teams)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
+'''
+request.data["athletes"] is a list of entries containing athlete names and event ids in the following format:
+{
+    'name': ... ,
+    'event_id': ...
+}
+when the list is recieved the following things need to happen:
+ - for athletes not in any event:
+    - Create new athlete with name and put them into their event(s)
+ - for athletes in one event:
+    - If their event is also not in the list they should be deleted
+    - If their event is in the list with a different name
+        - If the name matches another athlete, then update the result entry to match and delete this athlete
+        - otherwise update this athlete to match the new name
+ - for athletes in multiple events:
+    - If all of their events are not in the list they should be deleted
+    - If any of their events are in the list with (a) different name(s)
+        - if all the names are the same and don't match an existing athlete, then update this athlete
+        - otherwise for each event:
+            - If the name matches another athlete, then update the result entry to match
+            - otherwise create a new athlete and update the result entry to point to them
+            - If at the end of this there are no remaining events matching this athlete then delete them
+    - If any of their events are not in the list then those result entries should be deleted
+'''
+
+
 @api_view(['POST'])
 def bulk_create_athletes(request, f_id):
     athletes_data_list = request.data["athletes"]
-    results = []
+    athletes_in_team = Athlete.objects.filter(team_id=f_id)
+    athlete_results = { # Make dictionary of athlete names to lists containing their result entries
+        athlete.name:Result.objects.filter(athlete=athlete)
+        for athlete in athletes_in_team
+    }
+    filled_events = {} # Make dictionary of events to athlete from this team doing that event
+    for athlete in athletes_in_team:
+        for result in athlete_results[athlete.name]:
+            filled_events[result.event]=athlete
+    new_results=[] # List containing results to be bulk created and added to database
+    updated_results=[] # List containing existing results that have either had their athlete or event updated
+    updated_athletes=[] # List containing existing athletes that have had their name updated
     for athlete_data in athletes_data_list:
-        name=athlete_data.get('name')
-        existing = Athlete.objects.filter(name=name, team=f_id).first()
-        results.append(Result(
-            athlete_id = existing.id if existing else (Athlete.objects.create(name=name,team_id=f_id)).id,
-            event_id=athlete_data.get('event_id'),
-        ))
-    Result.objects.bulk_create(results)
+        name=athlete_data['name']
+        event=get_object_or_404(Event, pk=athlete_data['event_id']) # Finds the event matching the given event id
+        if athlete_results[name]: # If the athlete already exists
+            if athlete_results[name].count() == 1: # If the athlete is in only one event
+                result = athlete_results[name].first()
+                if result.event != event: # If the event has changed update the result | TODO: check if event is filled here as well
+                    result.event = event
+                    updated_results.append(event)
+            else: # The athlete is in more than one event
+                TODO
+        else: # The athlete doesn't currently exist
+            if filled_events[event]: # if there is already an athlete assigned to this event
+                athlete = filled_events[event]
+                if athlete_results[athlete.name].count() == 1: # this event is the only one assigned to this athlete
+                    athlete.name=name # so update the athlete's name to match the new one
+                    updated_athletes.append(athlete)
+                else: # the athlete is in more than one event
+                    result = athlete_results[athlete.name].filter(event=event).first() # So make a new athlete and assign it to the existing result
+                    result.athlete=Athlete.objects.create(name=name,team_id=f_id)
+                    updated_results.append(result)
+            else: # the event is not filled yet
+                new_results.append(Result( # so make a new result entry and new athlete
+                    athlete = Athlete.objects.create(name=name,team_id=f_id),
+                    event = event,
+                ))
+    Result.objects.bulk_create(new_results)
+    Result.objects.bulk_update(updated_results,["athlete","event"])
+    Athlete.objects.bulk_update(updated_athletes,["name"])
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
-
-""" @api_view(['POST'])
-def bulk_create_athletes(request, f_id):
-    athletes_data_list = request.data["athletes"]
-    existing = Athlete.objects.filter(team=f_id)
-    existingNames = [
-        athlete.name
-        for athlete in existing
-    ]
-    results = []
-    notRemoved = []
-    for athlete_data in athletes_data_list:
-        name = athlete_data['name']
-        notRemoved.append(name)
-        if not name in existingNames:
-            Athlete.objects.create(name=name,team_id=f_id)
-        
-    toBeRemoved = [
-        from athlete
-    ] """
 
 @api_view(['GET'])
 def get_team_athlete_events(request, team_id):
-    team=get_object_or_404(Team, pk=team_id)
-    athletes = Athlete.objects.filter(team=team)
+    athletes = Athlete.objects.filter(team_id=team_id)
     results = [
         (athlete, Result.objects.filter(athlete=athlete))
         for athlete in athletes
