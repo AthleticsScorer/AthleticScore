@@ -13,10 +13,11 @@ const EventsDisplayContainer = ({ competitionId, events }: Props) => {
       {events.map((event) => (
         <ListItem key={event.id} paddingY="5px">
           <Box
-            background={event.complete ? "green" : "darkviolet"}
+            background={event.complete ? "green" : "darkblue"}
             borderWidth="1px"
             borderRadius="lg"
             p="3"
+            color="white"
           >
             <HStack>
               <Link
