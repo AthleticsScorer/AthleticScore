@@ -60,7 +60,7 @@ const ResultsPage = () => {
         results: allResults,
       });
 
-      navigate(`../../competition/${competitionId}/viewteams`);
+      navigate(`../../competition/${competitionId}`);
     } catch (error) {
       console.error("Error posting athletes:", error);
     }
@@ -100,9 +100,9 @@ const ResultsPage = () => {
   }, []);
 
   useEffect(() => {
-    inResults.forEach(inResult => {
-      setResultsVals({...resultsVals, [inResult.athlete_id]: inResult.value});
-    });
+    setResultsVals(
+      Object.assign({}, ...inResults.map(inResult => ({[inResult.athlete_id]: inResult.value}))
+    ));
   }, [inResults]);
 
   useEffect(() => {
