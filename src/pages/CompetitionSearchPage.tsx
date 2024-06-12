@@ -151,7 +151,7 @@ const CompetitionSearchPage = () => {
                     "/view"
                   }
                 >
-                  <Heading size="md">{event.event_name}</Heading>
+                  <Heading size="md">{event.age_group + " " + event.event_name + " " + event.event_type}</Heading>
                 </Link>
               </Box>
             </React.Fragment>

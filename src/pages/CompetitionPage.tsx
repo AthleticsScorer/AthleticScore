@@ -21,16 +21,16 @@ interface DisplayTeam {
 
 const CompetitionPage = () => {
   const { competitionId } = useParams();
-  const [data, setData] = useState<Competition[]>([]);
+  const [competition, setCompetition] = useState<Competition>();
   const [events, setEvents] = useState<Event[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [displayTeams, setDisplayTeams] = useState<DisplayTeam[]>([]);
 
   useEffect(() => {
     axios
-      .get(backend + "/competitions/")
+      .get(backend + `/competitions/${competitionId}`)
       .then((response) => {
-        setData(response.data);
+        setCompetition(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -39,12 +39,9 @@ const CompetitionPage = () => {
 
   useEffect(() => {
     axios
-      .get(backend + "/events/")
+      .get(backend + `/competitions/${competitionId}/all_events`)
       .then((response) => {
-        const filteredEvents = response.data.filter(
-          (e: Event) => e.competition === Number(competitionId)
-        );
-        setEvents(filteredEvents);
+        setEvents(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -102,8 +99,6 @@ const CompetitionPage = () => {
       clearTimeout(timerId)
     }
   }, [displayTeams]);
-
-  const competition = data.find((comp) => comp.id === Number(competitionId));
 
   return (
     <>

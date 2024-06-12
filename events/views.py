@@ -186,27 +186,6 @@ def get_teams_points(request, team_id):
 
     return Response(total_points)
 
-# given event, returns all athletes in event
-@api_view(['GET'])
-def get_event_athletes(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    results = Result.objects.filter(event=event)
-    all_athletes = []
-    for result in results:
-        all_athletes.append(result.athlete)
-    serializer = AthleteSerializer(all_athletes, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def get_event_teams(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    teams = list(set([
-        result.athlete.team
-        for result in Result.objects.filter(event=event)
-    ]))
-    serializer = TeamSerializer(teams, many=True)
-    return Response(serializer.data)
-
 @api_view(['GET'])
 def get_event_results(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
@@ -240,6 +219,13 @@ def get_competition_athletes(request, competition_id):
     for team in teams:
         all_athletes += (Athlete.objects.filter(team=team))
     serializer = AthleteSerializer(all_athletes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_competition_events(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    events = Event.objects.filter(competition=competition)
+    serializer = EventSerializer(events, many=True)
     return Response(serializer.data)
 
 from .utils import create_search_view
