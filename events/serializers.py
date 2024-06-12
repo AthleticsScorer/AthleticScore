@@ -38,3 +38,7 @@ class ResultDetailSerializer(serializers.Serializer):
     athlete_id=serializers.IntegerField()
     athlete=serializers.CharField()
     team=serializers.CharField(max_length=3)
+
+class AthleteEventSerializer(serializers.Serializer):
+    name=serializers.CharField()
+    event_id=serializers.IntegerField()

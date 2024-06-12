@@ -1,7 +1,7 @@
 # core/views.py
 from rest_framework import generics
 from .models import Team, Athlete, Competition, Event, Result
-from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer, ResultDetailSerializer
+from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer, ResultDetailSerializer, AthleteEventSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -61,6 +61,44 @@ def bulk_create_athletes(request, f_id):
         ))
     Result.objects.bulk_create(results)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
+
+""" @api_view(['POST'])
+def bulk_create_athletes(request, f_id):
+    athletes_data_list = request.data["athletes"]
+    existing = Athlete.objects.filter(team=f_id)
+    existingNames = [
+        athlete.name
+        for athlete in existing
+    ]
+    results = []
+    notRemoved = []
+    for athlete_data in athletes_data_list:
+        name = athlete_data['name']
+        notRemoved.append(name)
+        if not name in existingNames:
+            Athlete.objects.create(name=name,team_id=f_id)
+        
+    toBeRemoved = [
+        from athlete
+    ] """
+
+@api_view(['GET'])
+def get_team_athlete_events(request, team_id):
+    team=get_object_or_404(Team, pk=team_id)
+    athletes = Athlete.objects.filter(team=team)
+    results = [
+        (athlete, Result.objects.filter(athlete=athlete))
+        for athlete in athletes
+    ]
+    athlete_events = []
+    for (athlete, events) in results:
+        for event in events:
+            athlete_events.append({
+                'name':athlete.name,
+                'event_id':event.event.pk,
+            })
+    serializer = AthleteEventSerializer(athlete_events, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def bulk_create_results(request, f_id):
