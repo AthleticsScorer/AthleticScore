@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.core.management import call_command
 from rest_framework import status
 from django.forms import ValidationError
+from datetime import date
 
 class BaseListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
@@ -76,6 +77,12 @@ def bulk_create_results(request, f_id):
     event.save()
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
+@api_view(['POST'])
+def mark_competition_complete(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    competition.date = date.today()
+    competition.save()
+    return Response("Competition marked as complete")
 
 class BaseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):

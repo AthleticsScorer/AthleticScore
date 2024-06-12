@@ -12,7 +12,7 @@ class Account(models.Model):
     
 class Competition(models.Model):
     name = models.CharField(max_length=255)
-    date = models.DateField()
+    date = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.name

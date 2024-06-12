@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 export interface Competition {
   id: number;
   name: String;
+  date: Date;
   events: Event[];
 }
 

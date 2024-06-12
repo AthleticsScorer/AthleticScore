@@ -17,7 +17,6 @@ function CreateCompetition() {
     try {
       const response = await axios.post(backend + "/competitions/", {
         name: competitionName,
-        date: "2000-01-01",
       });
       navigate(`/create/${response.data.id}`);
     } catch (error) {
