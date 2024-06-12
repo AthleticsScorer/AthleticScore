@@ -136,10 +136,27 @@ def bulk_create_athletes(request, f_id):
                     athlete = Athlete.objects.create(name=name,team_id=f_id),
                     event = event,
                 ))
-        # TODO: Figure out how to detect which events are now empty
     Result.objects.bulk_create(new_results)
     Result.objects.bulk_update(updated_results,["athlete","event"])
     Athlete.objects.bulk_update(updated_athletes,["name"])
+    # update variables with new values
+    athletes_in_team = Athlete.objects.filter(team_id=f_id)
+    athlete_results = { 
+        athlete.name:Result.objects.filter(athlete=athlete)
+        for athlete in athletes_in_team
+    }
+    athlete_names = []
+    team_events=[]
+    for athlete_data in athletes_data_list:
+        athlete_names.append(athlete_data['name'])
+        team_events.append(get_object_or_404(Event, pk=athlete_data['event_id']))
+    for athlete in athletes_in_team:
+        if not athlete.name in athlete_names:
+            athlete.delete()
+        else:
+            for result in athlete_results[athlete.name]:
+                if not result.event in team_events:
+                    result.delete()
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
