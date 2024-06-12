@@ -98,9 +98,9 @@ const ResultsPage = () => {
   }, []);
 
   useEffect(() => {
-    inResults.forEach(inResult => {
-      setResultsVals({...resultsVals, [inResult.athlete_id]: inResult.value});
-    });
+    setResultsVals(
+      Object.assign({}, ...inResults.map(inResult => ({[inResult.athlete_id]: inResult.value}))
+    ));
   }, [inResults]);
 
   useEffect(() => {
