@@ -91,6 +91,10 @@ const CompetitionPage = () => {
   };
 
   useEffect(() => {
+    fetchDisplayTeams();
+  }, [competitionId])
+
+  useEffect(() => {
     let timerId = setTimeout(() => {
       fetchDisplayTeams();
     }, 2000)
