@@ -92,7 +92,7 @@ const CompetitionPage = () => {
 
   useEffect(() => {
     fetchDisplayTeams();
-  }, [competitionId])
+  }, [teams]);
 
   useEffect(() => {
     let timerId = setTimeout(() => {
