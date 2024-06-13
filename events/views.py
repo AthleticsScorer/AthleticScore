@@ -35,17 +35,35 @@ def bulk_create_events(request, f_id):
 @api_view(['POST'])
 def bulk_create_teams(request, f_id):
     team_data_list = request.data["teams"]
-    teams = []
+    existing_teams = Team.objects.filter(competition=f_id)
+    team_code = {}
+    code_team = {}
     for team_data in team_data_list:
-        name = team_data.get('name')
-        short_code=team_data.get('short_code')
-        if not (Team.objects.filter(name=name, competition=f_id) or Team.objects.filter(short_code=short_code, competition=f_id)):
-            teams.append(Team(
+        if not team_code[team_data['name']] and not code_team[team_data['short_code']]: # only the first instance of team name or shortcode is stored
+            team_code[team_data['name']]=team_data['short_code'] # This means that team_code and code_team should have matching but inverse results
+            code_team[team_data['short_code']]=team_data['name']
+    updated_teams = []
+    for team in existing_teams:
+        if not code_team[team.short_code] and not team_code[team.name]: # The team has been deleted | It is impossible to tell the difference between deleting a team and changing both its name and shortcode
+            team.delete() # If you want to change both without deleting the team you have to do it in two steps | We might want to make a specific way to delete teams to avoid this
+        elif not code_team[team.short_code] and team_code[team.name]: 
+            team.short_code=team_code[team.name]
+            updated_teams.append(team)
+        elif code_team[team.short_code] and not team_code[team.name]:
+            team.name=code_team[team.short_code]
+            updated_teams.append(team)
+        # else do nothing
+    Team.objects.bulk_update(updated_teams, ["name","short_code"])
+    existing_teams = Team.objects.filter(competition=f_id)
+    new_teams = []
+    for name, code in team_code.items():
+        if not existing_teams.filter(name=name) and not existing_teams.filter(short_code=code): # Checking both separately might not be needed but it shouldn't matter
+            new_teams.append(Team(
                 name=name,
-                short_code=short_code,
+                short_code=code,
                 competition_id=f_id
             ))
-    Team.objects.bulk_create(teams)
+    Team.objects.bulk_create(new_teams)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
 '''
@@ -92,7 +110,7 @@ def bulk_create_athletes(request, f_id):
     for athlete_data in athletes_data_list:
         name=athlete_data['name']
         event=get_object_or_404(Event, pk=athlete_data['event_id']) # Finds the event matching the given event id
-        if athlete_results[name]: # If the athlete already exists
+        if Athlete.objects.filter(team_id=f_id,name=name).first(): # If the athlete already exists
             if athlete_results[name].count() == 1: # If the athlete is in only one event
                 result = athlete_results[name].first() # Get that event
                 if result.event != event: # If the event has changed update the result
