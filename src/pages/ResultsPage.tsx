@@ -30,7 +30,6 @@ interface InResult {
 }
 
 const ResultsPage = () => {
-  const [results, setResults] = useState<Result[]>([]);
   const [resultsVals, setResultsVals] = useState<{
     [athleteId: number]: String;
   }>({});
@@ -101,8 +100,10 @@ const ResultsPage = () => {
 
   useEffect(() => {
     setResultsVals(
-      Object.assign({}, ...inResults.map(inResult => ({[inResult.athlete_id]: inResult.value}))
-    ));
+      Object.assign(
+        {}, ...inResults.map(inResult => ({[inResult.athlete_id]: inResult.value}))
+      )
+    );
   }, [inResults]);
 
   useEffect(() => {
