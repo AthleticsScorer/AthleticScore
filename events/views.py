@@ -26,11 +26,13 @@ class BaseListCreateAPIView(generics.ListCreateAPIView):
 
 @api_view(['POST'])
 def bulk_create_events(request, f_id):
-    for age_group in request.data['age_groups']: # If this doesn't work with Axios try using POST instead of data
+    for age_group in request.data['age_groups'] if request.data['age_groups'] else [""]: # Allows no age groups to be defined
         for event_type in request.data['event_types']:
-            for name in request.data['names']:
+            for name in request.data['names'] if request.data['names'] else [""]: # Allows no strings to be defined
                 Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=f_id, complete=False)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
+
+#{"teams":[{"name":"test","short_code":"1"},{"name":"test2","short_code":"1"},{"name":"test","short_code":"3"},{"name":"test2","short_code":"2"}]}
 
 @api_view(['POST'])
 def bulk_create_teams(request, f_id):
@@ -39,17 +41,18 @@ def bulk_create_teams(request, f_id):
     team_code = {}
     code_team = {}
     for team_data in team_data_list:
-        if not team_code[team_data['name']] and not code_team[team_data['short_code']]: # only the first instance of team name or shortcode is stored
+        print(team_data)
+        if not team_data['name'] in team_code and not team_data['short_code'] in code_team: # only the first instance of team name or shortcode is stored
             team_code[team_data['name']]=team_data['short_code'] # This means that team_code and code_team should have matching but inverse results
             code_team[team_data['short_code']]=team_data['name']
     updated_teams = []
     for team in existing_teams:
-        if not code_team[team.short_code] and not team_code[team.name]: # The team has been deleted | It is impossible to tell the difference between deleting a team and changing both its name and shortcode
+        if not team.short_code in code_team and not team.name in team_code: # The team has been deleted | It is impossible to tell the difference between deleting a team and changing both its name and shortcode
             team.delete() # If you want to change both without deleting the team you have to do it in two steps | We might want to make a specific way to delete teams to avoid this
-        elif not code_team[team.short_code] and team_code[team.name]: 
+        elif not team.short_code in code_team and team.name in team_code: 
             team.short_code=team_code[team.name]
             updated_teams.append(team)
-        elif code_team[team.short_code] and not team_code[team.name]:
+        elif team.short_code in code_team and not team.name in team_code:
             team.name=code_team[team.short_code]
             updated_teams.append(team)
         # else do nothing
@@ -111,12 +114,13 @@ def bulk_create_athletes(request, f_id):
         name=athlete_data['name']
         event=get_object_or_404(Event, pk=athlete_data['event_id']) # Finds the event matching the given event id
         if Athlete.objects.filter(team_id=f_id,name=name).first(): # If the athlete already exists
+            print(Athlete.objects.filter(team_id=f_id,name=name).first())
             if athlete_results[name].count() == 1: # If the athlete is in only one event
                 result = athlete_results[name].first() # Get that event
                 if result.event != event: # If the event has changed update the result
                     result.event = event
                     updated_results.append(event)
-                    if filled_events[events]: # If the event was filled by someone else first
+                    if event in filled_events: # If the event was filled by someone else first
                         prev_athlete = filled_events[event]
                         prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
                         prev_result.delete() # Delete that result entry
@@ -127,7 +131,7 @@ def bulk_create_athletes(request, f_id):
                 events = athlete_results[name]
                 athlete = get_object_or_404(Athlete, name=name, team_id=f_id)
                 if not event in events: # The athlete is not already in the event
-                    if filled_events[event]: # Another athlete is already in the event
+                    if event in filled_events: # Another athlete is already in the event
                         prev_athlete = filled_events[event]
                         prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
                         prev_result.athlete=athlete # update the result to the new result
@@ -140,7 +144,7 @@ def bulk_create_athletes(request, f_id):
                         ))
                 # if the athlete is already in the event you don't need to do anything
         else: # The athlete doesn't currently exist
-            if filled_events[event]: # if there is already an athlete assigned to this event
+            if event in filled_events: # if there is already an athlete assigned to this event
                 athlete = filled_events[event]
                 if athlete_results[athlete.name].count() == 1: # this event is the only one assigned to this athlete
                     athlete.name=name # so update the athlete's name to match the new one
