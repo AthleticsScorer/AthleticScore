@@ -114,3 +114,6 @@ dist-ssr
 *.sln
 *.sw?
 
+dist/*
+dist/index.html
+dist/assets/*
