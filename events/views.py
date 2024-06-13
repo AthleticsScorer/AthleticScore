@@ -114,7 +114,7 @@ def bulk_create_athletes(request, f_id):
         name=athlete_data['name']
         event=get_object_or_404(Event, pk=athlete_data['event_id']) # Finds the event matching the given event id
         if Athlete.objects.filter(team_id=f_id,name=name).first(): # If the athlete already exists
-            if athlete_results[name].count() == 1: # If the athlete is in only one event
+            if name in athlete_results and athlete_results[name].count() == 1: # If the athlete is in only one event
                 result = athlete_results[name].first() # Get that event
                 if result.event != event: # If the event has changed update the result
                     result.event = event
