@@ -32,8 +32,6 @@ def bulk_create_events(request, f_id):
                 Event.objects.create(event_name=name, age_group=age_group, event_type=event_type, competition_id=f_id, complete=False)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
-#{"teams":[{"name":"test","short_code":"1"},{"name":"test2","short_code":"1"},{"name":"test","short_code":"3"},{"name":"test2","short_code":"2"}]}
-
 @api_view(['POST'])
 def bulk_create_teams(request, f_id):
     team_data_list = request.data["teams"]

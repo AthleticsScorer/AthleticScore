@@ -117,3 +117,4 @@ dist-ssr
 dist/*
 dist/index.html
 dist/assets/*
+events/migrations/0001_initial.py
