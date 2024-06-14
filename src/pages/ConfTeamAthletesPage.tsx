@@ -16,6 +16,7 @@ import { Params, useNavigate, useParams } from "react-router-dom";
 import { Event } from "../pages/CreatePage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { VscCommentUnresolved } from "react-icons/vsc";
 
 interface Athlete {
   name: String;
@@ -28,6 +29,7 @@ const ConfTeamAthletesPage = () => {
   const [athleteNames, setAthleteNames] = useState<{
     [eventId: number]: String;
   }>({});
+  const [inAthletes, setInAthletes] = useState<Athlete[]>([])
   const [ageGroups, setAgeGroups] = useState<String[]>([]);
   const [eventStrings, setEventStrings] = useState<String[]>([]);
   const { competitionId, teamId } = useParams<Params>();
@@ -54,6 +56,25 @@ const ConfTeamAthletesPage = () => {
         });
     }
   }, [competitionId, teamId]);
+
+  useEffect(() => {
+    axios
+      .get(backend + `/teams/${teamId}/athlete_events`)
+      .then((response) => {
+        setInAthletes(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    setAthleteNames(
+      Object.assign(
+        {}, ...inAthletes.map((athlete) => ({[athlete.event_id]: athlete.name}))
+      )
+    );
+  }, [inAthletes]);
 
   useEffect(() => {
     const fetchTeamName = async () => {
