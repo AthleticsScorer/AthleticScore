@@ -8,16 +8,16 @@ class EventStatistics:
         self.gradient = self.calculate_gradient()
         self.y_intercept = self.calculate_y_intercept()
 
-    def calculate_mean(self):
+    def calculate_mean(self) -> float:
         return (self.national_record + self.national_standard + self.entry_standard + self.county_standard) / 4
 
-    def calculate_gradient(self):
+    def calculate_gradient(self) -> float:
         mean = self.xmean
         numerator = 1 * self.national_record + 2 * self.national_standard + 3 * self.entry_standard + 4 * self.county_standard - 10 * mean
         denominator = self.national_record**2 + self.national_standard**2 + self.entry_standard**2 + self.county_standard**2 - 4 * (mean**2)
         return numerator / denominator if denominator != 0 else 0
 
-    def calculate_y_intercept(self):
+    def calculate_y_intercept(self) -> float:
         return 2.5 - self.xmean * self.gradient
     
     def calculate_performance(self, score: float) -> float:

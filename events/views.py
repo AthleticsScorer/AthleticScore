@@ -502,12 +502,12 @@ def wipe_events_data(request):
 @api_view(['GET'])
 def get_best_performers(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
-    events = Event.objects.filter(competition=competition)
+    events = Event.objects.filter(competition=competition, complete=True)
     
     best_performers = {}
 
     for event in events:
-        event_results = Result.objects.filter(event=event)
+        event_results = Result.objects.filter(event=event, value__isnull=False)
         
         for result in event_results:
             age_group = event.age_group
