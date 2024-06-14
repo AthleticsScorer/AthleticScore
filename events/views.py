@@ -1,7 +1,7 @@
 # core/views.py
 from rest_framework import generics
 from .models import Team, Athlete, Competition, Event, Result
-from .serializers import TeamSerializer, AthleteSerializer, CompetitionSerializer, EventSerializer, ResultSerializer, ResultDetailSerializer, AthleteEventSerializer
+from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -11,6 +11,7 @@ from django.forms import ValidationError
 from datetime import date
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ResultFilter
+from .best_performance import *
 
 class BaseListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
@@ -382,7 +383,7 @@ FIRST_PLACE_EDGE = 1
 MAX_SCORE_WITHOUT_EDGE = 11
 
 def calc_event_result(event):
-    time_events = ["Hurdles", "100m", "200m", "400m", "800m", "1500m"]
+    time_events = ["Hurdles", "100m", "200m", "400m", "800m", "1500m", "2k Steeplechase"]
     dist_events = ["Shot Put", "Discus", "Javelin", "High Jump", "Long Jump", "Triple Jump"]
     results = Result.objects.filter(event=event,value__isnull=False)
     if event.event_type in time_events: # Time based event order
@@ -497,3 +498,39 @@ def wipe_events_data(request):
         return Response({"message": "All entries in all tables in the events app have been wiped."}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_best_performers(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    events = Event.objects.filter(competition=competition)
+    
+    best_performers = {}
+
+    for event in events:
+        event_results = Result.objects.filter(event=event)
+        
+        for result in event_results:
+            age_group = event.age_group
+            if age_group not in best_performers:
+                best_performers[age_group] = {
+                    'athlete': None,
+                    'best_performance': float('-inf')
+                }
+            
+            event_stats = event_statistics.get(event.event_type, None)
+
+            if event_stats:
+                performance_value = event_stats.calculate_performance(result.value)
+
+                if performance_value > best_performers[age_group]['best_performance']:
+                    best_performers[age_group]['best_performance'] = performance_value
+                    best_performers[age_group]['athlete'] = result.athlete
+                    
+    serializer = BestPerformerSerializer([{
+        'athlete':best_performers[age_group]['athlete'].name,
+        'team':best_performers[age_group]['athlete'].team.shortcode,
+        'performance':best_performers[age_group]['best_performance'],
+        'age_group':age_group
+    }
+    for age_group in best_performers.keys()], many=True)
+    return Response(serializer.data)

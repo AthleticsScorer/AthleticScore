@@ -49,6 +49,7 @@ class Event(models.Model):
         ("400 m", "400m"),
         ("800 m", "800m"),
         ("1500 m", "1500m"),
+        ("2k Steeplechase", "2k"),
         ("Shot Put", "shot put"),
         ("Discus", "discus"),
         ("Javelin", "javelin"),

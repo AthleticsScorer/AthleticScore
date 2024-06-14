@@ -42,3 +42,9 @@ class ResultDetailSerializer(serializers.Serializer):
 class AthleteEventSerializer(serializers.Serializer):
     name=serializers.CharField()
     event_id=serializers.IntegerField()
+
+class BestPerformerSerializer(serializers.Serializer):
+    athlete=serializers.CharField()
+    team=serializers.CharField()
+    performance=serializers.FloatField()
+    age_group=serializers.CharField()
