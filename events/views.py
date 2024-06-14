@@ -44,10 +44,10 @@ def bulk_create_events(request, f_id):
         if not age_group in age_groups:
             new_age_groups.append(age_group)
     for age_group in age_groups:
-        if not age_group in r_age_groups:    
+        if not age_group in r_age_groups:
             new_age_group = None if len(new_age_groups) == 0 else new_age_groups.pop(0)
             for event in existing.filter(age_group=age_group):
-                if not new_age_group:
+                if new_age_group is None:
                     event.delete()
                 else:
                     event.age_group=new_age_group
@@ -63,7 +63,7 @@ def bulk_create_events(request, f_id):
         if not event_type in r_event_types:
             new_event_type = None if len(new_event_types) == 0 else new_event_types.pop(0)
             for event in existing.filter(event_type=event_type):
-                if not new_event_type:
+                if new_event_type is None:
                     event.delete()
                 else:
                     event.event_type=new_event_type
@@ -78,8 +78,8 @@ def bulk_create_events(request, f_id):
     for name in names:
         if not name in r_names:
             new_name = None if len(new_names) == 0 else new_names.pop(0)
-            for event in existing.filter(name=name):
-                if not new_name:
+            for event in existing.filter(event_name=name):
+                if new_name is None:
                     event.delete()
                 else:
                     event.event_name=new_name
@@ -137,7 +137,7 @@ def bulk_create_teams(request, f_id):
     for team in existing_teams:
         if not team.short_code in code_team and not team.name in team_code: # The team has been deleted | It is impossible to tell the difference between deleting a team and changing both its name and shortcode
             team.delete() # If you want to change both without deleting the team you have to do it in two steps | We might want to make a specific way to delete teams to avoid this
-        elif not team.short_code in code_team and team.name in team_code: 
+        elif not team.short_code in code_team and team.name in team_code:
             team.short_code=team_code[team.name]
             updated_teams.append(team)
         elif team.short_code in code_team and not team.name in team_code:
@@ -250,7 +250,7 @@ def bulk_create_athletes(request, f_id):
     Athlete.objects.bulk_update(updated_athletes,["name"])
     # update variables with new values
     athletes_in_team = Athlete.objects.filter(team_id=f_id)
-    athlete_results = { 
+    athlete_results = {
         athlete.name:Result.objects.filter(athlete=athlete)
         for athlete in athletes_in_team
     }
@@ -329,7 +329,7 @@ class AthleteListCreateAPIView(BaseListCreateAPIView):
             return Response(AthleteSerializer(existing_athlete).data, status=status.HTTP_200_OK)
         else:
             return super().create(request, *args, **kwargs)
-        
+
 
 class AthleteDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = AthleteSerializer
