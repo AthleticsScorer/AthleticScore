@@ -520,7 +520,7 @@ def get_best_performers(request, competition_id):
             event_stats = event_statistics.get(event.event_type, None)
 
             if event_stats:
-                performance_value = event_stats.calculate_performance(result.value)
+                performance_value = event_stats.calculate_performance(float(result.value))
 
                 if performance_value > best_performers[age_group]['best_performance']:
                     best_performers[age_group]['best_performance'] = performance_value
