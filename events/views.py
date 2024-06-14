@@ -206,7 +206,7 @@ def bulk_create_athletes(request, f_id):
                 result = athlete_results[name].first() # Get that event
                 if result.event != event: # If the event has changed update the result
                     result.event = event
-                    updated_results.append(event)
+                    updated_results.append(result)
                     if event in filled_events: # If the event was filled by someone else first
                         prev_athlete = filled_events[event]
                         prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
@@ -235,6 +235,7 @@ def bulk_create_athletes(request, f_id):
                             prev_athlete = filled_events[event]
                             prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
                             prev_result.athlete=athlete # update the result to the new result
+                            updated_results.append(prev_result)
                             if athlete_results[prev_athlete.name].count() == 1: # If that was the athlete's only event
                                 prev_athlete.delete() # Delete that athlete as well
                         else:
