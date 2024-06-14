@@ -213,39 +213,54 @@ def bulk_create_athletes(request, f_id):
     updated_results=[] # List containing existing results that have either had their athlete or event updated
     updated_athletes=[] # List containing existing athletes that have had their name updated
     for event,name in new_events.items():
-        def check_filled():
+        def replaceable_result(name: str):
+            result = athlete_results[name].exclude(event__in=athlete_events[name]).first()
+            if result:
+                athlete_results[name]=athlete_results[name].exclude(pk=result.pk)
+            return result
+        def check_filled(replace: bool):
             if event in filled_events: # If someone else was doing that event
                 prev_athlete=filled_events[event]
-                if prev_athlete in athlete_events: # If that person is still doing event(s)
-                    athlete_results[prev_athlete].filter(event=event).first().delete() # Remove their result in the event they are no longer doing
-                else: # If that person is no longer doing events then you can delete them
-                    existing_athletes[prev_athlete].delete()
-                    existing_athletes.pop(prev_athlete)
-        def create_result():
-            check_filled()
-            new_results.append(Result(
-                athlete=existing_athletes[name],
-                event=event
-            ))
-        def replace_or_create_result(name: str):
-            if event in new_events[name]:
-                pass
-            else:
-                result = athlete_results[name].filter(event__in=[result.event for result in athlete_results[name] if result.event not in new_events[name]]).first()
-                if result is None:
-                    create_result()
+                if replace:
+                    if prev_athlete.name in athlete_events: # If that person is still doing event(s)
+                        athlete_results[prev_athlete.name].filter(event=event).first().delete() # Remove their result in the event they are no longer doing
+                    else: # If that person is no longer doing events then you can delete them
+                        existing_athletes.pop(prev_athlete.name).delete()
                 else:
-                    check_filled()
-                    result.event = event
-                    updated_results.append(result)
-
+                    result = replaceable_result(prev_athlete.name)
+                    if result is None:
+                        new_results.append(Result(
+                            athlete=existing_athletes[name],
+                            event=event
+                        ))
+                    else:
+                        result.athlete = existing_athletes[name]
+                        updated_results.append(result)
+            else:
+                new_results.append(Result(
+                    athlete=existing_athletes[name],
+                    event=event
+                ))
         if name in existing_athletes: # Athlete already exists
             if name in athlete_results: # Athlete existed before this query
-                replace_or_create_result(name)
+                if event in [result.event for result in athlete_results[name]]:
+                    pass
+                else:
+                    result = replaceable_result(name)
+                    if result is None:
+                        check_filled(False)
+                    else:
+                        check_filled(True)
+                        result.event = event
+                        updated_results.append(result)
             else: # Athlete didn't exist before this query
-                create_result()
+                check_filled(False)
         else:
-            create_result()
+            existing_athletes[name]=Athlete.objects.create(
+                name=name,
+                team_id=f_id
+            )
+            check_filled(False)
 
     Result.objects.bulk_create(new_results)
     Result.objects.bulk_update(updated_results,["athlete","event"])
@@ -256,7 +271,7 @@ def bulk_create_athletes(request, f_id):
         athlete.name:Result.objects.filter(athlete=athlete)
         for athlete in athletes_in_team
     }
-    athlete_names = new_results.keys()
+    athlete_names = athlete_events.keys()
     team_events=new_events.keys()
     for athlete in athletes_in_team:
         if athlete.name not in athlete_names:
