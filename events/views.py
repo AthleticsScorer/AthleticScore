@@ -528,7 +528,7 @@ def get_best_performers(request, competition_id):
                     
     serializer = BestPerformerSerializer([{
         'athlete':best_performers[age_group]['athlete'].name,
-        'team':best_performers[age_group]['athlete'].team.shortcode,
+        'team':best_performers[age_group]['athlete'].team.short_code,
         'performance':best_performers[age_group]['best_performance'],
         'age_group':age_group
     }
