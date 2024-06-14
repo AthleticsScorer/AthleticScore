@@ -19,6 +19,7 @@ def generate_urlpatterns(viewset, basename):
     list_view = viewset['list']
     detail_view = viewset['detail']
     search_view = viewset.get('search')
+    bulk_create = viewset.get('bulk_create')
     
     urlpatterns = [
         path(f'{basename}/', list_view.as_view()),
@@ -28,6 +29,11 @@ def generate_urlpatterns(viewset, basename):
     if search_view:
         urlpatterns.append(
             path(f'{basename}/search/', search_view)
+        )
+
+    if bulk_create:
+        urlpatterns.append(
+            path(f'bulk_create/{basename}/<int:f_id>/', bulk_create)
         )
     
     return urlpatterns

@@ -1,15 +1,15 @@
 import { List, ListItem, HStack, Button } from "@chakra-ui/react";
-import { Athlete } from "./InputAthlete";
+import { Team } from "../pages/CreatePage";
 
 interface Props {
-  athletes: Athlete[];
+  teams: Team[];
 }
 
-const CreatedAthletesContainer = ({ athletes: atheltes }: Props) => {
+const CreatedTeamsContainer = ({ teams }: Props) => {
   return (
     <List>
-      {atheltes.map((athlete) => (
-        <ListItem key={athlete.id} paddingY="5px">
+      {teams.map((team) => (
+        <ListItem key={team.id} paddingY="5px">
           <HStack>
             <Button
               whiteSpace="normal"
@@ -17,7 +17,7 @@ const CreatedAthletesContainer = ({ athletes: atheltes }: Props) => {
               fontSize="lg"
               variant="link"
             >
-              {athlete.name}
+              {team.name}
             </Button>
           </HStack>
         </ListItem>
@@ -26,4 +26,4 @@ const CreatedAthletesContainer = ({ athletes: atheltes }: Props) => {
   );
 };
 
-export default CreatedAthletesContainer;
+export default CreatedTeamsContainer;

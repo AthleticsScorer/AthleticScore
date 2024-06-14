@@ -5,13 +5,13 @@ import { Athlete } from "../components/InputAthlete";
 import { useEffect, useState } from "react";
 import CreatedAthletesContainer from "../components/CreatedAthletesContainer";
 import axios from "axios";
-
+import { Team } from "./CreatePage";
 
 const EventPage = () => {
-
-  const [athletes, setAthletes] = useState<Athlete[]>([])
-  const [competitionName, setCompetitionName] = useState("")
-  const { competitionId, eventId } = useParams();
+  const [athletes, setAthletes] = useState<Athlete[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [competitionName, setCompetitionName] = useState("");
+  const { competitionId } = useParams();
 
   const handleAddAthlete = (newAthlete: Athlete) => {
     setAthletes([...athletes, newAthlete]);
@@ -20,7 +20,9 @@ const EventPage = () => {
   useEffect(() => {
     const fetchCompetitionName = async () => {
       try {
-        const response = await axios.get(backend + `/competitions/${competitionId}`);
+        const response = await axios.get(
+          backend + `/competitions/${competitionId}`
+        );
         setCompetitionName(response.data.name);
       } catch (error) {
         console.error("Error fetching competition data:", error);
@@ -31,17 +33,37 @@ const EventPage = () => {
     fetchCompetitionName();
   }, [competitionId]);
 
+  useEffect(() => {
+    axios
+      .get(backend + "/teams/")
+      .then((response) => {
+        const filteredTeams = response.data.filter(
+          (e: Team) => e.competition === Number(competitionId)
+        );
+        setTeams(filteredTeams);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
     <VStack padding="10px">
-        <Heading>{competitionName}</Heading>
-      <CreatedAthletesContainer athletes={athletes}/>
-      <InputAthlete onAdd={handleAddAthlete} competitionId={Number(competitionId)}/>
-      <Link to={"/competition/" + competitionId + "/" + eventId + "/results"}>
-        <Button size="lg">Submit</Button>
-        </Link>
+      <Heading>{competitionName}</Heading>
+      <CreatedAthletesContainer athletes={athletes} />
+      <InputAthlete
+        onAdd={handleAddAthlete}
+        competitionId={Number(competitionId)}
+        teams={teams}
+      />
+      <Link to={"/competition/" + competitionId}>
+        <Button size="lg">Back to Competition</Button>
+      </Link>
+      <Link to={"/create/" + competitionId}>
+        <Button size="lg">Submit Athletes</Button>
+      </Link>
     </VStack>
-  )
-}
+  );
+};
 
-export default EventPage
+export default EventPage;

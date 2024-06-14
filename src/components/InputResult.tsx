@@ -4,49 +4,50 @@ import { FaCirclePlus } from "react-icons/fa6";
 import axios from "axios";
 
 interface Props {
-    onAdd: (newResult: Result) => void;
-    athlete: number;
-    event: number;
+  onAdd: (newResult: Result) => void;
+  athlete: number;
+  event: number;
 }
 
 export interface Result {
-    id: number
-    value: String
-    athlete: number
-    event: number
+  value: String;
+  athlete_id: number;
+  event_id: number;
 }
 
 const InputResult = ({ onAdd, athlete, event }: Props) => {
-    
-    const [result, setResult] = useState('');
-    const currentIdRef = useRef(0);
+  const [result, setResult] = useState("");
+  const currentIdRef = useRef(0);
 
-    const handleAddClick = async () => {
-        await axios.post(backend + '/results/', {
+  const handleAddClick = async () => {
+    await axios
+      .post(backend + "/results/", {
         value: result,
         athlete: athlete,
-        event: event
+        event: event,
       })
       .then()
-      .catch(error => {
-        console.error('Error fetching data:', error);
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-      const newResult: Result = {
-        id: currentIdRef.current++,
-        value: result,
-        athlete: athlete,
-        event: event
-      };
-      onAdd(newResult);
-      setResult("")
-      };
-
+    const newResult: Result = {
+      id: currentIdRef.current++,
+      value: result,
+      athlete: athlete,
+      event: event,
+    };
+    onAdd(newResult);
+    setResult("");
+  };
 
   return (
     <HStack>
-
-      <Input placeholder="Add Result" size="md" value={result}
-        onChange={(e) => setResult(e.target.value)}/>
+      <Input
+        placeholder="Add Result"
+        size="md"
+        value={result}
+        onChange={(e) => setResult(e.target.value)}
+      />
       <IconButton
         variant="outline"
         colorScheme="teal"

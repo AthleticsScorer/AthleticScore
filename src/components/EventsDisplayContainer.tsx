@@ -1,32 +1,49 @@
-import { List, ListItem, HStack, Button } from "@chakra-ui/react"
-import { Event } from "../pages/CreatePage"
-import { Link } from "react-router-dom"
+import { List, ListItem, HStack, Button, Select, Box } from "@chakra-ui/react";
+import { Event } from "../pages/CreatePage";
+import { Link } from "react-router-dom";
 
 interface Props {
-    competitionId: number
-    events: Event[]
+  competitionId: number;
+  events: Event[];
 }
 
 const EventsDisplayContainer = ({ competitionId, events }: Props) => {
   return (
     <List>
-        {events.map((event) => (
-          <ListItem key={event.id} paddingY="5px">
+      {events.map((event) => (
+        <ListItem key={event.id} paddingY="5px">
+          <Box
+            background={event.complete ? "green" : "darkblue"}
+            borderWidth="1px"
+            borderRadius="lg"
+            p="3"
+          >
             <HStack>
-                <Link to={"/competition/" + competitionId + "/" + event.id}>
-              <Button
-                whiteSpace="normal"
-                textAlign="left"
-                fontSize="lg"
-                variant="link"
+              <Link
+                to={
+                  "/competition/" + competitionId + "/" + event.id + "/results"
+                }
               >
-                {event.name}
-              </Button></Link>
+                <Button
+                  whiteSpace="normal"
+                  textAlign="left"
+                  fontSize="lg"
+                  variant="link"
+                  color="white"
+                >
+                  {event.event_name +
+                    " " +
+                    event.age_group +
+                    " " +
+                    event.event_type}
+                </Button>
+              </Link>
             </HStack>
-          </ListItem>
-        ))}
-      </List>
-  )
-}
+          </Box>
+        </ListItem>
+      ))}
+    </List>
+  );
+};
 
-export default EventsDisplayContainer
+export default EventsDisplayContainer;

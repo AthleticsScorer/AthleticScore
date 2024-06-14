@@ -1,33 +1,39 @@
-import { Button, Heading, VStack } from "@chakra-ui/react"
-import CreatedEventsContainer from "../components/CreatedEventsContainer";
-import InputEvent from "../components/InputEvent";
-import { useState } from "react";
+import { Button, Center, VStack } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 
 export interface Event {
-  id: number
-  name: String
+  id: number;
+  event_name: String;
+  competition: number;
+  age_group: String;
+  event_type: String;
+  complete: boolean;
+}
+
+export interface Team {
+  id: number;
+  name: String;
+  short_code: String;
 }
 
 const createPage = () => {
-  const [events, setEvents] = useState<Event[]>([])
   const { competitionId } = useParams();
 
-
-  const handleAddEvent = (newEvent: Event) => {
-    setEvents([...events, newEvent]);
-  };
-
-
   return (
-    <VStack padding="10px">
-      <Heading>Competition Page</Heading>
-      <CreatedEventsContainer events={events}/>
-      <InputEvent onAdd={handleAddEvent} competitionId={Number(competitionId)}/>
-      <Link to={"/competition/" + competitionId}>
-        <Button size="lg">Submit</Button>
-      </Link>
-    </VStack>
+    <Center height={"100vh"}>
+      <VStack spacing={10}>
+        <Link to={"/manage/" + competitionId + "/teams"}>
+          <Button colorScheme="blue" size="lg" type="submit">
+            Manage Teams
+          </Button>
+        </Link>
+        <Link to={"/manage/" + competitionId + "/events"}>
+          <Button colorScheme="blue" size="lg" type="submit">
+            Manage Events
+          </Button>
+        </Link>
+      </VStack>
+    </Center>
   );
 };
 

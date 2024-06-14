@@ -114,3 +114,4 @@ dist-ssr
 *.sln
 *.sw?
 
+events/migrations/0001_initial.py

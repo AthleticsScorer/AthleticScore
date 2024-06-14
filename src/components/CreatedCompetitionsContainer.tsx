@@ -1,47 +1,54 @@
-import { List, ListItem, HStack, Button } from "@chakra-ui/react";
+import { List, ListItem, HStack, Button, Select, Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Competition } from "../pages/HomePage";
 import { Link } from "react-router-dom";
 
 const CreatedCompetitionsContainer = () => {
+  const [competitions, setCompetitions] = useState<Competition[]>([]);
 
-    const [competitions, setCompetitions] = useState<Competition[]>([])
+  useEffect(() => {
+    const fetchCompetitionName = async () => {
+      try {
+        const response = await axios.get(backend + `/competitions/`);
+        setCompetitions(response.data);
+      } catch (error) {
+        console.error("Error fetching competition data:", error);
+        setCompetitions([]);
+      }
+    };
 
-    useEffect(() => {
-        const fetchCompetitionName = async () => {
-          try {
-            const response = await axios.get(backend + `/competitions/`);
-            setCompetitions(response.data);
-          } catch (error) {
-            console.error("Error fetching competition data:", error);
-            setCompetitions([]);
-          }
-        };
-    
-        fetchCompetitionName();
-      }, []);
+    fetchCompetitionName();
+  }, []);
 
   return (
-        <List>
-            {competitions.map((competition) => (
-              <ListItem key={competition.id} paddingY="5px">
-                <HStack>
-                <Link to={"/competition/" + competition.id}>
-                  <Button
-                    whiteSpace="normal"
-                    textAlign="left"
-                    fontSize="lg"
-                    variant="link"
-                  >
-                    {competition.name}
-                  </Button>
-                  </Link>
-                </HStack>
-              </ListItem>
-            ))}
-          </List>
-      )
-}
+    <List>
+      {competitions.map((competition) => (
+        <ListItem key={competition.id} paddingY="5px">
+          <Box
+            background={competition.date ? "green" : "darkblue"}
+            borderWidth="1px"
+            borderRadius="lg"
+            p="3"
+          >
+            <HStack spacing={4}>
+              <Link to={"/competition/" + competition.id}>
+                <Button
+                  whiteSpace="normal"
+                  textAlign="left"
+                  fontSize="xl"
+                  variant="link"
+                  color="white"
+                >
+                  {competition.name}
+                </Button>
+              </Link>
+            </HStack>
+          </Box>
+        </ListItem>
+      ))}
+    </List>
+  );
+};
 
-export default CreatedCompetitionsContainer
+export default CreatedCompetitionsContainer;
