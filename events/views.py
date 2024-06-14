@@ -47,7 +47,7 @@ def bulk_create_events(request, f_id):
         if not age_group in r_age_groups:
             new_age_group = None if len(new_age_groups) == 0 else new_age_groups.pop(0)
             for event in existing.filter(age_group=age_group):
-                if not new_age_group:
+                if not new_age_group is None:
                     event.delete()
                 else:
                     event.age_group=new_age_group
@@ -63,7 +63,7 @@ def bulk_create_events(request, f_id):
         if not event_type in r_event_types:
             new_event_type = None if len(new_event_types) == 0 else new_event_types.pop(0)
             for event in existing.filter(event_type=event_type):
-                if not new_event_type:
+                if not new_event_type is None:
                     event.delete()
                 else:
                     event.event_type=new_event_type
@@ -79,7 +79,7 @@ def bulk_create_events(request, f_id):
         if not name in r_names:
             new_name = None if len(new_names) == 0 else new_names.pop(0)
             for event in existing.filter(event_name=name):
-                if not new_name:
+                if not new_name is None:
                     event.delete()
                 else:
                     event.event_name=new_name
