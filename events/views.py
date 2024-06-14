@@ -514,14 +514,13 @@ def get_best_performers(request, competition_id):
             if age_group not in best_performers:
                 best_performers[age_group] = {
                     'athlete': None,
-                    'best_performance': float('-inf')
+                    'best_performance': float('inf')
                 }
             
             event_stats = event_statistics.get(event.event_type, None)
 
             if event_stats:
                 performance_value = event_stats.calculate_performance(float(result.value))
-
                 if performance_value < best_performers[age_group]['best_performance']:
                     best_performers[age_group]['best_performance'] = performance_value
                     best_performers[age_group]['athlete'] = result.athlete
