@@ -216,7 +216,7 @@ def bulk_create_athletes(request, f_id):
                 # If the event has not changed then you don't need to do anything
             else: # The athlete is in more than one event
                 athlete = get_object_or_404(Athlete, name=name, team_id=f_id)
-                if name in athlete_results:
+                if not name in athlete_results:
                     if event in filled_events: # Another athlete is already in the event
                         prev_athlete = filled_events[event]
                         prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
