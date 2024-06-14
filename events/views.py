@@ -215,9 +215,8 @@ def bulk_create_athletes(request, f_id):
                             prev_athlete.delete() # Delete that athlete as well
                 # If the event has not changed then you don't need to do anything
             else: # The athlete is in more than one event
-                events = athlete_results[name]
                 athlete = get_object_or_404(Athlete, name=name, team_id=f_id)
-                if not event in events: # The athlete is not already in the event
+                if name in athlete_results:
                     if event in filled_events: # Another athlete is already in the event
                         prev_athlete = filled_events[event]
                         prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
@@ -229,6 +228,20 @@ def bulk_create_athletes(request, f_id):
                             athlete=athlete,
                             event=event
                         ))
+                else:
+                    events = athlete_results[name]
+                    if not event in events: # The athlete is not already in the event
+                        if event in filled_events: # Another athlete is already in the event
+                            prev_athlete = filled_events[event]
+                            prev_result = athlete_results[prev_athlete.name].filter(event=event).first()
+                            prev_result.athlete=athlete # update the result to the new result
+                            if athlete_results[prev_athlete.name].count() == 1: # If that was the athlete's only event
+                                prev_athlete.delete() # Delete that athlete as well
+                        else:
+                            new_results.append(Result(
+                                athlete=athlete,
+                                event=event
+                            ))
                 # if the athlete is already in the event you don't need to do anything
         else: # The athlete doesn't currently exist
             if event in filled_events: # if there is already an athlete assigned to this event
