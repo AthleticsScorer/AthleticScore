@@ -514,22 +514,33 @@ def get_best_performers(request, competition_id):
             if age_group not in best_performers:
                 best_performers[age_group] = {
                     'athlete': None,
-                    'best_performance': float('inf')
+                    'best_performance': {
+                        'performance': float('inf'),
+                        'event':event.event_type,
+                        'string':event.event_name,
+                        'result':0
+                    }
                 }
             
             event_stats = event_statistics.get(event.event_type, None)
 
             if event_stats:
                 performance_value = event_stats.calculate_performance(float(result.value))
-                if performance_value < best_performers[age_group]['best_performance']:
-                    best_performers[age_group]['best_performance'] = performance_value
+                if performance_value < best_performers[age_group]['best_performance']['performance']:
+                    best_performers[age_group]['best_performance']['performance'] = performance_value
+                    best_performers[age_group]['best_performance']['event'] = event.event_type
+                    best_performers[age_group]['best_performance']['string'] = event.event_name
+                    best_performers[age_group]['best_performance']['result'] = result.value
                     best_performers[age_group]['athlete'] = result.athlete
                     
     serializer = BestPerformerSerializer([{
         'athlete':best_performers[age_group]['athlete'].name,
         'team':best_performers[age_group]['athlete'].team.short_code,
-        'performance':best_performers[age_group]['best_performance'],
-        'age_group':age_group
+        'performance':best_performers[age_group]['best_performance']['performance'],
+        'age_group':age_group,
+        'event':best_performers[age_group]['best_performance']['event'],
+        'string':best_performers[age_group]['best_performance']['string'],
+        'result':best_performers[age_group]['best_performance']['result'],
     }
     for age_group in best_performers.keys()], many=True)
     return Response(serializer.data)
