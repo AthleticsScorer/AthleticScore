@@ -382,9 +382,10 @@ class ResultFilterAPIView(generics.ListAPIView):
 FIRST_PLACE_EDGE = 1
 MAX_SCORE_WITHOUT_EDGE = 11
 
+time_events = ["Hurdles", "100m", "200m", "400m", "800m", "1500m", "2k Steeplechase"]
+dist_events = ["Shot Put", "Discus", "Javelin", "High Jump", "Long Jump", "Triple Jump"]
+    
 def calc_event_result(event):
-    time_events = ["Hurdles", "100m", "200m", "400m", "800m", "1500m", "2k Steeplechase"]
-    dist_events = ["Shot Put", "Discus", "Javelin", "High Jump", "Long Jump", "Triple Jump"]
     results = Result.objects.filter(event=event,value__isnull=False)
     if event.event_type in time_events: # Time based event order
         results = results.order_by('value')  # Ascending for time
@@ -543,4 +544,26 @@ def get_best_performers(request, competition_id):
         'result':best_performers[age_group]['best_performance']['result'],
     }
     for age_group in best_performers.keys()], many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_winners(request, competition_id):
+    winners=[]
+    for event in Event.objects.filter(competition_id=competition_id, complete=True):
+        results = Result.objects.filter(event=event,value__isnull=False)
+        if results.count() > 0:
+            if event.event_type in time_events: # Time based event order
+                results = results.order_by('value')  # Ascending for time
+            elif event.event_type in dist_events: # Distance based event order
+                results = results.order_by('-value')  # Descending for distance
+            else:
+                raise ValidationError("Invalid Event Type:" + event.event_type)
+            winners.append({
+                'string':event.event_name,
+                'age_group':event.age_group,
+                'event_type':event.event_type,
+                'athlete':results.first().athlete.name,
+                'team':results.first().athlete.team.short_code,
+            })
+    serializer = WinnerSerializer(winners)
     return Response(serializer.data)

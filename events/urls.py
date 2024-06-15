@@ -15,7 +15,7 @@ from .views import (
     wipe_events_data, 
     bulk_create_events, bulk_create_teams,
     bulk_create_athletes, bulk_create_results,
-    mark_competition_complete, get_best_performers
+    mark_competition_complete, get_best_performers, get_winners
 )
 
 # Define viewsets
@@ -67,4 +67,5 @@ urlpatterns += [
     path('wipe/', wipe_events_data, name='wipe-events-data'),
     path('results/filter/', ResultFilterAPIView.as_view(), name='result_filter'),
     path('competitions/<int:competition_id>/best_performers/', get_best_performers, name='best-performer'),
+    path('competitions/<int:competition_id>/winners/', get_winners, name='winners'),
 ]

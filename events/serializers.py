@@ -37,7 +37,7 @@ class ResultDetailSerializer(serializers.Serializer):
     value=serializers.DecimalField(max_digits=10, decimal_places=3, allow_null=True)
     athlete_id=serializers.IntegerField()
     athlete=serializers.CharField()
-    team=serializers.CharField(max_length=3)
+    team=serializers.CharField()
 
 class AthleteEventSerializer(serializers.Serializer):
     name=serializers.CharField()
@@ -51,3 +51,10 @@ class BestPerformerSerializer(serializers.Serializer):
     event=serializers.CharField()
     string=serializers.CharField()
     result=serializers.DecimalField(max_digits=10, decimal_places=3)
+
+class WinnerSerializer(serializers.Serializer):
+    string=serializers.CharField()
+    age_group=serializers.CharField()
+    event_type=serializers.CharField()
+    athlete=serializers.CharField()
+    team=serializers.CharField()
