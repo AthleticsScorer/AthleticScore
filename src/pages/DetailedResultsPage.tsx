@@ -1,6 +1,6 @@
 import { Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Team } from "./CreatePage";
 import { Params, useParams } from "react-router-dom";
 
@@ -10,14 +10,37 @@ interface DisplayTeam {
   points: number;
 }
 
+interface Winner {
+  string: String;
+  age_group: String;
+  event_type: String;
+  athlete: String;
+  team: String;
+}
+
+interface WinnerDisplay {
+  athlete: String;
+  team: String;
+  performance: number;
+  age_group: String;
+  event: String;
+  string: String;
+  result: number;
+}
+
 const DetailedResultsPage = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [displayTeams, setDisplayTeams] = useState<DisplayTeam[]>([]);
+  const [winners, setWinners] = useState<Winner[]>([]);
+  const [displayWinners, setDisplayWinners] = useState<WinnerDisplay[]>([]);
   const competitionId = useParams<Params>();
+  const winnerId = useRef(0);
 
   useEffect(() => {
     axios
-      .get(backend + "/competitions/" + competitionId + "/all_teams")
+      .get(
+        backend + "/competitions/" + competitionId.competitionId + "/all_teams"
+      )
       .then((response) => {
         setTeams(response.data);
       })
@@ -25,6 +48,44 @@ const DetailedResultsPage = () => {
         console.error("Error fetching data:", error);
       });
   }, [competitionId]);
+
+  useEffect(() => {
+    axios
+      .get(
+        backend + "/competitions/" + competitionId.competitionId + "/winners"
+      )
+      .then((response) => {
+        setWinners(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [competitionId]);
+
+  useEffect(() => {
+    axios
+      .get(
+        backend +
+          "/competitions/" +
+          competitionId.competitionId +
+          "/best_performers"
+      )
+      .then((response) => {
+        const winnerAthletes: Set<String> = new Set(
+          winners.map((winner) => winner.athlete)
+        );
+
+        const filteredWinnerDisplays: WinnerDisplay[] = response.data.filter(
+          (wd: WinnerDisplay) => winnerAthletes.has(wd.athlete)
+        );
+        setDisplayWinners(
+          filteredWinnerDisplays.sort((a, b) => a.performance - b.performance)
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [winners]);
 
   async function fetchDisplayTeams() {
     const displayTeamsPromises = teams.map(async (team) => {
@@ -77,8 +138,21 @@ const DetailedResultsPage = () => {
           </ListItem>
         ))}
       </List>
-      <Heading>Results by Age Group (todo)</Heading>
-      <Heading>Best Performers (todo)</Heading>
+      <Heading>Best Performers</Heading>
+      <List>
+        {displayWinners.map((winner, index) => (
+          <ListItem key={winnerId.current++} paddingY="5px">
+            <HStack>
+              <Heading size={"sm"}>{index + 1}</Heading>
+              <Heading size={"sm"}>{winner.athlete}</Heading>
+              <Heading size={"sm"}>
+                {winner.string + " " + winner.age_group + " " + winner.event}
+              </Heading>
+              <Heading size={"sm"}>{winner.performance}</Heading>
+            </HStack>
+          </ListItem>
+        ))}
+      </List>
     </VStack>
   );
 };
