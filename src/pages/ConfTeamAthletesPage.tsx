@@ -29,7 +29,7 @@ const ConfTeamAthletesPage = () => {
   const [athleteNames, setAthleteNames] = useState<{
     [eventId: number]: String;
   }>({});
-  const [inAthletes, setInAthletes] = useState<Athlete[]>([])
+  const [inAthletes, setInAthletes] = useState<Athlete[]>([]);
   const [ageGroups, setAgeGroups] = useState<String[]>([]);
   const [eventStrings, setEventStrings] = useState<String[]>([]);
   const { competitionId, teamId } = useParams<Params>();
@@ -71,7 +71,8 @@ const ConfTeamAthletesPage = () => {
   useEffect(() => {
     setAthleteNames(
       Object.assign(
-        {}, ...inAthletes.map((athlete) => ({[athlete.event_id]: athlete.name}))
+        {},
+        ...inAthletes.map((athlete) => ({ [athlete.event_id]: athlete.name }))
       )
     );
   }, [inAthletes]);
@@ -144,7 +145,7 @@ const ConfTeamAthletesPage = () => {
                       {index % eventStrings.length == 0 ? (
                         <Box>{event.event_type}</Box>
                       ) : (
-                        <></> 
+                        <></>
                       )}
                       <Box>
                         <Input

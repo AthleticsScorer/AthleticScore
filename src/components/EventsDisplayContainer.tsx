@@ -1,4 +1,4 @@
-import { List, ListItem, HStack, Button, Select, Box } from "@chakra-ui/react";
+import { List, ListItem, HStack, Button, Box } from "@chakra-ui/react";
 import { Event } from "../pages/CreatePage";
 import { Link } from "react-router-dom";
 

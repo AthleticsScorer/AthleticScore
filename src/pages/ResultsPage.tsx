@@ -9,7 +9,7 @@ import {
   Thead,
   Tr,
   VStack,
-  Input
+  Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useParams, Params, useNavigate } from "react-router-dom";
@@ -49,7 +49,7 @@ const ResultsPage = () => {
       if (value) {
         allResults.push({
           value,
-          athlete_id: Number(athleteId)
+          athlete_id: Number(athleteId),
         });
       }
     });
@@ -71,7 +71,7 @@ const ResultsPage = () => {
   ) => {
     setResultsVals({ ...resultsVals, [athleteId]: event.target.value });
   };
-  
+
   useEffect(() => {
     const fetchCompetitionName = async () => {
       try {
@@ -101,7 +101,10 @@ const ResultsPage = () => {
   useEffect(() => {
     setResultsVals(
       Object.assign(
-        {}, ...inResults.map(inResult => ({[inResult.athlete_id]: inResult.value}))
+        {},
+        ...inResults.map((inResult) => ({
+          [inResult.athlete_id]: inResult.value,
+        }))
       )
     );
   }, [inResults]);
@@ -124,7 +127,15 @@ const ResultsPage = () => {
   return (
     <>
       <VStack>
-        <Heading>{competitionName + " - " + eventAgeGroup + " - " + eventString + " - " + eventType}</Heading>
+        <Heading>
+          {competitionName +
+            " - " +
+            eventAgeGroup +
+            " - " +
+            eventString +
+            " - " +
+            eventType}
+        </Heading>
         <TableContainer>
           <Table variant={"simple"}>
             <Thead>
@@ -137,26 +148,22 @@ const ResultsPage = () => {
             <Tbody>
               {inResults.map((result: InResult) => (
                 <Tr key={result.athlete_id} paddingY="5px">
-                  <Td>
-                    {result.team}
-                  </Td>
+                  <Td>{result.team}</Td>
                   <Td>{result.athlete}</Td>
                   <Td>
-                  <Input
-                    placeholder="Enter Result"
-                    size="md"
-                    value={String(resultsVals[result.athlete_id] || "")}
-                    onChange={(f) => handleInputChange(f, result.athlete_id)}
-                  />
+                    <Input
+                      placeholder="Enter Result"
+                      size="md"
+                      value={String(resultsVals[result.athlete_id] || "")}
+                      onChange={(f) => handleInputChange(f, result.athlete_id)}
+                    />
                   </Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </TableContainer>
-        <Button 
-          onClick={handleSubmitResults}
-          size="lg">
+        <Button onClick={handleSubmitResults} size="lg">
           Submit results
         </Button>
       </VStack>

@@ -111,6 +111,25 @@ const CompetitionSearchPage = () => {
     }
   }, [results]);
 
+  const handleSearch = async () => {
+    console.log("searching");
+    try {
+      if (searchType == "Events") {
+        const response = await axios.get(
+          backend + `/events/search/?name=` + searchValue
+        );
+        setEvents(response.data);
+      } else if (searchType == "Athletes") {
+        const response = await axios.get(
+          backend + `/athletes/search/?name=` + searchValue
+        );
+        setAthletes(response.data);
+      }
+    } catch (error) {
+      console.error("Error searching data:", error);
+    }
+  };
+
   return (
     <VStack>
       <HStack>
@@ -130,7 +149,7 @@ const CompetitionSearchPage = () => {
           <option value="Athletes">Athlete</option>
           <option value="Results">Result</option>
         </Select>
-        <Button colorScheme="blue" size="lg">
+        <Button colorScheme="blue" size="lg" onClick={handleSearch}>
           <Text>Search</Text>
         </Button>
       </HStack>
@@ -151,7 +170,13 @@ const CompetitionSearchPage = () => {
                     "/view"
                   }
                 >
-                  <Heading size="md">{event.age_group + " " + event.event_name + " " + event.event_type}</Heading>
+                  <Heading size="md">
+                    {event.age_group +
+                      " " +
+                      event.event_name +
+                      " " +
+                      event.event_type}
+                  </Heading>
                 </Link>
               </Box>
             </React.Fragment>

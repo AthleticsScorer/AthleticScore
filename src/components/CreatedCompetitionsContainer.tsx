@@ -1,4 +1,4 @@
-import { List, ListItem, HStack, Button, Select, Box } from "@chakra-ui/react";
+import { List, ListItem, HStack, Button, Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Competition } from "../pages/HomePage";

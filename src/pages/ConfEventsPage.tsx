@@ -13,7 +13,6 @@ import { useEffect, useRef, useState } from "react";
 import { Event } from "../pages/CreatePage";
 import axios from "axios";
 import CheckBox from "../components/CheckBox";
-import { VscCommentUnresolved } from "react-icons/vsc";
 
 interface EventBox {
   id: number;
@@ -64,37 +63,54 @@ const ConfEventsPage = () => {
   };
 
   useEffect(() => {
-      if (competitionId) {
-        axios
-          .get(backend + `/events/`)
-          .then((response) => {
-            const filteredEvents = response.data.filter(
-              (e: Event) => e.competition === Number(competitionId)
-            )
-            const eventTypes = Array.from(new Set(filteredEvents.map((e: Event) => e.event_type)))
-            setEventAges(
-              filteredEvents.map((e: Event) => ({
-                id: e.id, 
-                value: e.age_group
-              })).filter((elem: ListElem, index: number, self: ListElem[]) => index === 
-                  self.findIndex((o: ListElem) => o.value === elem.value))
-            );
-            setEventStrings(
-              filteredEvents.map((e: Event) => ({
-                id: e.id, 
-                value: e.event_name
-              })).filter((elem: ListElem, index: number, self: ListElem[]) => index === 
-                  self.findIndex((o: ListElem) => o.value === elem.value))
-            );
-            setEventBoxes(eventBoxes.map((eb) => ({ 
-              id: eb.id, 
-              value: eb.value, 
-              isChecked: eventTypes.length === 0 || eventTypes.includes(eb.value) })))
-        }).catch((error) => {
+    if (competitionId) {
+      axios
+        .get(backend + `/events/`)
+        .then((response) => {
+          const filteredEvents = response.data.filter(
+            (e: Event) => e.competition === Number(competitionId)
+          );
+          const eventTypes = Array.from(
+            new Set(filteredEvents.map((e: Event) => e.event_type))
+          );
+          setEventAges(
+            filteredEvents
+              .map((e: Event) => ({
+                id: e.id,
+                value: e.age_group,
+              }))
+              .filter(
+                (elem: ListElem, index: number, self: ListElem[]) =>
+                  index ===
+                  self.findIndex((o: ListElem) => o.value === elem.value)
+              )
+          );
+          setEventStrings(
+            filteredEvents
+              .map((e: Event) => ({
+                id: e.id,
+                value: e.event_name,
+              }))
+              .filter(
+                (elem: ListElem, index: number, self: ListElem[]) =>
+                  index ===
+                  self.findIndex((o: ListElem) => o.value === elem.value)
+              )
+          );
+          setEventBoxes(
+            eventBoxes.map((eb) => ({
+              id: eb.id,
+              value: eb.value,
+              isChecked:
+                eventTypes.length === 0 || eventTypes.includes(eb.value),
+            }))
+          );
+        })
+        .catch((error) => {
           console.error("Error fetching data:", error);
         });
-      }
-  }, [competitionId])
+    }
+  }, [competitionId]);
 
   function changeChecked(
     event: EventBox,

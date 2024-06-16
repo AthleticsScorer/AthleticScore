@@ -34,7 +34,7 @@ const SearchPage = () => {
   }, []);
 
   const handleSearch = async () => {
-    console.log("searching")
+    console.log("searching");
     try {
       const response = await axios.get(
         backend + `/competitions/search/?name=` + searchValue

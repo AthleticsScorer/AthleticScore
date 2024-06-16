@@ -29,8 +29,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/" },
       { path: "/info", element: <InformationPage /> },
-      { path: "/search", element: <SearchPage />},
-      { path: "/competition/:competitionId/search", element: <CompetitionSearchPage />},
+      { path: "/search", element: <SearchPage /> },
+      {
+        path: "/competition/:competitionId/search",
+        element: <CompetitionSearchPage />,
+      },
       { path: "/create/:competitionId", element: <ConfEventsPage /> },
       { path: "/create/:competitionId/teams", element: <ConfTeamsPage /> },
       { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage /> },
@@ -43,7 +46,10 @@ const router = createBrowserRouter([
       { path: "/manage/:competitionId/teams", element: <ManageTeamPage /> },
       { path: "/manage/:competitionId/events", element: <ManageEventPage /> },
       { path: "/competition/:competitionId", element: <CompetitionPage /> },
-      { path: "/competition/:competitionId/details", element: <DetailedResultsPage /> },
+      {
+        path: "/competition/:competitionId/details",
+        element: <DetailedResultsPage />,
+      },
       { path: "/competition/:competitionId/:eventId", element: <EventPage /> },
       {
         path: "/competition/:competitionId/:eventId/results",

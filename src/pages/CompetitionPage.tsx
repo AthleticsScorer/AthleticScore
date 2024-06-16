@@ -61,33 +61,33 @@ const CompetitionPage = () => {
       });
   }, [competitionId]);
 
-  async function fetchDisplayTeams () {
-      const displayTeamsPromises = teams.map(async (team) => {
-        try {
-          const response = await axios.get(
-            backend + `/teams/${team.id}/total_points`
-          );
-          return {
-            id: team.id,
-            name: team.name,
-            points: response.data,
-          };
-        } catch (error) {
-          console.error("Error fetching team points data:", error);
-          return {
-            id: team.id,
-            name: "Unknown Team",
-            points: 0,
-          };
-        }
-      });
+  async function fetchDisplayTeams() {
+    const displayTeamsPromises = teams.map(async (team) => {
+      try {
+        const response = await axios.get(
+          backend + `/teams/${team.id}/total_points`
+        );
+        return {
+          id: team.id,
+          name: team.name,
+          points: response.data,
+        };
+      } catch (error) {
+        console.error("Error fetching team points data:", error);
+        return {
+          id: team.id,
+          name: "Unknown Team",
+          points: 0,
+        };
+      }
+    });
 
-      const resolvedDisplayTeams = await Promise.all(displayTeamsPromises);
-      const sortedTeams = resolvedDisplayTeams.sort(
-        (a, b) => b.points - a.points
-      );
-      setDisplayTeams(sortedTeams);
-  };
+    const resolvedDisplayTeams = await Promise.all(displayTeamsPromises);
+    const sortedTeams = resolvedDisplayTeams.sort(
+      (a, b) => b.points - a.points
+    );
+    setDisplayTeams(sortedTeams);
+  }
 
   useEffect(() => {
     fetchDisplayTeams();
@@ -96,10 +96,10 @@ const CompetitionPage = () => {
   useEffect(() => {
     let timerId = setTimeout(() => {
       fetchDisplayTeams();
-    }, 2000)
+    }, 2000);
     return () => {
-      clearTimeout(timerId)
-    }
+      clearTimeout(timerId);
+    };
   }, [displayTeams]);
 
   return (
