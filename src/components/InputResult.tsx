@@ -10,9 +10,10 @@ interface Props {
 }
 
 export interface Result {
+  id: number;
   value: String;
-  athlete_id: number;
-  event_id: number;
+  athlete: number;
+  event: number
 }
 
 const InputResult = ({ onAdd, athlete, event }: Props) => {

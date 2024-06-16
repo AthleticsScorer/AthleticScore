@@ -12,10 +12,8 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link, useParams, Params, useNavigate } from "react-router-dom";
+import { useParams, Params, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Team } from "./CreatePage";
-import InputAthlete, { Athlete } from "../components/InputAthlete";
 
 interface Result {
   value: String;

@@ -1,6 +1,6 @@
 import { Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react";
 import { Result } from "../components/InputResult";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -16,6 +16,7 @@ const ViewPage = () => {
   const [competitionName, setCompetitionName] = useState("");
   const [eventName, setEventName] = useState("");
   const [displayResults, setDisplayResults] = useState<DisplayResult[]>([]);
+  const resultId = useRef(0);
 
   useEffect(() => {
     axios
@@ -40,14 +41,14 @@ const ViewPage = () => {
           );
           const athleteName = response.data.name;
           return {
-            id: result.id,
+            id: resultId.current++,
             athleteName: athleteName,
             value: Number(result.value),
           };
         } catch (error) {
           console.error("Error fetching athlete data:", error);
           return {
-            id: result.id,
+            id: -1,
             athleteName: "Unknown Athlete",
             value: Number(result.value),
           };

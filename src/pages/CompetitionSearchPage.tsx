@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import React from "react";
 import { Link, Params, useParams } from "react-router-dom";
@@ -34,6 +34,7 @@ const CompetitionSearchPage = () => {
   const [searchType, setSearchType] = useState("Events");
   const [displayResults, setDisplayResults] = useState<DisplayResult[]>([]);
   const competitionId = useParams<Params>();
+  const resultId = useRef(0);
 
   const handleSearchType = (type: string) => {
     setSearchType(type);
@@ -58,7 +59,12 @@ const CompetitionSearchPage = () => {
 
   useEffect(() => {
     axios
-      .get(backend + "/competitions/" + competitionId + "/all_athletes")
+      .get(
+        backend +
+          "/competitions/" +
+          competitionId.competitionId +
+          "/all_athletes"
+      )
       .then((response) => {
         setAthletes(response.data);
       })
@@ -88,14 +94,14 @@ const CompetitionSearchPage = () => {
           );
           const athleteName = response.data.name;
           return {
-            id: result.id,
+            id: resultId.current++,
             name: athleteName,
             value: Number(result.value),
           };
         } catch (error) {
           console.error("Error fetching athlete data:", error);
           return {
-            id: result.id,
+            id: -1,
             name: "Unknown Athlete",
             value: Number(result.value),
           };
@@ -116,7 +122,7 @@ const CompetitionSearchPage = () => {
     try {
       if (searchType == "Events") {
         const response = await axios.get(
-          backend + `/events/search/?name=` + searchValue
+          backend + `/events/search/?event_name=` + searchValue
         );
         setEvents(response.data);
       } else if (searchType == "Athletes") {
