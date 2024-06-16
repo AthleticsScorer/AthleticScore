@@ -148,7 +148,7 @@ const DetailedResultsPage = () => {
               <Heading size={"sm"}>
                 {winner.string + " " + winner.age_group + " " + winner.event}
               </Heading>
-              <Heading size={"sm"}>{winner.performance}</Heading>
+              <Heading size={"sm"}>{winner.performance.toPrecision(4)}</Heading>
             </HStack>
           </ListItem>
         ))}
