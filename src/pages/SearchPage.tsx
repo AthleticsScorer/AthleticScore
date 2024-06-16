@@ -22,9 +22,7 @@ const SearchPage = () => {
   useEffect(() => {
     const fetchCompetitions = async () => {
       try {
-        const response = await axios.get(
-          backend + `/competitions/`
-        );
+        const response = await axios.get(backend + `/competitions/`);
         setCompetitions(response.data);
       } catch (error) {
         console.error("Error fetching competition data:", error);
@@ -34,6 +32,19 @@ const SearchPage = () => {
 
     fetchCompetitions();
   }, []);
+
+  const handleSearch = async () => {
+    console.log("searching")
+    try {
+      const response = await axios.get(
+        backend + `/competitions/search/?name=` + searchValue
+      );
+      setCompetitions(response.data);
+    } catch (error) {
+      console.error("Error fetching competition data:", error);
+      setCompetitions([]);
+    }
+  };
 
   return (
     <VStack>
@@ -51,7 +62,7 @@ const SearchPage = () => {
           <option value="Last Year">Last Year</option>
           <option value="All Time">All Time</option>
         </Select>
-        <Button colorScheme="blue" size="lg">
+        <Button colorScheme="blue" size="lg" onClick={handleSearch}>
           <Text>Search</Text>
         </Button>
       </HStack>
@@ -65,7 +76,7 @@ const SearchPage = () => {
         {competitions.map((competition) => (
           <React.Fragment key={competition.id}>
             <Box>
-              <Heading size="md">{competition.date}</Heading>
+              <Heading size="md">{String(competition.date)}</Heading>
             </Box>
             <Box>
               <Link to={"/competition/" + competition.id + "/search"}>
