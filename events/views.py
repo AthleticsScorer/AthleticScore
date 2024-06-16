@@ -565,5 +565,5 @@ def get_winners(request, competition_id):
                 'athlete':results.first().athlete.name,
                 'team':results.first().athlete.team.short_code,
             })
-    serializer = WinnerSerializer(winners)
+    serializer = WinnerSerializer(winners, many=True)
     return Response(serializer.data)
