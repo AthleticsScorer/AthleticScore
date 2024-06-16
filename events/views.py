@@ -319,7 +319,7 @@ def bulk_create_results(request, f_id):
     event.save()
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
-@api_view(['POST'])
+@api_view(['GET'])
 def mark_competition_complete(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     competition.date = date.today()
