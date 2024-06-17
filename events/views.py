@@ -40,88 +40,53 @@ def bulk_create_events(request, f_id):
             names.append(event.event_name)
         if not event.event_type in event_types:
             event_types.append(event.event_type)
+
+    def update(news:list, rs:list, es:list, field:str):
+        update=[]
+        for r in rs:
+            if not r in es:
+                news.append(r)
+        for e in es:
+            if not e in rs:
+                new = None if len(news) == 0 else news.pop(0)
+                for event in existing.filter(**{field:e}):
+                    if new is None:
+                        event.delete()
+                    else:
+                        exec('event.' + field + '=new',globals(),locals())
+                        update.append(event)
+        Event.objects.bulk_update(update,[field])
+    
     r_age_groups=request.data['age_groups'] if request.data['age_groups'] else [""] # Allows no age groups to be defined
-    update_age_group=[]
     new_age_groups=[] # If this isn't empty by the bulk_update of age groups it contains all of the new age groups to be created
-    for age_group in r_age_groups:
-        if not age_group in age_groups:
-            new_age_groups.append(age_group)
-    for age_group in age_groups:
-        if not age_group in r_age_groups:
-            new_age_group = None if len(new_age_groups) == 0 else new_age_groups.pop(0)
-            for event in existing.filter(age_group=age_group):
-                if new_age_group is None:
-                    event.delete()
-                else:
-                    event.age_group=new_age_group
-                    update_age_group.append(event)
-    Event.objects.bulk_update(update_age_group,["age_group"])
+    update(new_age_groups, r_age_groups, age_groups, "age_group")
     r_event_types=request.data['event_types']
-    update_event_type=[]
     new_event_types=[]
-    for event_type in r_event_types:
-        if not event_type in event_types:
-            new_event_types.append(event_type)
-    for event_type in event_types:
-        if not event_type in r_event_types:
-            new_event_type = None if len(new_event_types) == 0 else new_event_types.pop(0)
-            for event in existing.filter(event_type=event_type):
-                if new_event_type is None:
-                    event.delete()
-                else:
-                    event.event_type=new_event_type
-                    update_event_type.append(event)
-    Event.objects.bulk_update(update_event_type,["event_type"])
+    update(new_event_types, r_event_types, event_types, "event_type")
     r_names=request.data['names'] if request.data['names'] else [""] # Allows no strings to be defined
-    update_name=[]
     new_names=[]
-    for name in r_names:
-        if not name in names:
-            new_names.append(name)
-    for name in names:
-        if not name in r_names:
-            new_name = None if len(new_names) == 0 else new_names.pop(0)
-            for event in existing.filter(event_name=name):
-                if new_name is None:
-                    event.delete()
-                else:
-                    event.event_name=new_name
-                    update_name.append(event)
-    Event.objects.bulk_update(update_name,["event_name"])
+    update(new_names, r_names, names, "event_name")
+    
     new_events=[]
+
+    def create(age_groups :list, event_types:list, names:list):
+        for age_group in age_groups:
+            for event_type in event_types:
+                for name in names:
+                    new_events.append(Event(
+                        event_name=name,
+                        age_group=age_group,
+                        event_type=event_type,
+                        competition_id=f_id,
+                        complete=False
+                    ))
+
     if new_age_groups:
-        for age_group in new_age_groups:
-            for event_type in r_event_types:
-                for name in r_names:
-                    new_events.append(Event(
-                        event_name=name,
-                        age_group=age_group,
-                        event_type=event_type,
-                        competition_id=f_id,
-                        complete=False
-                    ))
+        create(new_age_groups,r_event_types,r_names)
     elif new_event_types:
-        for age_group in r_age_groups:
-            for event_type in new_event_types:
-                for name in r_names:
-                    new_events.append(Event(
-                        event_name=name,
-                        age_group=age_group,
-                        event_type=event_type,
-                        competition_id=f_id,
-                        complete=False
-                    ))
+        create(r_age_groups,new_event_types,r_names)
     elif new_names:
-        for age_group in r_age_groups:
-            for event_type in r_event_types:
-                for name in new_names:
-                    new_events.append(Event(
-                        event_name=name,
-                        age_group=age_group,
-                        event_type=event_type,
-                        competition_id=f_id,
-                        complete=False
-                    ))
+        create(r_age_groups,r_event_types,new_names)
     Event.objects.bulk_create(new_events)
     return Response("Bulk create successful", status=status.HTTP_201_CREATED)
 
@@ -183,61 +148,6 @@ when the list is recieved the following things need to happen:
             - otherwise create a new athlete and update the result entry to point to them
             - If at the end of this there are no remaining events matching this athlete then delete them
     - If any of their events are not in the list then those result entries should be deleted
-'''
-
-'''
-{
-"athletes":[
-{
-"name":"c",
-"event_id":1
-},
-{
-"name":"c",
-"event_id":2
-},
-{
-"name":"c",
-"event_id":3
-},
-{
-"name":"c",
-"event_id":4
-},
-{
-"name":"c",
-"event_id":5
-},
-{
-"name":"c",
-"event_id":6
-},
-{
-"name":"c",
-"event_id":7
-},
-{
-"name":"c",
-"event_id":8
-},
-{
-"name":"c",
-"event_id":9
-},
-{
-"name":"c",
-"event_id":10
-},
-{
-"name":"c",
-"event_id":11
-},
-{
-"name":"c",
-"event_id":12
-}
-]
-}
 '''
 
 @api_view(['POST'])
