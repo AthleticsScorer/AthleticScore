@@ -43,6 +43,11 @@ class AthleteEventSerializer(serializers.Serializer):
     name=serializers.CharField()
     event_id=serializers.IntegerField()
 
+class AthleteTeamSerializer(serializers.Serializer):
+    name=serializers.CharField()
+    id=serializers.IntegerField()
+    team=serializers.CharField()
+
 class BestPerformerSerializer(serializers.Serializer):
     athlete=serializers.CharField()
     team=serializers.CharField()

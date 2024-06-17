@@ -53,7 +53,7 @@ def bulk_create_events(request, f_id):
                     if new is None:
                         event.delete()
                     else:
-                        exec('event.' + field + '=new',globals(),locals())
+                        setattr(event, field, new)
                         update.append(event)
         Event.objects.bulk_update(update,[field])
     
@@ -476,8 +476,13 @@ def get_competition_athletes(request, competition_id):
     teams = Team.objects.filter(competition=competition)
     all_athletes = []
     for team in teams:
-        all_athletes += (Athlete.objects.filter(team=team))
-    serializer = AthleteSerializer(all_athletes, many=True)
+        for athlete in Athlete.objects.filter(team=team):
+            all_athletes.append({
+                "name":athlete.name,
+                "id":athlete.id,
+                "team":athlete.team.name
+            })
+    serializer = AthleteTeamSerializer(all_athletes, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
