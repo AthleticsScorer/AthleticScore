@@ -40,36 +40,10 @@ const ViewPage = () => {
 
   useEffect(() => {
     const fetchAthleteNames = async () => {
-      const filteredResults = results.filter(
-        (r) => r.event === Number(eventId)
+      const response = await axios.get(
+        backend + `/events/${eventId}`
       );
-      const displayResultsPromises = filteredResults.map(async (result) => {
-        try {
-          const response = await axios.get(
-            backend + `/athletes/${result.athlete}`
-          );
-          const athleteName = response.data.name;
-          return {
-            id: resultId.current++,
-            athleteName: athleteName,
-            value: Number(result.value),
-          };
-        } catch (error) {
-          console.error("Error fetching athlete data:", error);
-          return {
-            id: -1,
-            athleteName: "Unknown Athlete",
-            value: Number(result.value),
-          };
-        }
-      });
-
-      const resolvedDisplayResults = await Promise.all(displayResultsPromises);
-      const sortedResults = resolvedDisplayResults.sort(
-        (a, b) => a.value - b.value
-      );
-
-      setDisplayResults(sortedResults);
+      setDisplayResults(response.data);
     };
 
     if (results.length > 0) {
