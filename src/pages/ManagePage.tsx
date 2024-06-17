@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ManagePage = () => {
   return (
-    <Center height={"100vh"}>
+    <Center height={"80vh"}>
       <VStack spacing={10}>
         <CreateCompetition />
         <Link to="/competition">
