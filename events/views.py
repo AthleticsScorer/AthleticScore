@@ -185,6 +185,61 @@ when the list is recieved the following things need to happen:
     - If any of their events are not in the list then those result entries should be deleted
 '''
 
+'''
+{
+"athletes":[
+{
+"name":"c",
+"event_id":1
+},
+{
+"name":"c",
+"event_id":2
+},
+{
+"name":"c",
+"event_id":3
+},
+{
+"name":"c",
+"event_id":4
+},
+{
+"name":"c",
+"event_id":5
+},
+{
+"name":"c",
+"event_id":6
+},
+{
+"name":"c",
+"event_id":7
+},
+{
+"name":"c",
+"event_id":8
+},
+{
+"name":"c",
+"event_id":9
+},
+{
+"name":"c",
+"event_id":10
+},
+{
+"name":"c",
+"event_id":11
+},
+{
+"name":"c",
+"event_id":12
+}
+]
+}
+'''
+
 @api_view(['POST'])
 def bulk_create_athletes(request, f_id):
     athletes_data_list = request.data["athletes"]
@@ -216,7 +271,7 @@ def bulk_create_athletes(request, f_id):
     updated_athletes=[] # List containing existing athletes that have had their name updated
 
     def replaceable_result(name: str):
-        result = athlete_results[name].exclude(event__in=athlete_events[name]).first()
+        result = athlete_results[name].exclude(event__in=athlete_events[name] if name in athlete_events else []).first()
         if result:
             athlete_results[name]=athlete_results[name].exclude(pk=result.pk)
         return result
