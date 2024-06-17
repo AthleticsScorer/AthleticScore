@@ -2,11 +2,8 @@ from django_filters import rest_framework as filters
 from .models import Result, Competition, Athlete, Event
 
 class ResultFilter(filters.FilterSet):
-    athlete_name = filters.CharFilter(field_name="athlete__name", lookup_expr="icontains")
-    athlete_organisation = filters.CharFilter(field_name="athlete__team__name", lookup_expr="icontains")
-    event_age_category = filters.CharFilter(field_name="event__age_group", lookup_expr="icontains")
-    event_type = filters.CharFilter(field_name="event__event_type", lookup_expr="icontains")
-    event_name = filters.CharFilter(field_name="event__event_name", lookup_expr="icontains")
+    athlete_id = filters.NumberFilter(field_name="athlete__id")
+    event_id = filters.NumberFilter(field_name="event__id")
     competition_id = filters.NumberFilter(field_name="competition__id")
     result_min = filters.NumberFilter(field_name="value", lookup_expr="gte")
     result_max = filters.NumberFilter(field_name="value", lookup_expr="lte")
@@ -14,8 +11,7 @@ class ResultFilter(filters.FilterSet):
     class Meta:
         model = Result
         fields = [
-            'athlete_name', 'athlete_organisation', 'event_age_category', 'event_type', 
-            'event_name', 'competition_id', 'result_min', 'result_max'
+            'athlete_id', 'event_id', 'competition_id', 'result_min', 'result_max'
         ]
 
 class CompetitionFilter(filters.FilterSet):
