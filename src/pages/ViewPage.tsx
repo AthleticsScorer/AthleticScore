@@ -78,7 +78,7 @@ const ViewPage = () => {
               <Tr>
                 <Th>Position</Th>
                 <Th>Athlete</Th>
-                <Th>Score</Th>
+                <Th>Result</Th>
               </Tr>
             </Thead>
             <Tbody>
