@@ -587,7 +587,7 @@ search_events_by_name = create_search_view(Event)
 
 # visiting this wipes all database entries
 # specifically added for debugging and testing
-@api_view(['GET'])
+@api_view(['POST'])
 def wipe_events_data(request):
     try:
         call_command('wipe_events')
