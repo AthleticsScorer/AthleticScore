@@ -15,41 +15,29 @@ import axios from "axios";
 
 interface DisplayResult {
   id: number;
-  athleteName: String;
-  value: number;
+  rank: number;
+  athlete_name: String;
+  result: number;
+  points: number;
 }
 
 const ViewPage = () => {
-  const [results, setResults] = useState<Result[]>([]);
   const { competitionId, eventId } = useParams();
   const [competitionName, setCompetitionName] = useState("");
   const [eventName, setEventName] = useState("");
   const [displayResults, setDisplayResults] = useState<DisplayResult[]>([]);
-  const resultId = useRef(0);
 
   useEffect(() => {
-    axios
-      .get(backend + "/results/")
-      .then((response) => {
-        setResults(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const fetchAthleteNames = async () => {
+    const fetchDisplayResults = async () => {
       const response = await axios.get(
-        backend + `/events/${eventId}`
+        backend + `/events/${eventId}/ranked_athletes`
       );
       setDisplayResults(response.data);
     };
 
-    if (results.length > 0) {
-      fetchAthleteNames();
-    }
-  }, [results]);
+    fetchDisplayResults();
+    console.log(displayResults);
+  }, []);
 
   useEffect(() => {
     const fetchCompetitionName = async () => {
@@ -71,7 +59,7 @@ const ViewPage = () => {
     const fetchEventName = async () => {
       try {
         const response = await axios.get(backend + `/events/${eventId}`);
-        setEventName(response.data.age_group + " " + response.data.name + " " + response.data.event_type);
+        setEventName(response.data.age_group + " " + response.data.event_name + " " + response.data.event_type);
       } catch (error) {
         console.error("Error fetching event data:", error);
         setEventName("Unknown Event");
@@ -94,11 +82,11 @@ const ViewPage = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {displayResults.map((result, index) => (
+              {displayResults.map(result => (
               <Tr>
-                <Td>{index + 1}</Td>
-                <Td>{result.athleteName}</Td>
-                <Td>{result.value}</Td>
+                <Td>{result.rank}</Td>
+                <Td>{result.athlete_name}</Td>
+                <Td>{result.result}</Td>
               </Tr>
               ))}
             </Tbody>
