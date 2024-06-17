@@ -1,4 +1,13 @@
-import { Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react";
+import { Heading, HStack, List, ListItem, VStack, 
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer, } from "@chakra-ui/react";
 import { Result } from "../components/InputResult";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -101,7 +110,27 @@ const ViewPage = () => {
     <>
       <VStack>
         <Heading>{competitionName + " " + eventName}</Heading>
-        <List>
+        <TableContainer>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Position</Th>
+                <Th>Team</Th>
+                <Th>Score</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {displayResults.map((result, index) => (
+              <Tr>
+                <Td>{index + 1}</Td>
+                <Td>{result.athleteName}</Td>
+                <Td>{result.value}</Td>
+              </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        {/* <List>
           {displayResults.map((result, index) => (
             <ListItem key={result.id} paddingY="5px">
               <HStack>
@@ -111,7 +140,7 @@ const ViewPage = () => {
               </HStack>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </VStack>
     </>
   );

@@ -10,6 +10,15 @@ import {
   List,
   ListItem,
   VStack,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer
 } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
 import { Event, Team } from "./CreatePage";
@@ -124,17 +133,26 @@ const CompetitionPage = () => {
           </VStack>
           <VStack>
             <Heading>Results</Heading>
-            <List>
+            <TableContainer>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Position</Th>
+                <Th>Team</Th>
+                <Th>Score</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {displayTeams.map((team, index) => (
-                <ListItem key={team.id} paddingY="5px">
-                  <HStack>
-                    <Heading size={"sm"}>{index + 1}</Heading>
-                    <Heading size={"sm"}>{team.name}</Heading>
-                    <Heading size={"sm"}>{team.points}</Heading>
-                  </HStack>
-                </ListItem>
+              <Tr>
+                <Td>{index + 1}</Td>
+                <Td>{team.name}</Td>
+                <Td>{team.points}</Td>
+              </Tr>
               ))}
-            </List>
+            </Tbody>
+          </Table>
+        </TableContainer>
             <Link to={"/competition/" + competitionId + "/details"}>
               <Button>More Results</Button>
             </Link>

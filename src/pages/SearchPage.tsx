@@ -37,7 +37,7 @@ const SearchPage = () => {
     console.log("searching");
     try {
       const response = await axios.get(
-        backend + `/competitions/search/?name=` + searchValue
+        backend + `/competitions/filter/?name=` + searchValue
       );
       setCompetitions(response.data);
     } catch (error) {
@@ -75,12 +75,21 @@ const SearchPage = () => {
         </Box>
         {competitions.map((competition) => (
           <React.Fragment key={competition.id}>
-            <Box>
-              <Heading size="md">{String(competition.date)}</Heading>
+            <Box w="100px">
+              <Heading size="md">{
+                String(competition.date) === "null" ? "Ongoing" : String(competition.date)
+              }</Heading>
             </Box>
             <Box>
               <Link to={"/competition/" + competition.id + "/search"}>
-                <Heading size="md">{competition.name}</Heading>
+              <Button
+                colorScheme="blue"
+                size="lg"
+                width='500px'
+                type="button">
+                  
+            {competition.name}
+          </Button>
               </Link>
             </Box>
           </React.Fragment>
