@@ -146,7 +146,7 @@ const CompetitionSearchPage = () => {
           onChange={(e) => setSearchValue(e.target.value)}
         ></Input>
         <Select
-          placeholder="Event"
+          placeholder="Select a filter"
           size="lg"
           value={searchType}
           onChange={(e) => handleSearchType(e.target.value)}

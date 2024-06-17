@@ -8,6 +8,15 @@ import {
   SimpleGrid,
   Text,
   VStack,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Competition } from "./HomePage";
@@ -37,7 +46,7 @@ const SearchPage = () => {
     console.log("searching");
     try {
       const response = await axios.get(
-        backend + `/competitions/filter/?name=` + searchValue
+        backend + `/competitions/filter/?competition_name=` + searchValue
       );
       setCompetitions(response.data);
     } catch (error) {
@@ -66,35 +75,35 @@ const SearchPage = () => {
           <Text>Search</Text>
         </Button>
       </HStack>
-      <SimpleGrid columns={2} spacing={4}>
-        <Box>
-          <Heading size="md">Date</Heading>
-        </Box>
-        <Box>
-          <Heading size="md">Name</Heading>
-        </Box>
-        {competitions.map((competition) => (
-          <React.Fragment key={competition.id}>
-            <Box w="100px">
-              <Heading size="md">{
-                String(competition.date) === "null" ? "Ongoing" : String(competition.date)
-              }</Heading>
-            </Box>
-            <Box>
-              <Link to={"/competition/" + competition.id + "/search"}>
-              <Button
-                colorScheme="blue"
-                size="lg"
-                width='500px'
-                type="button">
-                  
-            {competition.name}
-          </Button>
-              </Link>
-            </Box>
-          </React.Fragment>
-        ))}
-      </SimpleGrid>
+      <TableContainer>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Date</Th>
+                <Th>Name</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {competitions.map((competition) => (
+              <Tr>
+                <Td>{String(competition.date) === "null" ? "Ongoing" : String(competition.date)}</Td>
+                <Td>
+                  <Link to={"/competition/" + competition.id + "/search"}>
+                  <Button
+                    colorScheme="blue"
+                    size="lg"
+                    width='500px'
+                    type="button">
+                      
+                {competition.name}
+                </Button>
+                </Link>
+              </Td>
+              </Tr> 
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
     </VStack>
   );
 };

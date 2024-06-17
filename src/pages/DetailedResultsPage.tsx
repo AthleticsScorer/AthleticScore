@@ -1,4 +1,14 @@
-import { Heading, HStack, List, ListItem, VStack } from "@chakra-ui/react";
+import { Heading, HStack, List, ListItem, VStack,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer
+ } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Team } from "./CreatePage";
@@ -124,20 +134,33 @@ const DetailedResultsPage = () => {
     };
   }, [displayTeams]);
 
+    useEffect(() => {
+    fetchDisplayTeams();
+  }, [teams]);
+
   return (
     <VStack>
       <Heading>Overall Results</Heading>
-      <List>
-        {displayTeams.map((team, index) => (
-          <ListItem key={team.id} paddingY="5px">
-            <HStack>
-              <Heading size={"sm"}>{index + 1}</Heading>
-              <Heading size={"sm"}>{team.name}</Heading>
-              <Heading size={"sm"}>{team.points}</Heading>
-            </HStack>
-          </ListItem>
-        ))}
-      </List>
+      <TableContainer>
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Position</Th>
+              <Th>Team</Th>
+              <Th>Score</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {displayTeams.map((team, index) => (
+            <Tr>
+              <Td>{index + 1}</Td>
+              <Td>{team.name}</Td>
+              <Td>{team.points}</Td>
+            </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
       <Heading>Best Performers</Heading>
       <List>
         {displayWinners.map((winner, index) => (
