@@ -4,7 +4,7 @@ import { FaHome, FaRunning, FaSearch } from "react-icons/fa";
 
 const NavBar = () => {
   return (
-    <HStack spacing={20} padding="10px" background="deepskyblue">
+    <HStack spacing={20} padding="10px" background="deepskyblue" height="100px">
       <Link to="/">
         <FaHome size="50px" />
       </Link>
