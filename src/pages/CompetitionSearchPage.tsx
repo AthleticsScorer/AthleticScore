@@ -194,7 +194,7 @@ const CompetitionSearchPage = () => {
               {isEvent && events.map((event) => (
                 <Tr>
                 <Td>
-                <Link to={"/competition/" + competitionId + "/" + event.id + "/view"}>
+                <Link to={"/competition/" + competitionId + "/event/" + event.id + "/view"}>
                   <Button size="md" textAlign="center" minW="400px">
                     {event.age_group + " " +event.event_name + " " + event.event_type}
                   </Button>
@@ -205,7 +205,7 @@ const CompetitionSearchPage = () => {
               {isAthlete && athletes.map((athlete) => (
                 <Tr>
                 <Td>
-              <Link to={"/competition/" + competitionId + "/" + athlete.id + "/view"}>
+              <Link to={"/competition/" + competitionId + "/athlete/" + athlete.id + "/view"}>
                 <Button size="md" textAlign="center" minW="400px">
                   {athlete.name + " - " + getTeamNameFromId(Number(athlete.team))}
                 </Button>

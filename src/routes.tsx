@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         path: "/competition/:competitionId/search",
         element: <CompetitionSearchPage />,
       },
-      { path: "/competition/:competitionId/:athleteId/view", 
+      { path: "/competition/:competitionId/athlete/:athleteId/view", 
         element: <AthletesEventsResultsPage/>},
       { path: "/create/:competitionId", element: <ConfEventsPage /> },
       { path: "/create/:competitionId/teams", element: <ConfTeamsPage /> },
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <ResultsPage />,
       },
       {
-        path: "/competition/:competitionId/:eventId/view",
+        path: "/competition/:competitionId/event/:eventId/view",
         element: <ViewPage />,
       },
     ],
