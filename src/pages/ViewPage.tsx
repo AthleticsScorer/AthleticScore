@@ -115,7 +115,7 @@ const ViewPage = () => {
             <Thead>
               <Tr>
                 <Th>Position</Th>
-                <Th>Team</Th>
+                <Th>Athlete</Th>
                 <Th>Score</Th>
               </Tr>
             </Thead>
@@ -130,17 +130,6 @@ const ViewPage = () => {
             </Tbody>
           </Table>
         </TableContainer>
-        {/* <List>
-          {displayResults.map((result, index) => (
-            <ListItem key={result.id} paddingY="5px">
-              <HStack>
-                <Heading size={"sm"}>{index + 1}</Heading>
-                <Heading size={"sm"}>{result.athleteName}</Heading>
-                <Heading size={"sm"}>{result.value}</Heading>
-              </HStack>
-            </ListItem>
-          ))}
-        </List> */}
       </VStack>
     </>
   );
