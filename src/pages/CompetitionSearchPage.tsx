@@ -156,6 +156,14 @@ const CompetitionSearchPage = () => {
     }
   }
 
+  function getTeamNameFromId(id: Number) {
+    for (const team of inTeams) {
+      if (team.id === id) {
+        return team.name
+      }
+    }
+  }
+
   return (
     <VStack>
       <HStack>
@@ -197,9 +205,9 @@ const CompetitionSearchPage = () => {
               {isAthlete && athletes.map((athlete) => (
                 <Tr>
                 <Td>
-              <Link to={""}>
+              <Link to={"/competition/" + competitionId + "/" + athlete.id + "/view"}>
                 <Button size="md" textAlign="center" minW="400px">
-                  {athlete.name + " " + athlete.team}
+                  {athlete.name + " - " + getTeamNameFromId(Number(athlete.team))}
                 </Button>
               </Link>
               </Td>

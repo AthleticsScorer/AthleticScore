@@ -130,17 +130,6 @@ const ViewPage = () => {
             </Tbody>
           </Table>
         </TableContainer>
-        {/* <List>
-          {displayResults.map((result, index) => (
-            <ListItem key={result.id} paddingY="5px">
-              <HStack>
-                <Heading size={"sm"}>{index + 1}</Heading>
-                <Heading size={"sm"}>{result.athleteName}</Heading>
-                <Heading size={"sm"}>{result.value}</Heading>
-              </HStack>
-            </ListItem>
-          ))}
-        </List> */}
       </VStack>
     </>
   );

@@ -14,6 +14,7 @@ import ConfTeamAthletesPage from "./pages/ConfTeamAthletesPage";
 import SearchPage from "./pages/SearchPage";
 import CompetitionSearchPage from "./pages/CompetitionSearchPage";
 import DetailedResultsPage from "./pages/DetailedResultsPage";
+import AthletesEventsResultsPage from "./pages/AthletesEventsResultsPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,8 @@ const router = createBrowserRouter([
         path: "/competition/:competitionId/search",
         element: <CompetitionSearchPage />,
       },
+      { path: "/competition/:competitionId/:athleteId/view", 
+        element: <AthletesEventsResultsPage/>},
       { path: "/create/:competitionId", element: <ConfEventsPage /> },
       { path: "/create/:competitionId/teams", element: <ConfTeamsPage /> },
       { path: "/create/:competitionId/viewteams/", element: <ViewTeamsPage /> },
