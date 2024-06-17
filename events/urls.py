@@ -33,23 +33,26 @@ viewsets = {
         'detail': AthleteDetailAPIView,
         'search': search_athletes_by_name,
         'bulk_create': bulk_create_athletes
+        'filter': AthleteFilterAPIView,
     },
     'competitions': {
         'list': CompetitionListCreateAPIView,
         'detail': CompetitionDetailAPIView,
         'search': search_competitions_by_name,
+        'filter': CompetitionFilterAPIView,
     },
     'events': {
         'list': EventListCreateAPIView,
         'detail': EventDetailAPIView,
         'search': search_events_by_name,
-        'bulk_create': bulk_create_events
+        'bulk_create': bulk_create_events,
+        'filter': EventFilterAPIView,
     },
     'results': {
         'list': ResultListCreateAPIView,
         'detail': ResultDetailAPIView,
         'bulk_create': bulk_create_results,
-        'filter': ResultFilterAPIVAthleteFilteriew,
+        'filter': ResultFilterAPIView,
     }
 }
 
