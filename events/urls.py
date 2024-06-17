@@ -32,7 +32,7 @@ viewsets = {
         'list': AthleteListCreateAPIView,
         'detail': AthleteDetailAPIView,
         'search': search_athletes_by_name,
-        'bulk_create': bulk_create_athletes
+        'bulk_create': bulk_create_athletes,
         'filter': AthleteFilterAPIView,
     },
     'competitions': {
