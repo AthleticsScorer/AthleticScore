@@ -20,7 +20,7 @@ interface DisplayTeam {
 const CompetitionResultsPage = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [displayTeams, setDisplayTeams] = useState<DisplayTeam[]>([]);
-  const competitionId = useParams<Params>();
+  const {competitionId} = useParams<Params>();
 
   useEffect(() => {
     axios

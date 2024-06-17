@@ -115,7 +115,7 @@ const ViewPage = () => {
             <Thead>
               <Tr>
                 <Th>Position</Th>
-                <Th>Team</Th>
+                <Th>Athlete</Th>
                 <Th>Score</Th>
               </Tr>
             </Thead>
