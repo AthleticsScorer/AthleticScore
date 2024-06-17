@@ -71,7 +71,7 @@ const ViewPage = () => {
     const fetchEventName = async () => {
       try {
         const response = await axios.get(backend + `/events/${eventId}`);
-        setEventName(response.data.age_group);
+        setEventName(response.data.age_group + " " + response.data.name + " " + response.data.event_type);
       } catch (error) {
         console.error("Error fetching event data:", error);
         setEventName("Unknown Event");
