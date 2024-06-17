@@ -134,25 +134,25 @@ const CompetitionPage = () => {
           <VStack>
             <Heading>Results</Heading>
             <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Position</Th>
-                <Th>Team</Th>
-                <Th>Score</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {displayTeams.map((team, index) => (
-              <Tr>
-                <Td>{index + 1}</Td>
-                <Td>{team.name}</Td>
-                <Td>{team.points}</Td>
-              </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Position</Th>
+                    <Th>Team</Th>
+                    <Th>Score</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {displayTeams.map((team, index) => (
+                  <Tr>
+                    <Td>{index + 1}</Td>
+                    <Td>{team.name}</Td>
+                    <Td>{team.points}</Td>
+                  </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
             <Link to={"/competition/" + competitionId + "/details"}>
               <Button>More Results</Button>
             </Link>
