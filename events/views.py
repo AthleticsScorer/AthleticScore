@@ -185,7 +185,6 @@ when the list is recieved the following things need to happen:
     - If any of their events are not in the list then those result entries should be deleted
 '''
 
-
 @api_view(['POST'])
 def bulk_create_athletes(request, f_id):
     athletes_data_list = request.data["athletes"]
@@ -215,7 +214,7 @@ def bulk_create_athletes(request, f_id):
     new_results=[] # List containing results to be bulk created and added to database
     updated_results=[] # List containing existing results that have either had their athlete or event updated
     updated_athletes=[] # List containing existing athletes that have had their name updated
-    
+
     def replaceable_result(name: str):
         result = athlete_results[name].exclude(event__in=athlete_events[name]).first()
         if result:
@@ -244,7 +243,26 @@ def bulk_create_athletes(request, f_id):
                 athlete=existing_athletes[name],
                 event=event
             ))
-    
+
+    for name,events in athlete_events.items():
+        if name not in existing_athletes:
+            prev_athlete = None
+            for event in events:
+                if event in filled_events:
+                    prev_athlete=filled_events[event]
+                    break
+            if prev_athlete:
+                replace = True
+                for result in athlete_results[prev_athlete.name]:
+                    if result.event not in events:
+                        replace = False
+                        break
+                if replace:
+                    athlete_results[name]=athlete_results.pop(prev_athlete.name)
+                    existing_athletes[name]=existing_athletes.pop(prev_athlete.name)
+                    prev_athlete.name=name
+                    updated_athletes.append(prev_athlete)
+
     for event,name in new_events.items():
         if name in existing_athletes: # Athlete already exists
             if name in athlete_results: # Athlete existed before this query
@@ -272,11 +290,13 @@ def bulk_create_athletes(request, f_id):
     Athlete.objects.bulk_update(updated_athletes,["name"])
     # update variables with new values
     athletes_in_team = Athlete.objects.filter(team_id=f_id)
+    print(athletes_in_team)
     athlete_results = {
         athlete.name:Result.objects.filter(athlete=athlete)
         for athlete in athletes_in_team
     }
     athlete_names = athlete_events.keys()
+    print(athlete_names)
     team_events=new_events.keys()
     for athlete in athletes_in_team:
         if athlete.name not in athlete_names:
