@@ -7,7 +7,7 @@ from .views import (
     CompetitionListCreateAPIView, CompetitionDetailAPIView,
     EventListCreateAPIView, EventDetailAPIView,
     ResultListCreateAPIView, ResultDetailAPIView,
-    get_athletes_ranked_by_result, ResultFilterAPIView, get_teams_points,
+    get_athletes_ranked_by_result, get_teams_points,
     get_competition_athletes, get_competition_teams, get_competition_events,
     get_event_results, get_team_athlete_events,
     search_athletes_by_name, search_teams_by_name,
@@ -15,7 +15,9 @@ from .views import (
     wipe_events_data, 
     bulk_create_events, bulk_create_teams,
     bulk_create_athletes, bulk_create_results,
-    mark_competition_complete, get_best_performers, get_winners
+    mark_competition_complete, get_best_performers, get_winners,
+    ResultFilterAPIView, CompetitionFilterAPIView, AthleteFilterAPIView,
+    EventFilterAPIView,
 )
 
 # Define viewsets
@@ -26,7 +28,7 @@ viewsets = {
         'search': search_teams_by_name,
         'bulk_create': bulk_create_teams
     },
-    'athletes': {
+    'athletes': {result
         'list': AthleteListCreateAPIView,
         'detail': AthleteDetailAPIView,
         'search': search_athletes_by_name,
@@ -47,7 +49,7 @@ viewsets = {
         'list': ResultListCreateAPIView,
         'detail': ResultDetailAPIView,
         'bulk_create': bulk_create_results,
-        'filter': ResultFilterAPIView,
+        'filter': ResultFilterAPIVAthleteFilteriew,
     }
 }
 
@@ -66,6 +68,9 @@ urlpatterns += [
     path('events/<int:event_id>/all_results/', get_event_results, name='event-all-results'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
     path('results/filter/', ResultFilterAPIView.as_view(), name='result_filter'),
+    path('competitions/filter/', CompetitionFilterAPIView.as_view(), name='competition_filter'),
+    path('events/filter/', EventFilterAPIView.as_view(), name='event_filter'),
+    path('athletes/filter/', AthleteFilterAPIView.as_view(), name='athlete_filter'),
     path('competitions/<int:competition_id>/best_performers/', get_best_performers, name='best-performer'),
     path('competitions/<int:competition_id>/winners/', get_winners, name='winners'),
 ]

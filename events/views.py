@@ -353,6 +353,12 @@ class AthleteListCreateAPIView(BaseListCreateAPIView):
 class AthleteDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = AthleteSerializer
 
+class AthleteFilterAPIView(generics.ListAPIView):
+    queryset = Athlete.objects.all()
+    serializer_class = AthleteSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AthleteFilter
+
 # Competition Views
 class CompetitionListCreateAPIView(BaseListCreateAPIView):
     serializer_class = CompetitionSerializer
@@ -360,12 +366,24 @@ class CompetitionListCreateAPIView(BaseListCreateAPIView):
 class CompetitionDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = CompetitionSerializer
 
+class CompetitionFilterAPIView(generics.ListAPIView):
+    queryset = Competition.objects.all()
+    serializer_class = CompetitionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = CompetitionFilter
+
 # Event Views
 class EventListCreateAPIView(BaseListCreateAPIView):
     serializer_class = EventSerializer
 
 class EventDetailAPIView(BaseRetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
+
+class EventFilterAPIView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = EventFilter
 
 # Result Views
 class ResultListCreateAPIView(BaseListCreateAPIView):
