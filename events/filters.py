@@ -43,7 +43,7 @@ class EventFilter(filters.FilterSet):
 class AthleteFilter(filters.FilterSet):
     athlete_name = filters.CharFilter(field_name="name", lookup_expr="icontains")
     athlete_organisation = filters.CharFilter(field_name="team__name", lookup_expr="icontains")
-    competition_id = filters.NumberFilter(field_name="competition__id")
+    competition_id = filters.NumberFilter(field_name="team__competition__id")
 
     class Meta:
         model = Athlete
