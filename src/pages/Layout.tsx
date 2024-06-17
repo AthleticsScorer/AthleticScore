@@ -9,7 +9,7 @@ const Layout = () => {
       <Box padding={5}>
         <Outlet />
       </Box>
-      <footer height="100px" background="deepskyblue">
+      <footer style={{height="100px" background="deepskyblue"}}>
         </footer>
     </>
   );
