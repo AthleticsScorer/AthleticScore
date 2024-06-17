@@ -28,7 +28,7 @@ viewsets = {
         'search': search_teams_by_name,
         'bulk_create': bulk_create_teams
     },
-    'athletes': {result
+    'athletes': {
         'list': AthleteListCreateAPIView,
         'detail': AthleteDetailAPIView,
         'search': search_athletes_by_name,
