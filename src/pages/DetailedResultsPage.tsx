@@ -15,7 +15,7 @@ import { Params, useParams } from "react-router-dom";
 
 interface DisplayTeam {
   id: number;
-  name: String;
+  team: String;
   points: number;
 }
 
@@ -42,26 +42,13 @@ const DetailedResultsPage = () => {
   const [displayTeams, setDisplayTeams] = useState<DisplayTeam[]>([]);
   const [winners, setWinners] = useState<Winner[]>([]);
   const [displayWinners, setDisplayWinners] = useState<WinnerDisplay[]>([]);
-  const competitionId = useParams<Params>();
+  const {competitionId} = useParams<Params>();
   const winnerId = useRef(0);
 
   useEffect(() => {
     axios
       .get(
-        backend + "/competitions/" + competitionId.competitionId + "/all_teams"
-      )
-      .then((response) => {
-        setTeams(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [competitionId]);
-
-  useEffect(() => {
-    axios
-      .get(
-        backend + "/competitions/" + competitionId.competitionId + "/winners"
+        backend + "/competitions/" + competitionId + "/winners"
       )
       .then((response) => {
         setWinners(response.data);
@@ -76,7 +63,7 @@ const DetailedResultsPage = () => {
       .get(
         backend +
           "/competitions/" +
-          competitionId.competitionId +
+          competitionId +
           "/best_performers"
       )
       .then((response) => {
@@ -96,31 +83,13 @@ const DetailedResultsPage = () => {
       });
   }, [winners]);
 
-  async function fetchDisplayTeams() {
-    const displayTeamsPromises = teams.map(async (team) => {
-      try {
-        const response = await axios.get(
-          backend + `/teams/${team.id}/total_points`
-        );
-        return {
-          id: team.id,
-          name: team.name,
-          points: response.data,
-        };
-      } catch (error) {
-        console.error("Error fetching team points data:", error);
-        return {
-          id: team.id,
-          name: "Unknown Team",
-          points: 0,
-        };
-      }
-    });
-
-    const resolvedDisplayTeams = await Promise.all(displayTeamsPromises);
-    const sortedTeams = resolvedDisplayTeams.sort(
+  const fetchDisplayTeams = async () => {
+    const response = await axios.get(backend + `/competitions/${competitionId}/team_points/`)
+    const inTeams: DisplayTeam[] = response.data
+    const sortedTeams = inTeams.sort(
       (a, b) => b.points - a.points
     );
+    console.log(sortedTeams)
     setDisplayTeams(sortedTeams);
   }
 
@@ -134,8 +103,9 @@ const DetailedResultsPage = () => {
   }, [displayTeams]);
 
   useEffect(() => {
+    console.log("use effect called")
     fetchDisplayTeams();
-  }, [teams]);
+  }, [competitionId]);
 
   return (
     <Box minHeight={"80vh"}>
@@ -154,7 +124,7 @@ const DetailedResultsPage = () => {
             {displayTeams.map((team, index) => (
             <Tr>
               <Td>{index + 1}</Td>
-              <Td>{team.name}</Td>
+              <Td>{team.team}</Td>
               <Td>{team.points}</Td>
             </Tr>
             ))}
