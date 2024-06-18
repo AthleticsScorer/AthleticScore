@@ -63,3 +63,7 @@ class WinnerSerializer(serializers.Serializer):
     event_type=serializers.CharField()
     athlete=serializers.CharField()
     team=serializers.CharField()
+
+class TeamPointsSerializer(serializers.Serializer):
+    points=serializers.IntegerField()
+    team=serializers.CharField()

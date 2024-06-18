@@ -46,7 +46,6 @@ for basename, viewset in viewsets.items():
 urlpatterns += [
     path('events/<int:event_id>/ranked_athletes/', get_athletes_ranked_by_result, name='ranked-athletes'),
     path('events/<int:event_id>/all_results/', get_event_results, name='event-all-results'),
-    path('teams/<int:team_id>/total_points/', get_teams_points, name='total-points'),
     path('teams/<int:team_id>/athlete_events/', get_team_athlete_events, name='team-athlete-events'),
     path('competitions/<int:competition_id>/all_athletes/', get_competition_athletes, name='comp-all-athletes'),
     path('competitions/<int:competition_id>/all_teams/', get_competition_teams, name='comp-all-teams'),
@@ -54,5 +53,6 @@ urlpatterns += [
     path('competitions/<int:competition_id>/complete/', mark_competition_complete, name='comp-mark-complete'),
     path('competitions/<int:competition_id>/best_performers/', get_best_performers, name='best-performer'),
     path('competitions/<int:competition_id>/winners/', get_winners, name='winners'),
+    path('competitions/<int:competition_id>/team_points/', get_teams_points, name='team-points'),
     path('wipe/', wipe_events_data, name='wipe-events-data'),
 ]

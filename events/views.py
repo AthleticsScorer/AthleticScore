@@ -409,7 +409,7 @@ def calc_event_result(event):
             points = MAX_SCORE_WITHOUT_EDGE - dist_from_first
         ranked_results.append({
             'rank': rank,
-            'athlete_id': result.athlete.id,
+            'athlete': result.athlete,
             'result': result.value,
             'points': points
         })
@@ -421,29 +421,38 @@ def get_athletes_ranked_by_result(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     ranked_results = calc_event_result(event)
     for result in ranked_results:
-        athlete_id = result['athlete_id']
-        athlete = get_object_or_404(Athlete, pk=athlete_id)
-        result['athlete_name'] = athlete.name
-        del result['athlete_id']
+        result['athlete_name'] = result['athlete'].pop().name
     return Response(ranked_results)
 
 @api_view(['GET'])
-def get_teams_points(request, team_id):
-    team = get_object_or_404(Team, pk=team_id)
-    team_athletes = Athlete.objects.filter(team=team)
-    team_athletes_ids = []
-    for athlete in team_athletes:
-        team_athletes_ids.append(athlete.id)
-    events = Event.objects.filter(competition=team.competition)
+def get_teams_points(request, competition_id):
+    event_results={}
+    for result in Result.objects.filter(value__isnull=False):
+        if result.event.competition_id == competition_id:
+            if result.event in event_results:
+                event_results[result.event].append(result)
+            else:
+                event_results[result.event]=[result]
 
-    total_points = 0
-    for event in events:
-        ranked_results = calc_event_result(event)
-        for result in ranked_results:
-            if result['athlete_id'] in team_athletes_ids:
-                total_points += result['points']
-
-    return Response(total_points)
+    team_points = {}
+    for event,results in event_results.items():
+        if event.event_type in time_events: # Time based event order
+            results = results.order_by('value')  # Ascending for time
+        elif event.event_type in dist_events: # Distance based event order
+            results = results.order_by('-value')  # Descending for distances
+        for rank, result in enumerate(results, start=1):
+            points = 0
+            dist_from_first = rank - 1
+            if rank == 1:
+                points = MAX_SCORE_WITHOUT_EDGE + FIRST_PLACE_EDGE
+            else:
+                points = MAX_SCORE_WITHOUT_EDGE - dist_from_first
+            team_points[result.athlete.team] = points + team_points[result.athlete.team] if result.athlete.team in team_points else points
+    serializer=TeamPointsSerializer([{
+        'team':team.name,
+        'points':points
+    } for team,points in team_points.items()],many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def get_event_results(request, event_id):
