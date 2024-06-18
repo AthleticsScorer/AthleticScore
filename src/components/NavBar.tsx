@@ -1,11 +1,11 @@
-import { HStack, Heading } from "@chakra-ui/react";
+import { HStack, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaHome, FaRunning, FaSearch } from "react-icons/fa";
 
 const NavBar = () => {
   return (
     <HStack spacing="40px" padding="20px" background="#ADD8E6" height="75px">
-      <img alt='logo' style={{ width: 325 }} src="./resources/athleticscore.png" />
+      <Image alt='logo' style={{ width: 325 }} src="./athleticscore.png" />
       <Link to="/">
         <FaHome size="50px" />
       </Link>
