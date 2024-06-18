@@ -567,7 +567,7 @@ def get_best_performers(request, competition_id):
         if event_stats and event_results:
             for result in event_results:
                 performance_value = event_stats.calculate_performance(float(result.value))
-                if event in best_performers and performance_value < best_performers[event]['performance']:
+                if event not in best_performers or performance_value < best_performers[event]['performance']:
                     best_performers[event]={
                         'athlete':result.athlete.name,
                         'team':result.athlete.team.short_code,
