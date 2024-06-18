@@ -519,6 +519,41 @@ def wipe_events_data(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+#     for result in event_results:
+    #         age_group = event.age_group
+    #         if age_group not in best_performers:
+    #             best_performers[age_group] = {
+    #                 'athlete': None,
+    #                 'best_performance': {
+    #                     'performance': float('inf'),
+    #                     'event':event.event_type,
+    #                     'string':event.event_name,
+    #                     'result':0
+    #                 }
+    #             }
+            
+    #         event_stats = event_statistics.get(event.event_type, None)
+
+    #         if event_stats:
+    #             performance_value = event_stats.calculate_performance(float(result.value))
+    #             if performance_value < best_performers[age_group]['best_performance']['performance']:
+    #                 best_performers[age_group]['best_performance']['performance'] = performance_value
+    #                 best_performers[age_group]['best_performance']['event'] = event.event_type
+    #                 best_performers[age_group]['best_performance']['string'] = event.event_name
+    #                 best_performers[age_group]['best_performance']['result'] = result.value
+    #                 best_performers[age_group]['athlete'] = result.athlete
+                    
+    # serializer = BestPerformerSerializer([{
+    #     'athlete':best_performers[age_group]['athlete'].name,
+    #     'team':best_performers[age_group]['athlete'].team.short_code,
+    #     'performance':best_performers[age_group]['best_performance']['performance'],
+    #     'age_group':age_group,
+    #     'event':best_performers[age_group]['best_performance']['event'],
+    #     'string':best_performers[age_group]['best_performance']['string'],
+    #     'result':best_performers[age_group]['best_performance']['result'],
+    # }
+    # for age_group in best_performers.keys()], many=True)
+
 @api_view(['GET'])
 def get_best_performers(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
@@ -528,41 +563,22 @@ def get_best_performers(request, competition_id):
 
     for event in events:
         event_results = Result.objects.filter(event=event, value__isnull=False)
-        
-        for result in event_results:
-            age_group = event.age_group
-            if age_group not in best_performers:
-                best_performers[age_group] = {
-                    'athlete': None,
-                    'best_performance': {
-                        'performance': float('inf'),
+        event_stats = event_statistics.get(event.event_type, None)
+        if event_stats and event_results:
+            for result in event_results:
+                performance_value = event_stats.calculate_performance(float(result.value))
+                if event in best_performers and performance_value < best_performers[event]['performance']:
+                    best_performers[event]={
+                        'athlete':result.athlete.name,
+                        'team':result.athlete.team.short_code,
+                        'performance':performance_value,
+                        'age_group':event.age_group,
                         'event':event.event_type,
                         'string':event.event_name,
-                        'result':0
+                        'result':result.value,
                     }
-                }
-            
-            event_stats = event_statistics.get(event.event_type, None)
-
-            if event_stats:
-                performance_value = event_stats.calculate_performance(float(result.value))
-                if performance_value < best_performers[age_group]['best_performance']['performance']:
-                    best_performers[age_group]['best_performance']['performance'] = performance_value
-                    best_performers[age_group]['best_performance']['event'] = event.event_type
-                    best_performers[age_group]['best_performance']['string'] = event.event_name
-                    best_performers[age_group]['best_performance']['result'] = result.value
-                    best_performers[age_group]['athlete'] = result.athlete
-                    
-    serializer = BestPerformerSerializer([{
-        'athlete':best_performers[age_group]['athlete'].name,
-        'team':best_performers[age_group]['athlete'].team.short_code,
-        'performance':best_performers[age_group]['best_performance']['performance'],
-        'age_group':age_group,
-        'event':best_performers[age_group]['best_performance']['event'],
-        'string':best_performers[age_group]['best_performance']['string'],
-        'result':best_performers[age_group]['best_performance']['result'],
-    }
-    for age_group in best_performers.keys()], many=True)
+    
+    serializer = BestPerformerSerializer(best_performers.values(),many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
