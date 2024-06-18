@@ -58,30 +58,31 @@ const DetailedResultsPage = () => {
       });
   }, [competitionId]);
 
-  useEffect(() => {
-    axios
-      .get(
-        backend +
-          "/competitions/" +
-          competitionId +
-          "/best_performers"
-      )
-      .then((response) => {
-        const winnerAthletes: Set<String> = new Set(
-          winners.map((winner) => winner.athlete)
-        );
+  const fetchWinners = async () => {
+    const response = await axios.get(backend + `/competitions/${competitionId}/best_performers`)
+    const winnerAthletes: Set<String> = new Set(
+      winners.map((winner) => winner.athlete)
+    );
+    const filteredWinnerDisplays: WinnerDisplay[] = response.data.filter(
+      (wd: WinnerDisplay) => winnerAthletes.has(wd.athlete)
+    );
+    setDisplayWinners(
+      filteredWinnerDisplays.sort((a, b) => a.performance - b.performance)
+    );
+  }
 
-        const filteredWinnerDisplays: WinnerDisplay[] = response.data.filter(
-          (wd: WinnerDisplay) => winnerAthletes.has(wd.athlete)
-        );
-        setDisplayWinners(
-          filteredWinnerDisplays.sort((a, b) => a.performance - b.performance)
-        );
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+  useEffect(() => {
+    fetchWinners();
   }, [winners]);
+
+  useEffect(() => {
+    let timerId = setTimeout(() => {
+      fetchWinners();
+    }, 2000);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [displayWinners]);
 
   const fetchDisplayTeams = async () => {
     const response = await axios.get(backend + `/competitions/${competitionId}/team_points/`)
@@ -103,7 +104,6 @@ const DetailedResultsPage = () => {
   }, [displayTeams]);
 
   useEffect(() => {
-    console.log("use effect called")
     fetchDisplayTeams();
   }, [competitionId]);
 
