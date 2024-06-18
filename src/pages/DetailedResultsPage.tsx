@@ -38,34 +38,16 @@ interface WinnerDisplay {
 }
 
 const DetailedResultsPage = () => {
-  const [teams, setTeams] = useState<Team[]>([]);
   const [displayTeams, setDisplayTeams] = useState<DisplayTeam[]>([]);
-  const [winners, setWinners] = useState<Winner[]>([]);
   const [displayWinners, setDisplayWinners] = useState<WinnerDisplay[]>([]);
   const {competitionId} = useParams<Params>();
   const winnerId = useRef(0);
 
-  useEffect(() => {
-    axios
-      .get(
-        backend + "/competitions/" + competitionId + "/winners"
-      )
-      .then((response) => {
-        setWinners(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [competitionId]);
-
   const fetchWinners = async () => {
     const response = await axios.get(backend + `/competitions/${competitionId}/best_performers`)
-    const winnerAthletes: Set<String> = new Set(
-      winners.map((winner) => winner.athlete)
-    );
-    const filteredWinnerDisplays: WinnerDisplay[] = response.data.filter(
-      (wd: WinnerDisplay) => winnerAthletes.has(wd.athlete)
-    );
+    const filteredWinnerDisplays: WinnerDisplay[] = response.data
+    console.log("response")
+    console.log(response.data)
     setDisplayWinners(
       filteredWinnerDisplays.sort((a, b) => a.performance - b.performance)
     );
@@ -73,7 +55,7 @@ const DetailedResultsPage = () => {
 
   useEffect(() => {
     fetchWinners();
-  }, [winners]);
+  }, [competitionId]);
 
   useEffect(() => {
     let timerId = setTimeout(() => {
@@ -108,45 +90,59 @@ const DetailedResultsPage = () => {
   }, [competitionId]);
 
   return (
-    <Box minHeight={"80vh"}>
-    <VStack>
-      <Heading>Overall Results</Heading>
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Position</Th>
-              <Th>Team</Th>
-              <Th>Score</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {displayTeams.map((team, index) => (
-            <Tr>
-              <Td>{index + 1}</Td>
-              <Td>{team.team}</Td>
-              <Td>{team.points}</Td>
-            </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      <Heading>Best Performers</Heading>
-      <List>
-        {displayWinners.map((winner, index) => (
-          <ListItem key={winnerId.current++} paddingY="5px">
-            <HStack>
-              <Heading size={"sm"}>{index + 1}</Heading>
-              <Heading size={"sm"}>{winner.athlete}</Heading>
-              <Heading size={"sm"}>
-                {winner.string + " " + winner.age_group + " " + winner.event}
-              </Heading>
-              <Heading size={"sm"}>{winner.performance.toPrecision(4)}</Heading>
-            </HStack>
-          </ListItem>
-        ))}
-      </List>
-    </VStack>
+    <Box minHeight={"80vh"} alignItems={"center"}>
+      <VStack>
+        <HStack alignItems="top" spacing="100px">
+          <VStack>
+          <Heading>Overall Results</Heading>
+          <TableContainer>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Position</Th>
+                  <Th>Team</Th>
+                  <Th>Score</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {displayTeams.map((team, index) => (
+                <Tr>
+                  <Td>{index + 1}</Td>
+                  <Td>{team.team}</Td>
+                  <Td>{team.points}</Td>
+                </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          </VStack>
+          <VStack>
+          <Heading>Best Performers</Heading>
+          <TableContainer>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Position</Th>
+                  <Th>Name</Th>
+                  <Th>Event</Th>
+                  <Th>Performance</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {displayWinners.map((winner, index) => (
+                <Tr>
+                  <Td>{index + 1}</Td>
+                  <Td>{winner.athlete}</Td>
+                  <Td>{winner.string + " " + winner.age_group + " " + winner.event}</Td>
+                  <Td>{winner.performance.toPrecision(4)}</Td>
+                </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          </VStack>
+        </HStack>
+      </VStack>
     </Box>
   );
 };
