@@ -11,7 +11,7 @@ export interface Competition {
 
 const HomePage = () => {
   return (
-    <Center height={"100vh"}>
+    <Center height={"80vh"}>
       <VStack spacing={10}>
         <Link to="/manage">
           <Button colorScheme="blue" size="lg" type="submit">
