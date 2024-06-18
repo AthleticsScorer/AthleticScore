@@ -426,7 +426,7 @@ def get_athletes_ranked_by_result(request, event_id):
 
 @api_view(['GET'])
 def get_teams_points(request, competition_id):
-    event_results={}
+    event_results:dict[Event,list]={}
     for result in Result.objects.filter(value__isnull=False):
         if result.event.competition_id == competition_id:
             if result.event in event_results:
@@ -437,9 +437,9 @@ def get_teams_points(request, competition_id):
     team_points = {}
     for event,results in event_results.items():
         if event.event_type in time_events: # Time based event order
-            results = results.order_by('value')  # Ascending for time
+            results.sort(key=lambda a: a.value)
         elif event.event_type in dist_events: # Distance based event order
-            results = results.order_by('-value')  # Descending for distances
+            results.sort(key=lambda a: a.value,reverse=True)
         for rank, result in enumerate(results, start=1):
             points = 0
             dist_from_first = rank - 1
