@@ -5,7 +5,8 @@ import { Heading, VStack,
     Tr,
     Th,
     Td,
-    TableContainer, } from "@chakra-ui/react";
+    TableContainer,
+    Box } from "@chakra-ui/react";
   import { Result } from "../components/InputResult";
   import { useEffect, useRef, useState } from "react";
   import { useParams } from "react-router-dom";
@@ -114,7 +115,7 @@ import { Heading, VStack,
     }, [athleteId]);
   
     return (
-      <>
+      <Box minHeight={"80vh"}>
         <VStack>
           <Heading>{competitionName + " " + athleteName}</Heading>
           <TableContainer>
@@ -122,7 +123,7 @@ import { Heading, VStack,
               <Thead>
                 <Tr>
                   <Th>Event</Th>
-                  <Th>Score</Th>
+                  <Th>Result</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -136,7 +137,7 @@ import { Heading, VStack,
             </Table>
           </TableContainer>
         </VStack>
-      </>
+      </Box>
     );
   };
   

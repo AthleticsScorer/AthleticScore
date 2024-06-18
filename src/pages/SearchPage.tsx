@@ -1,22 +1,18 @@
 import {
-  Box,
   Button,
-  Heading,
   HStack,
   Input,
   Select,
-  SimpleGrid,
   Text,
   VStack,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
-  TableContainer
+  TableContainer,
+  Box
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Competition } from "./HomePage";
@@ -56,6 +52,7 @@ const SearchPage = () => {
   };
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack>
       <HStack>
         <Input
@@ -105,6 +102,7 @@ const SearchPage = () => {
           </Table>
         </TableContainer>
     </VStack>
+    </Box>
   );
 };
 

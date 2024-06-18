@@ -1,12 +1,11 @@
-import { Heading, HStack, List, ListItem, VStack, 
+import { Heading, VStack, 
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
+  Box,
   TableContainer, } from "@chakra-ui/react";
 import { Result } from "../components/InputResult";
 import { useEffect, useRef, useState } from "react";
@@ -69,7 +68,7 @@ const ViewPage = () => {
   }, [eventId]);
 
   return (
-    <>
+    <Box minHeight={"80vh"}>
       <VStack>
         <Heading>{competitionName + " " + eventName}</Heading>
         <TableContainer>
@@ -93,7 +92,7 @@ const ViewPage = () => {
           </Table>
         </TableContainer>
       </VStack>
-    </>
+    </Box>
   );
 };
 

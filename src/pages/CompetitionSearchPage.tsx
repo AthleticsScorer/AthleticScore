@@ -11,7 +11,7 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer,
+  TableContainer, Box
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -165,6 +165,7 @@ const CompetitionSearchPage = () => {
   }
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack>
       <HStack>
       <Select
@@ -217,6 +218,7 @@ const CompetitionSearchPage = () => {
           </Table>
         </TableContainer>
     </VStack>
+    </Box>
   );
 };
 

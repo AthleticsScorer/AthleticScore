@@ -6,7 +6,7 @@ const ErrorPage = () => {
   const error = useRouteError();
 
   return (
-    <>
+    <Box minHeight={"80vh"}>
       <NavBar />
       <Box padding={5}>
         {" "}
@@ -17,7 +17,7 @@ const ErrorPage = () => {
             : "An unexpected error occured."}
         </Text>
       </Box>
-    </>
+    </Box>
   );
 };
 
