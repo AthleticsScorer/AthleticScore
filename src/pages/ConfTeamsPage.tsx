@@ -4,12 +4,13 @@ import {
   VStack,
   HStack,
   Input,
-  Center,
+  Box,
   IconButton,
+  Center
 } from "@chakra-ui/react";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 interface Team {
@@ -60,6 +61,7 @@ const ConfTeamsPage = () => {
   }
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack padding="10px">
       <Heading>{"Configure Teams"}</Heading>
       {teams.map((t) => (
@@ -79,6 +81,7 @@ const ConfTeamsPage = () => {
           size="md"
           value={String(teamCode)}
           onChange={(e) => setTeamCode(e.target.value)}
+          maxLength={3}
         />
         <IconButton
           variant="outline"
@@ -98,6 +101,7 @@ const ConfTeamsPage = () => {
         Confirm
       </Button>
     </VStack>
+    </Box>
   );
 };
 

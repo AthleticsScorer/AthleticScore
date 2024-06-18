@@ -1,4 +1,4 @@
-import { Heading, VStack, Button } from "@chakra-ui/react";
+import { Heading, VStack, Button, Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -31,6 +31,7 @@ const ViewTeamsPage = () => {
   }, [competitionId]);
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack spacing="10px">
       <Heading>{"Manage Teams"}</Heading>
       {teams.map((team) => (
@@ -44,6 +45,7 @@ const ViewTeamsPage = () => {
         </Link>
       ))}
     </VStack>
+    </Box>
   );
 };
 

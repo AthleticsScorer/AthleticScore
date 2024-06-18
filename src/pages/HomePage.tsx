@@ -1,4 +1,4 @@
-import { Button, Center, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, Box, HStack, Text, VStack, Center } from "@chakra-ui/react";
 import { FaRunning, FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,7 @@ export interface Competition {
 
 const HomePage = () => {
   return (
-    <Center height={"80vh"}>
+    <Center minHeight={"80vh"}>
       <VStack spacing={10}>
         <Link to="/manage">
           <Button colorScheme="blue" size="lg" type="submit">

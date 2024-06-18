@@ -2,12 +2,11 @@ import { Heading, HStack, List, ListItem, VStack,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
-  TableContainer
+  TableContainer,
+  Box
  } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -134,11 +133,12 @@ const DetailedResultsPage = () => {
     };
   }, [displayTeams]);
 
-    useEffect(() => {
+  useEffect(() => {
     fetchDisplayTeams();
   }, [teams]);
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack>
       <Heading>Overall Results</Heading>
       <TableContainer>
@@ -177,6 +177,7 @@ const DetailedResultsPage = () => {
         ))}
       </List>
     </VStack>
+    </Box>
   );
 };
 

@@ -9,7 +9,7 @@ import {
   Thead,
   Tr,
   VStack,
-  Input,
+  Input, Box
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams, Params, useNavigate } from "react-router-dom";
@@ -123,7 +123,7 @@ const ResultsPage = () => {
   }, [eventId]);
 
   return (
-    <>
+    <Box minHeight={"80vh"}>
       <VStack>
         <Heading>
           {competitionName +
@@ -165,7 +165,7 @@ const ResultsPage = () => {
           Submit results
         </Button>
       </VStack>
-    </>
+    </Box>
   );
 };
 

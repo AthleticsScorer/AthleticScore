@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Competition } from "./HomePage";
 import {
   Button,
-  Center,
+  Box,
   Heading,
   HStack,
   VStack,
@@ -14,7 +14,7 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer,
+  TableContainer, Center
 } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
 import { Event, Team } from "./CreatePage";
@@ -108,7 +108,7 @@ const CompetitionPage = () => {
   }, [displayTeams]);
 
   return (
-    <>
+    <Box minHeight={"80vh"}>
       <Heading size="xl" paddingLeft={10}>
         {competition?.name}
       </Heading>
@@ -153,7 +153,7 @@ const CompetitionPage = () => {
           </VStack>
         </HStack>
       </Center>
-    </>
+    </Box>
   );
 };
 

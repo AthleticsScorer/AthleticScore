@@ -4,7 +4,7 @@ import {
   VStack,
   HStack,
   Input,
-  Center,
+  Center, Box,
   IconButton,
 } from "@chakra-ui/react";
 import { useParams, Link } from "react-router-dom";
@@ -154,6 +154,7 @@ const ConfEventsPage = () => {
   }
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack padding="10px">
       <Heading>{"Configure Events"}</Heading>
       <HStack>
@@ -232,6 +233,7 @@ const ConfEventsPage = () => {
         </Button>
       </Link>
     </VStack>
+    </Box>
   );
 };
 

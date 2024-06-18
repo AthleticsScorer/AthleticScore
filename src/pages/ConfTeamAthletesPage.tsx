@@ -10,13 +10,12 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Box,
+  Box
 } from "@chakra-ui/react";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { Event } from "../pages/CreatePage";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { VscCommentUnresolved } from "react-icons/vsc";
 
 interface Athlete {
   name: String;
@@ -121,6 +120,7 @@ const ConfTeamAthletesPage = () => {
   };
 
   return (
+    <Box minHeight={"80vh"}>
     <VStack padding="10px">
       <Heading>{teamName}</Heading>
       <Tabs isFitted variant="enclosed">
@@ -164,6 +164,7 @@ const ConfTeamAthletesPage = () => {
       </Tabs>
       <Button onClick={handleSubmitAthletes}>Submit Athletes</Button>
     </VStack>
+    </Box>
   );
 };
 

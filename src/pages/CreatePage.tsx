@@ -20,7 +20,7 @@ const createPage = () => {
   const { competitionId } = useParams();
 
   return (
-    <Center height={"100vh"}>
+    <Center minHeight={"100vh"}>
       <VStack spacing={10}>
         <Link to={"/manage/" + competitionId + "/teams"}>
           <Button colorScheme="blue" size="lg" type="submit">
