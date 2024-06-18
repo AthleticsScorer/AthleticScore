@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 
 interface DisplayTeam {
   id: number;
-  name: String;
+  team: String;
   points: number;
 }
 
@@ -30,7 +30,6 @@ const CompetitionPage = () => {
   const { competitionId } = useParams();
   const [competition, setCompetition] = useState<Competition>();
   const [events, setEvents] = useState<Event[]>([]);
-  const [teams, setTeams] = useState<Team[]>([]);
   const [displayTeams, setDisplayTeams] = useState<DisplayTeam[]>([]);
 
   useEffect(() => {
@@ -55,53 +54,26 @@ const CompetitionPage = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(backend + "/competitions/" + competitionId + "/all_teams")
-      .then((response) => {
-        setTeams(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [competitionId]);
-
-  async function fetchDisplayTeams() {
-    const displayTeamsPromises = teams.map(async (team) => {
-      try {
-        const response = await axios.get(
-          backend + `/teams/${team.id}/total_points`
-        );
-        return {
-          id: team.id,
-          name: team.name,
-          points: response.data,
-        };
-      } catch (error) {
-        console.error("Error fetching team points data:", error);
-        return {
-          id: team.id,
-          name: "Unknown Team",
-          points: 0,
-        };
-      }
-    });
-
-    const resolvedDisplayTeams = await Promise.all(displayTeamsPromises);
-    const sortedTeams = resolvedDisplayTeams.sort(
+  const fetchDisplayTeams = async () => {
+    const response = await axios.get(backend + `/competitions/${competitionId}/team_points/`)
+    const inTeams: DisplayTeam[] = response.data
+    const sortedTeams = inTeams.sort(
       (a, b) => b.points - a.points
     );
+    console.log(sortedTeams)
     setDisplayTeams(sortedTeams);
   }
 
   useEffect(() => {
+    console.log("use effect 1")
     fetchDisplayTeams();
-  }, [teams]);
+  }, [competitionId]);
 
   useEffect(() => {
     let timerId = setTimeout(() => {
       fetchDisplayTeams();
     }, 2000);
+    console.log(displayTeams)
     return () => {
       clearTimeout(timerId);
     };
@@ -140,7 +112,7 @@ const CompetitionPage = () => {
                   {displayTeams.map((team, index) => (
                   <Tr>
                     <Td>{index + 1}</Td>
-                    <Td>{team.name}</Td>
+                    <Td>{team.team}</Td>
                     <Td>{team.points}</Td>
                   </Tr>
                   ))}
