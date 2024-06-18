@@ -7,18 +7,14 @@ import {
   Center,
   Heading,
   HStack,
-  List,
-  ListItem,
   VStack,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
-  TableContainer
+  TableContainer,
 } from "@chakra-ui/react";
 import EventsDisplayContainer from "../components/EventsDisplayContainer";
 import { Event, Team } from "./CreatePage";
@@ -117,9 +113,8 @@ const CompetitionPage = () => {
         {competition?.name}
       </Heading>
       <Center>
-        <HStack>
-          <VStack>
-            <EventsDisplayContainer
+        <HStack alignItems="start">
+          <EventsDisplayContainer
               competitionId={Number(competitionId)}
               events={events.map((e) => ({
                 id: e.id,
@@ -130,7 +125,6 @@ const CompetitionPage = () => {
                 complete: e.complete,
               }))}
             />
-          </VStack>
           <VStack>
             <Heading>Results</Heading>
             <TableContainer>
